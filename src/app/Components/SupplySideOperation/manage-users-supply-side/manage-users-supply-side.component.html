@@ -1,0 +1,117 @@
+<div class="flex flex-col gap-3">
+    <!-- Headings and buttons -->
+    <div class="flex flex-col gap-2">
+        <div class="text-orange-500 font-bold font-abcd text-2xl">Manage Users And Sub-Accounts</div>
+        <div class="text-orange-500 font-bold font-abcd text-lg">Manage My Users</div>
+        <div class="flex gap-3">
+            <button
+                class="inline-block px-2 py-1 text-white bg-sideBarColor rounded-md shadow-md hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-sideBarColor focus:ring-offset-2">Display
+                My Direct users</button>
+            <button
+                class="inline-block px-2 py-1 text-white bg-sideBarColor rounded-md shadow-md hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-sideBarColor focus:ring-offset-2">Add
+                New Direct User</button>
+        </div>
+    </div>
+
+    <!-- Table -->
+    <div class="overflow-x-auto bg-white shadow-md shadow-gray-200 rounded-md p-3">
+        <table class="w-full">
+            <thead>
+                <tr>
+                    <th>S#</th>
+                    <th>User ID</th>
+                    <th>User Name</th>
+                    <th>Mobile#</th>
+                    <th>Role Allocated</th>
+                    <th>Active</th>
+                    <th>Prim.</th>
+                    <th>Sec.</th>
+                    <th>App PIN Details</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- User details and PIN details -->
+    <div class="flex flex-col md:flex-row gap-3 md:gap-12 mb-10">
+        <!-- User details -->
+        <div class="flex flex-col gap-2 bg-white rounded-md shadow-md shadow-gray-200 p-3 w-full xl:w-[30%] lg:w-[40%] md:w-[50%] ">
+            <div class="font-semibold">Address : <span>-----------------------</span></div>
+            <div class="flex flex-row gap-2 justify-between">
+                <div class="font-semibold">Bank : <span>---------------</span></div>
+                <div class="font-semibold">Branch : <span>--------------</span></div>
+            </div>
+            <div class="flex flex-row justify-between">
+                <div class="font-semibold">Bank A/C# : <span>--------------</span></div>
+                <div class="font-semibold">IFSC : <span>----------------</span></div>
+            </div>
+        </div>
+
+        <!-- PIN details -->
+        <div class="flex flex-col gap-2 bg-white rounded-md shadow-md shadow-gray-200 p-3 w-full xl:w-[30%] lg:w-[40%] md:w-[50%] ">
+            <div class="font-semibold">Webapp PIN : <span>--------------------</span></div>
+            <div class="font-semibold">ScreenPlayer PIN : <span>------------------</span></div>
+            <div class="font-semibold">E-comm PIN : <span>---------------------</span></div>
+        </div>
+    </div>
+
+    <!-- Add new Sub-account form -->
+    <div class="bg-white p-3 flex flex-col gap-3 rounded-md shadow-md shadow-gray-200 w-full xl:w-[70%] lg:w-[80%] md:w-[100%]">
+        <div class="font-semibold text-base">Subacct id : </div>
+
+        <!-- Form fields -->
+        <div class="flex flex-col md:flex-row gap-3">
+            <div class="flex flex-col gap-2 w-full md:w-[40%]">
+                <label class="font-semibold" for="">Sub-acct Name </label>
+                <input class="custom-input" type="text">
+            </div>
+            <div class="flex flex-col gap-2 w-full md:w-[50%]">
+                <label class="font-semibold" for="">Corp. Address </label>
+                <input class="custom-input" type="text">
+            </div>
+        </div>
+
+        <div class="flex flex-col md:flex-row gap-3">
+            <div class="flex flex-col gap-2 w-full md:w-[40%]">
+                <label class="font-semibold" for="">Primary Mobile # </label>
+                <input class="custom-input" type="text">
+            </div>
+            <div class="flex flex-col gap-2 w-full md:w-[50%]">
+                <label class="font-semibold" for="">Bank Name </label>
+                <input class="custom-input" type="text">
+            </div>
+        </div>
+
+        <div class="flex flex-col md:flex-row gap-3">
+            <div class="flex flex-col gap-2 w-full md:w-[40%]">
+                <label for="">Bank Branch </label>
+                <input class="custom-input" type="text">
+            </div>
+            <div class="flex flex-col gap-2 w-full md:w-[50%]">
+                <label for="">Bank IFSC </label>
+                <input class="custom-input" type="text">
+            </div>
+        </div>
+
+        <div class="flex flex-col md:flex-row gap-3">
+            <div class="flex flex-col gap-2 w-full md:w-[40%]">
+                <label for="">Bank A/C # </label>
+                <input class="custom-input" type="text">
+            </div>
+            <div class="flex flex-col gap-2 w-full md:w-[50%]">
+                <label for="">Active Flag </label>
+                <select class="custom-input" name="" id="">
+                    <option value="">Yes</option>
+                    <option value="">No</option>
+                </select>
+            </div>
+        </div>
+
+        <div>
+            <button class="bg-sideBarColor hover:bg-red-800 rounded-md px-3 py-2 text-white">Save Sub-account</button>
+        </div>
+    </div>
+</div>

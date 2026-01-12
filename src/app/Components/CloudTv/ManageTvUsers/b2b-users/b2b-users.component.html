@@ -1,0 +1,475 @@
+<div class="flex flex-col w-full">
+    <div class="w-full flex flex-col gap-10 justify-center items-center">
+        <div class="text-orange-500 w-full font-bold font-abcd text-2xl">
+            Manage B2B Users
+        </div>
+
+        <div class="flex w-[95%] gap-6 items-center flex-col">
+            <div class="w-[100%] flex justify-between flex-row">
+                <div>
+                    <label class="text-lg font-semibold text-[#63040D]" for="choice">Select Channel: </label>
+                    <select class="ml-2 p-1" id="choice" name="choice">
+                        <option>Channel Name 1</option>
+                        <option>Channel Name 2</option>
+                    </select>
+                </div>
+                <button (click)="toggleManageB2BPopup()" 
+                    [class.bg-[#d11225]]="isPopupManageB2BVisible"
+                    [class.bg-[#63040D]]="!isPopupManageB2BVisible"
+                    class="bg-[#63040D] text-white px-4 py-2 font-semibold">
+                    Manage B2B Account for TV
+                </button>
+                <button (click)="toggleRegisterUserPopup()" class="bg-[#63040D] text-white px-4 py-2 font-semibold">
+                    Register New B2B Account for TV
+                </button>
+                <button (click)="toggleManagePaymentPopup()" 
+                    [class.bg-[#d11225]]="isPopupManagePaymentVisible"
+                    [class.bg-[#63040D]]="!isPopupManagePaymentVisible"
+                    class="bg-[#63040D] text-white px-4 py-2 font-semibold">
+                    Add Payment
+                </button>
+                <button (click)="toggleUsageDashboarPopup()" class="bg-[#63040D] text-white px-4 py-2 font-semibold">
+                    View Usage Dashboard
+                </button>
+            </div>
+
+            <div *ngIf="isPopupManageB2BVisible" class="w-full p-5 bg-white border-[1px] flex flex-col justify-start border-black">
+                <div class="h-2 text-[12px] flex justify-start font-semibold text-[#63040D] w-full mb-10">
+                    <span class="w-[8%] h-10">Channel-Id</span>
+                    <span class="w-[11%] h-10">Channel-name</span>
+                    <span class="w-[8%] h-10">Category</span>
+                    <span class="w-[8%] h-10">Acc-Id</span>
+                    <span class="w-[9%] h-10">SubAcc-Id</span>
+                    <span class="w-[12%] h-10">email</span>
+                    <span class="w-[9%] h-10">Reg. mob no</span>
+                    <span class="w-[8%] h-10">Subs. Plan</span>
+                    <span class="w-[7%] h-10">Active</span>
+                    <span class="w-[8%] h-10">Valid frm</span>
+                    <span class="w-[8%] h-10">Valid to</span>
+                    <span class="w-[6%] h-10">Action</span>     
+                </div>
+
+                
+                <div class="w-full flex font-semibold flex-col gap-1">
+                    <div class="w-full text-[10px] py-2 flex justify-start">
+                        <span class="w-[8%] h-10">101</span>
+                        <span class="w-[11%] h-10">TechTalks</span>
+                        <span class="w-[8%] h-10">Education</span>
+                        <span class="w-[8%] h-10">ACC123</span>
+                        <span class="w-[9%] h-10">SUB456</span>
+                        <span class="w-[12%] h-10">tech&#64;example.com</span>
+                        <span class="w-[9%] h-10">9876543210</span>
+                        <span class="w-[8%] h-10">Premium</span>
+                        <div class="w-[7%] h-10">
+                            <img [src]="valid" alt="Validity" class="h-6 w-auto" />
+                        </div>
+                        <span class="w-[8%] h-10">01-Jan-2025</span>
+                        <span class="w-[8%] h-10">31-Dec-2025</span>
+                        <div class="w-[6%] h-10">
+                            <button (click)="toggleEditUserPopup()" ><img [src]="edit" class="h-6"></button>
+                        </div>
+                    </div>
+
+                    <div class="w-full text-[10px] py-2 flex justify-start">
+                        <span class="w-[8%] h-10">102</span>
+                        <span class="w-[11%] h-10">FoodiesHub</span>
+                        <span class="w-[8%] h-10">Lifestyle</span>
+                        <span class="w-[8%] h-10">ACC789</span>
+                        <span class="w-[9%] h-10">SUB012</span>
+                        <span class="w-[12%] h-10">foodies&#64;example.com</span>
+                        <span class="w-[9%] h-10">9876543211</span>
+                        <span class="w-[8%] h-10">Basic</span>
+                        <div class="w-[7%] h-10">
+                            <img [src]="valid" alt="Validity" class="h-6 w-auto" />
+                        </div>
+                        <span class="w-[8%] h-10">15-Feb-2025</span>
+                        <span class="w-[8%] h-10">14-Feb-2026</span>                    
+                        <div class="w-[6%] h-10">
+                            <button (click)="toggleEditUserPopup()" ><img [src]="edit" class="h-6"></button>
+                        </div>
+                    </div>
+
+                    <div class="w-full text-[10px] py-2 flex justify-start">
+                        <span class="w-[8%] h-10">103</span>
+                        <span class="w-[11%] h-10">TravelVibes</span>
+                        <span class="w-[8%] h-10">Travel</span>
+                        <span class="w-[8%] h-10">ACC345</span>
+                        <span class="w-[9%] h-10">SUB678</span>
+                        <span class="w-[12%] h-10">travel&#64;example.com</span>
+                        <span class="w-[9%] h-10">9876543212</span>
+                        <span class="w-[8%] h-10">Enterprise</span>
+                        <div class="w-[7%] h-10">
+                            <img [src]="valid" alt="Validity" class="h-6 w-auto" />
+                        </div>
+                        <span class="w-[8%] h-10">01-Mar-2025</span>
+                        <span class="w-[8%] h-10">28-Feb-2026</span>                    
+                        <div class="w-[6%] h-10">
+                            <button (click)="toggleEditUserPopup()"><img [src]="edit" class="h-6"></button>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+
+            <div *ngIf="isPopupManagePaymentVisible" class="w-full p-5 bg-white border-[1px] flex flex-col justify-start border-black">
+                <div class="  w-full flex justify-between items-center">
+                    <span class="text-lg font-semibold text-[#63040D]">Total current date Active users Subscribed License : <span class="ml-2 text-lg text-green-500">1055</span></span>
+                    <button (click)="toggleMakeUserPaymentPopup()" class="bg-[#63040D] text-white px-4 py-2 font-semibold">
+                        Make Users Payment
+                    </button>
+                </div>
+
+                <div class="h-2 text-[15px] mt-5 flex justify-start font-semibold text-[#63040D] w-full mb-10">
+                    <span class="w-[12%] h-10">#Serial</span>
+                    <span class="w-[18%] h-10">Subscriber Plan</span>
+                    <span class="w-[12%] h-10">Cart Id</span>
+                    <span class="w-[12%] h-10">User Count</span>
+                    <span class="w-[12%] h-10">Valid From</span>
+                    <span class="w-[12%] h-10">Validd To</span>
+                    <span class="w-[12%] h-10">Active status</span>
+                </div>
+
+                <div class="w-full flex font-semibold flex-col gap-1">
+                    <div class="w-full text-[13px] py-2 flex justify-start">
+                        <span class="w-[12%] h-10">1</span>
+                        <span class="w-[18%] h-10">Premium</span>
+                        <span class="w-[12%] h-10">12345</span>
+                        <span class="w-[12%] h-10">5</span>
+                        <span class="w-[12%] h-10">01-Jan-2025</span>
+                        <span class="w-[12%] h-10">31-Dec-2025</span>
+                        <span class="w-[12%] h-10">Active</span>
+                    </div>
+
+                    <div class="w-full text-[13px] py-2 flex justify-start">
+                        <span class="w-[12%] h-10">2</span>
+                        <span class="w-[18%] h-10">Basic</span>
+                        <span class="w-[12%] h-10">67890</span>
+                        <span class="w-[12%] h-10">2</span>
+                        <span class="w-[12%] h-10">15-Feb-2025</span>
+                        <span class="w-[12%] h-10">14-Feb-2026</span>
+                        <span class="w-[12%] h-10">Active</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<div *ngIf="isPopupRegisterUserVisible" class="fixed inset-0 z-20 flex justify-center items-center bg-black bg-opacity-50">
+    <form  class="w-[35%] bg-white flex justify-start flex-col ">
+
+        <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+            <button (click)="toggleRegisterUserPopup()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="w-full flex justify-start p-5 pb-2 gap-8">
+            <span class="text-lg font-semibold text-[#63040D]">Channel-Id:<span class="ml-2 text-lg text-gray-500">123</span></span>                      
+        </div>
+
+        <div class="w-full flex flex-col justify-start gap-4 items-start pt-8 mb-6 px-5 roundded-lg">
+            <div>
+                <label class="text-lg font-semibold text-[#63040D]" for="firstname">Reg Mobile number:</label>
+                <input  name="firstname" class="ml-2 p-1" type="text" id="verticalname" [placeholder]="" required />
+            </div>
+            <div>
+                <label class="text-lg font-semibold text-[#63040D]" for="lastname">Email iD:</label>
+                <input  name="lastname" class="ml-2 p-1" type="text" id="verticalname" [placeholder]="" required />
+            </div>
+        </div>
+
+        <div class=" flex justify-center w-full items-end pb-6 ">
+
+            <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Register Acc</button>
+
+        </div>
+
+    </form>
+</div>
+
+<div *ngIf="isPopupEditUserVisible" class="fixed inset-0 z-20 flex justify-center items-center bg-black bg-opacity-50">
+    <form  class="w-[35%] bg-white flex justify-start flex-col ">
+
+        <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+            <button (click)="toggleEditUserPopup()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="w-full flex justify-start p-5 pb-2 gap-8">
+            <span class="text-lg font-semibold text-[#63040D]">Channel-Id:<span class="ml-2 text-lg text-gray-500">123</span></span>                      
+        </div>
+
+        <div class="w-full flex flex-col justify-start gap-4 items-start pt-8 mb-6 px-5 roundded-lg">
+            <div>
+                <label class="text-lg font-semibold text-[#63040D]" for="firstname">Reg Mobile number:</label>
+                <input  name="firstname" class="ml-2 p-1" type="text" id="verticalname" [placeholder]="" required />
+            </div>
+            <div>
+                <label class="text-lg font-semibold text-[#63040D]" for="lastname">Email iD:</label>
+                <input  name="lastname" class="ml-2 p-1" type="text" id="verticalname" [placeholder]="" required />
+            </div>
+        </div>
+
+        <div class=" flex justify-center w-full items-end pb-6 ">
+
+            <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Edit Acc</button>
+
+        </div>
+
+    </form>
+</div>
+
+<div *ngIf="isPopupRegisterUserEditVisible" class="fixed inset-0 z-20 flex justify-center items-center bg-black bg-opacity-50">
+    <form  class="w-[35%] bg-white flex justify-start flex-col ">
+
+        <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+            <button (click)="toggleRegisterUserEditPopup()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="w-full flex justify-start p-5 pb-2 gap-8">
+            <span class="text-lg font-semibold text-[#63040D]">Channel-Id:<span class="ml-2 text-lg text-gray-500">123</span></span>                      
+        </div>
+
+        <div class="w-full flex flex-col justify-start gap-4 items-start pt-8 mb-6 px-5 roundded-lg">
+            <div>
+                <label class="text-lg font-semibold text-[#63040D]" for="firstname">Reg Mobile number:</label>
+                <input  name="firstname" class="ml-2 p-1" type="text" id="verticalname" [placeholder]="" required />
+            </div>
+            <div>
+                <label class="text-lg font-semibold text-[#63040D]" for="lastname">Email iD:</label>
+                <input  name="lastname" class="ml-2 p-1" type="text" id="verticalname" [placeholder]="" required />
+            </div>
+        </div>
+
+        <div class=" flex justify-center w-full items-end pb-6 ">
+
+            <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Edit Acc</button>
+
+        </div>
+
+    </form>
+</div>
+
+<div *ngIf="isPopupUsageDashboarVisible" class="fixed inset-0 z-20 flex justify-center items-center bg-black bg-opacity-50">
+    <form  class="w-[75%] bg-white flex justify-start flex-col ">
+
+        <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+            <button (click)="toggleUsageDashboarPopup()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="w-full flex mt-4 items-center justify-between">
+            <div class=" flex justify-start p-5 pb-2 gap-8">
+                <div>
+                  <label class="text-lg font-semibold text-[#63040D]" for="usageFrom">View Usage From: </label>
+                  <input class="p-1" type="date" id="usageFrom" [(ngModel)]="usageFrom" />
+                </div>
+                
+                <div>
+                  <label class="text-lg font-semibold text-[#63040D]" for="usageDate">View Usage Date: </label>
+                  <input class="p-1" type="date" id="usageDate" [(ngModel)]="usageDate" />
+                </div>
+            </div>
+
+            <div class=" flex justify-start p-5 pb-2 gap-8">
+                <button class="bg-[#63040D] text-white px-4 py-2 font-semibold">
+                    Display Dashboard
+                </button>
+            </div>
+        </div>
+
+        <div class="w-full flex justify-start p-5 pb-2 gap-8">
+            <span class="text-lg font-semibold text-[#63040D]">Channel-Id:<span class="ml-2 text-lg text-gray-500">123</span></span>                      
+        </div>
+
+        <div class="w-[95%] mx-auto border-[1px]  p-5 bg-white flex flex-col justify-start border-black">
+            <div class="h-2 text-[15px] flex justify-start font-semibold text-[#63040D] w-full mb-10">
+                <span class="w-[12%] h-10">#Serial</span>
+                <span class="w-[18%] h-10">User Mob. number</span>
+                <span class="w-[15%] h-10">Screen Id</span>
+                <span class="w-[15%] h-10">Client Os</span>
+                <span class="w-[15%] h-10">Item Allowed</span>
+                <span class="w-[15%] h-10">Logged in Date</span>
+                <span class="w-[15%] h-10">Logged out Date</span>    
+            </div>
+
+            <div class="w-full flex font-semibold flex-col gap-1">
+                <div class="w-full text-[13px] py-2 flex justify-start">
+                    <span class="w-[12%] h-10">1</span>
+                    <span class="w-[18%] h-10">9876543210</span>
+                    <span class="w-[15%] h-10">SC1234</span>
+                    <span class="w-[15%] h-10">Windows 10</span>
+                    <span class="w-[15%] h-10">5</span>
+                    <span class="w-[15%] h-10">01-Jan-2025</span>
+                    <span class="w-[15%] h-10">01-Jan-2025</span>
+                </div>
+
+                <div class="w-full text-[13px] py-2 flex justify-start">
+                    <span class="w-[12%] h-10">2</span>
+                    <span class="w-[18%] h-10">9876543211</span>
+                    <span class="w-[15%] h-10">SC5678</span>
+                    <span class="w-[15%] h-10">macOS 13</span>
+                    <span class="w-[15%] h-10">10</span>
+                    <span class="w-[15%] h-10">15-Feb-2025</span>
+                    <span class="w-[15%] h-10">15-Feb-2025</span>
+                </div>
+
+            </div>
+        </div>
+          
+
+        <div class=" flex justify-center w-full mt-5 items-end pb-6 ">
+
+            <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Send Report</button>
+
+        </div>
+
+    </form>
+</div>
+
+<div *ngIf="isPopupMakeUserPaymentVisible" class="fixed inset-0 z-20 flex justify-center items-center bg-black bg-opacity-50">
+    <form  class="w-[45%] bg-white flex justify-start flex-col ">
+
+        <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+            <button (click)="toggleMakeUserPaymentPopup()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div class=" flex justify-start p-5 pb-2 gap-8">
+            <div class=" flex flex-col">
+                <label class="text-lg font-semibold text-[#63040D]" for="plan">Select user Subscribed Plan: </label>
+                <select class="ml-2 p-1" id="plan" name="plan">
+                    <option>Flat Per User Plan "&#64;"INR 50/- Per Month </option>
+                    <option>100 User Pack "&#64;"INR 4200/- Per Month</option>                        
+                    <option>1000 User Pack "&#64;"INR 32000/- Per Month</option>
+                </select>
+            </div>
+                
+            <div class=" flex flex-col">
+              <label class="text-lg font-semibold text-[#63040D]" for="Quantity">Quantity: </label>
+              <input class="p-1" type="number" id="Quantity"  />
+            </div>
+        </div>
+
+        <div class=" flex justify-start p-5 pb-2 gap-8">
+            <div class=" flex flex-col">
+                <label class="text-lg font-semibold text-[#63040D]" for="plan">Payment Mode on: </label>
+                <select class="ml-2 p-1" id="plan" name="plan">
+                    <option>Monthly Basis</option>
+                    <option>Quaterly Basis-Discount-2%</option>                        
+                    <option>Annual Basis-Discount-5%</option>
+                </select>
+            </div>
+        </div>
+       
+
+        <div class=" flex justify-center w-full mt-5 items-end pb-6 ">
+
+            <button (click)="togglePaymentWindowPopup()" class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Check out</button>
+
+        </div>
+
+    </form>
+</div>
+
+<div *ngIf="isPopupPaymentWindowVisible" class="fixed inset-0 z-30 flex justify-center items-center bg-black bg-opacity-50">
+    <form  class="w-[50%] bg-white flex justify-start flex-col ">
+
+        <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+            <button (click)="togglePaymentWindowPopup()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        
+        <div class="w-full flex justify-start px-5 py-2 gap-10">
+            <span class="text-lg font-semibold text-[#63040D]">Cart-Id:<span class="ml-2 text-lg text-gray-500">123</span></span>                      
+            <span class="text-lg font-semibold text-[#63040D]">User"&#64;":<span class="ml-2 text-lg text-gray-500">50</span></span>  
+            <span class="text-lg font-semibold text-[#63040D]">Quantity:<span class="ml-2 text-lg text-gray-500">10</span></span>                      
+            <span class="text-lg font-semibold text-[#63040D]">Total:<span class="ml-2 text-lg text-gray-500">500/-</span></span>                      
+        </div>
+
+        <div class="w-full flex flex-col justify-start px-5 py-2 gap-1">
+            <div class=" w-[60%] flex justify-between items-center">
+                <span class="text-lg font-sans font-semibold text-[#63040D]">GST "&#64;"18%:</span> 
+                <span class="ml-2 text-lg text-gray-500">90.00</span>   
+            </div>
+
+            <div class=" w-[60%] flex justify-between items-center">
+                <span class="text-lg font-sans font-semibold text-[#63040D]">Discount:</span>  
+                <span class="ml-2 text-lg text-gray-500">00.00</span>
+            </div>
+
+            <div class=" w-[60%] flex justify-between items-center">
+                <span class="text-lg font-bold text-[#63040D]">Total To be Paid:</span>                      
+                <span class="ml-2 text-lg text-gray-500">590.00</span>
+            </div>
+
+        </div>
+
+        <div class=" flex justify-start p-5 pb-2 gap-8">
+            <div class=" flex">
+                <label class="text-lg font-semibold text-[#63040D]" for="plan">Payment Mode: </label>
+                <select class="ml-2 p-1" id="plan" name="plan">
+                    <option>Bank Transfer</option>
+                    <option>By Direct Bank QR</option>                        
+                    <!-- <option>3rd Party Payment Bridge<span class="text-red-500">**</span></option> -->
+                </select>
+            </div>
+        </div>
+
+        <div class=" w-full flex  items-center p-5 pb-2">
+            <div class=" w-[50%] flex justify-items-center flex-col gap-5">
+                <div class=" flex flex-col">
+                    <label class="text-lg font-semibold text-[#63040D]" for="paymentdetails"><span class=" font-bold">Enter</span>Chq/RTGS/Bank Tr./UPI Tr.</label>
+                    <input  name="paymentdetails" class="ml-2 p-1" type="text" id="paymentdetails" [placeholder]="" required />
+                </div>
+
+                <div class=" flex flex-col">
+                    <span class="text-lg font-semibold text-[#63040D]" for="amt">Payment Amount (in INR):</span>
+                    <input  name="amt" class="ml-2 p-1" type="number" id="amt" [placeholder]="" required />
+                </div>
+            </div>
+
+            <div class=" w-[50%] flex justify-center items-center">
+                <div class=" w-[150px] h-[150px] border-[1px] flex justify-center items-center font-bold text-3xl">
+                    QR
+                </div>
+            </div>
+
+        </div>
+       
+
+        <div class=" flex w-full flex-col mt-5 pb-6 gap-2 justify-center items-center ">
+            
+            <button *ngIf="!isActivatePayment" (click)="ActivatePayment()" class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Activate Payment</button>
+            <button *ngIf="isActivatePayment" class="bg-green-500 px-4 py-2 hover:bg-green-600 text-white font-semibold">Add Payment</button>
+            <span class=" w-[80%] text-center text-[10px] text-red-500 font-serif">3rd party payment bridge 2% Transaction charges will  be deducted add on with payment</span>
+
+        </div>
+
+    </form>
+</div>
+

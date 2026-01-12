@@ -1,0 +1,827 @@
+<div class="flex flex-col w-full">
+    <div class="w-full flex flex-col gap-10 justify-center items-center">
+        <div class="text-orange-500 w-full font-bold font-abcd text-2xl">
+            Manage Channel
+        </div>
+
+        <div class="flex w-[95%] gap-6 items-center flex-col">
+            <div class="w-[100%] flex justify-between flex-row-reverse">
+                <button class="bg-[#63040D] text-white px-4 py-2 font-semibold" (click)="togglePopup()">
+                    Add Channel
+                </button>
+                <div class=" flex justify-start items-center gap-6">
+                    <div>
+                        <label class="text-lg font-semibold text-[#63040D]" for="choice">Select Vertical: </label>
+                        <select [(ngModel)]="newChannel.verName" (change)="onVerSelect($event)" class="ml-2 p-1"
+                            id="choice" name="choice">
+                            <option *ngFor="let item of verArr" [value]="item.verName">{{ item.verName }}</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-lg font-semibold text-[#63040D]" for="productLineName">Select Product Line:
+                        </label>
+                        <select [(ngModel)]="newChannel.productLineName" class="ml-2 p-1" id="productLineName"
+                            name="productLineName">
+                            <option *ngFor="let product of ProductLineArr" [value]="product.prouctName">{{
+                                product.prouctName }}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-full p-5 bg-white border-[1px] flex flex-col justify-start border-black">
+                <div class="h-2 text-[12px] flex justify-start font-semibold text-[#63040D] w-full mb-10">
+                    <span class="w-[7%] h-10">Serial#</span>
+                    <span class="w-[7%] h-10">Vertical</span>
+                    <span class="w-[11%] h-10">Product Line</span>
+                    <span class="w-[11%] h-10">Channel-Id</span>
+                    <span class="w-[11%] h-10">Channel</span>
+                    <span class="w-[7%] h-10">Image</span>
+                    <span class="w-[6%] h-10">Valid</span>
+                    <div class=" flex flex-col w-[55%] h-10">
+                        <div class=" w-full flex flex-col justify-center items-center h-5">
+                            <div class="w-full h-6 flex flex-col justify-end">
+                                <div class="w-full h-1 bg-red-500"></div>
+                            </div>
+                            <span class="px-2 absolute bg-white z-10">Actions</span>
+                            <div class=" w-full flex justify-between h-4">
+                                <div class="w-1 h-full bg-red-500"></div>
+                                <div class="w-1 h-full bg-red-500"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w-full text-[9px] flex font-semibold flex-col gap-1">
+                    <div *ngFor="let item of Channels, let i = index" class="w-full py-2 flex justify-start">
+                        <div class="w-[7%] h-8">{{ i }}</div>
+                        <div class="w-[7%] h-8">{{ item.verticalName }}</div>
+                        <div class="w-[11%] h-8">{{ item.productLineName }}</div>
+                        <div class="w-[11%] h-8">{{ item.adcMastrChannelId }}</div>
+                        <div class="w-[11%] h-8">{{ item.adcMastrChannelName }}</div>
+                        <div class="w-[7%] h-8">
+                            <img [src]="item.adcMastrChannelImage" alt="{{ item.adcMastrChannelName }}"
+                                class="h-6 w-auto" />
+                        </div>
+                        <div class="w-[6%] h-8">
+                            <img [src]="item.adcMasterChannelActivFlg === true ? valid : unvalid" alt="Validity"
+                                class="h-5 w-auto" />
+                        </div>
+
+                        <div class="w-[55%] flex justify-between h-full">
+
+                            <button (click)="toggleEditPopup(i, item)" class=" h-8">
+                                <img [src]="edit" alt="Edit" class="h-5 w-auto" />
+                            </button>
+
+                            <button (click)="toggleViewSuser(item)"
+                                class="bg-green-500 scale-90 text-[10px] text-white px-2 py-1">
+                                view s.user
+                            </button>
+                            <button (click)="toggleAddSuser(item)"
+                                class="bg-green-500 scale-90 text-[10px] text-white px-2 py-1">
+                                Add/Edit Ch s.user
+                            </button>
+
+                            <button *ngIf="!item.isDetailsadded" (click)="toggleAddChannel(i, item)"
+                                class="bg-green-500 scale-90 text-[10px] text-white px-2 py-1">
+                                Add Ch.detail
+                            </button>
+
+                            <button *ngIf="item.isDetailsadded" (click)="toggleEditChannel(i, item)"
+                                class="bg-green-500 scale-90 text-[10px] text-white px-2 py-1">
+                                Edit Ch.detail
+                            </button>
+
+                            <button (click)="toggleFaceConnStatusTool(item.adcMastrChannelId)"
+                                class="bg-green-500 text-[10px] scale-90 text-white px-2 py-1">
+                                Face Conn. status
+                            </button>
+
+                            <button (click)="toggleFaceConnectTool(item.adcMastrChannelId)"
+                                class="bg-green-500 text-[10px] scale-90 text-white px-2 py-1">
+                                Add Face Conn.
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Popup Template -->
+    <div *ngIf="isPopupVisible" class="fixed inset-0 flex z-20 justify-center items-center bg-black bg-opacity-50">
+        <form #formRef="ngForm" novalidate (ngSubmit)="addChannel(formRef)"
+            class="w-[65%] bg-white flex justify-start flex-col ">
+
+            <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+                <button (click)="togglePopup()"
+                    class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="w-full flex justify-start p-5 gap-8">
+                <span class="text-lg font-semibold text-[#63040D]">Serial#:<span class="ml-2 text-lg text-gray-500">{{
+                        Channels.length }}</span></span>
+                <span class="text-lg font-semibold text-[#63040D]">Vertical:<span class="ml-2 text-lg text-gray-500">{{
+                        newChannel.verName }}</span></span>
+                <span class="text-lg font-semibold text-[#63040D]">Prouct-line:<span
+                        class="ml-2 text-lg text-gray-500">{{ newChannel.productLineName }}</span></span>
+            </div>
+
+            <div class="w-full flex mb-5 rounded-lg  ">
+
+                <div class="w-[50%] flex flex-col gap-6 h-full p-5 pr-0">
+                    <div>
+                        <label class="text-lg font-semibold text-[#63040D]" for="verticalname">Channel name <span
+                                class="text-red-600">*</span>:</label>
+                        <input [(ngModel)]="newChannel.name" name="verticalName" class="ml-2 p-1" type="text"
+                            id="verticalname" placeholder="" required #channelNameRef="ngModel" />
+                    </div>
+
+                    <!-- Radio Groups -->
+                    <div class="flex justify-start items-center">
+                        <label class="w-[33%] flex justify-start gap-1 items-center text-lg">
+                            <input type="radio" name="Channel" [checked]="newChannel.d2C_Flg"
+                                (click)="selectChannelType('D2C')"> D2C Channel
+                        </label>
+                        <span class="w-[12%] flex justify-center items-center text-lg text-red-500">OR</span>
+                        <label class="w-[45%] flex justify-start gap-1 items-center text-lg">
+                            <input type="radio" name="Channel" [checked]="newChannel.b2B_Flg"
+                                (click)="selectChannelType('B2B')"> B2B Channel
+                        </label>
+                    </div>
+
+                    <!-- Free Air / Subscription Based -->
+                    <div class="flex justify-start items-center">
+                        <label class="w-[33%] flex justify-start gap-1 items-center text-lg">
+                            <input type="radio" name="based" [checked]="newChannel.freeAir_flg"
+                                (click)="selectBasedType('FreeAir')"> Free on air
+                        </label>
+                        <span class="w-[12%] flex justify-center items-center text-lg text-red-500">OR</span>
+                        <label class="w-[45%] flex justify-start gap-1 items-center text-lg">
+                            <input type="radio" name="based" [checked]="newChannel.subscription_Flg"
+                                (click)="selectBasedType('Subscription')"> Subscription based
+                        </label>
+                    </div>
+
+                    <!-- AD Type Radio -->
+                    <div class="flex justify-start items-center">
+                        <label class="w-[33%] flex justify-start gap-1 items-center text-lg">
+                            <input type="radio" name="AD" [checked]="newChannel.comm_AD_Flg"
+                                (click)="selectAdType('Common')"> Common AD
+                        </label>
+                        <span class="w-[12%] flex justify-center items-center text-lg text-red-500">OR</span>
+                        <label class="w-[45%] flex justify-start gap-1 items-center text-lg">
+                            <input type="radio" name="AD" [checked]="newChannel.info_AD_flg"
+                                (click)="selectAdType('Info')"> Info AD
+                        </label>
+                    </div>
+
+                    <div>
+                        <label class="text-lg font-semibold text-[#63040D]" for="choice">Valid <span
+                                class="text-red-600">*</span>: </label>
+                        <select [(ngModel)]="newChannel.active" class="ml-2 p-1" id="choice" name="choice">
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="w-[50%] flex py-5 pr-0 flex-col h-full">
+                    <label class="text-lg font-semibold text-[#63040D]" for="imageUpload">Attach an image <span
+                            class="text-red-600">*</span>:</label>
+                    <div class="flex flex-col gap-3">
+                        <div class="w-[60%] mt-2 h-[8rem] p-2 border-[2px] flex justify-center items-center">
+                            <img *ngIf="SelectedPromoImageToBeAdded" class=" max-w-max h-full" alt=""
+                                [src]="SelectedPromoImageToBeAdded" />
+                        </div>
+                        <input [(ngModel)]="newChannel.image" class="w-[80%] text-sm" type="file" id="imageUpload"
+                            name="imageUpload" accept="image/*" (change)="onFileChange($event)" required #fileRef />
+
+                        <div *ngIf="formRef?.submitted && !SelectedPromoImageToBeAdded" class="text-red-600 text-sm">
+                            * File is required *
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class=" flex-col justify-center items-center w-full mt-8 pb-6 ">
+
+                <div class="w-full flex justify-center items-center">
+                    <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Save Channel</button>
+                </div>
+
+                <!-- Error Message -->
+                <div *ngIf="formRef.submitted && formRef.invalid" class="text-red-600 text-center  mt-1 mb-1">
+                    ***Fill all the required fields.***
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- Edit Popup -->
+    <div *ngIf="isEditPopupVisible" class="fixed inset-0 flex z-20 justify-center items-center bg-black bg-opacity-50">
+        <form (ngSubmit)="editChannel()" class="w-[65%] bg-white flex justify-start flex-col ">
+
+            <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+                <button (click)="toggleEditPopup(-1)"
+                    class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="w-full flex justify-start p-5 gap-8">
+                <!-- <span class="text-lg font-semibold text-[#63040D]">Serial#:<span class="ml-2 text-lg text-gray-500">{{  }}</span></span>             -->
+                <span class="text-lg font-semibold text-[#63040D]">Vertical:<span class="ml-2 text-lg text-gray-500">{{
+                        SelectedChannel.verticalName }}</span></span>
+                <span class="text-lg font-semibold text-[#63040D]">Prouct-line:<span
+                        class="ml-2 text-lg text-gray-500">{{ SelectedChannel.productLineName }}</span></span>
+            </div>
+
+            <div class="w-full flex mb-5 rounded-lg  ">
+
+                <div class="w-[50%] flex flex-col gap-6 h-full p-5 pr-0">
+                    <div>
+                        <label class="text-lg font-semibold text-[#63040D]" for="verticalname">Channel name:</label>
+                        <input [(ngModel)]="SelectedChannel.adcMastrChannelName" name="verticalName" class="ml-2 p-1"
+                            type="text" id="verticalname" placeholder="" required />
+                    </div>
+
+                    <!-- Radio Groups -->
+                    <div class="flex justify-start items-center">
+                        <label class="w-[33%] flex justify-start gap-1 items-center text-lg">
+                            <input type="radio" name="Channel" [checked]="SelectedChannel.adcMastrChannelD2cFlg"
+                                (click)="selectChannelType('D2C')"> D2C Channel
+                        </label>
+                        <span class="w-[12%] flex justify-center items-center text-lg text-red-500">OR</span>
+                        <label class="w-[45%] flex justify-start gap-1 items-center text-lg">
+                            <input type="radio" name="Channel" [checked]="SelectedChannel.adcMastrChannelB2bFlg"
+                                (click)="selectChannelType('B2B')"> B2B Channel
+                        </label>
+                    </div>
+
+                    <!-- Free Air / Subscription Based -->
+                    <div class="flex justify-start items-center">
+                        <label class="w-[33%] flex justify-start gap-1 items-center text-lg">
+                            <input type="radio" name="based" [checked]="SelectedChannel.adcMastrChannelD2cFreeOnairFlg"
+                                (click)="selectBasedType('FreeAir')"> Free on air
+                        </label>
+                        <span class="w-[12%] flex justify-center items-center text-lg text-red-500">OR</span>
+                        <label class="w-[45%] flex justify-start gap-1 items-center text-lg">
+                            <input type="radio" name="based"
+                                [checked]="SelectedChannel.adcMastrChannelD2cOnSubscrptnFlg"
+                                (click)="selectBasedType('Subscription')"> Subscription based
+                        </label>
+                    </div>
+
+                    <!-- AD Type Radio -->
+                    <div class="flex justify-start items-center">
+                        <label class="w-[33%] flex justify-start gap-1 items-center text-lg">
+                            <input type="radio" name="AD" [checked]="SelectedChannel.adcMasterChannelComrclAdAllowdFlg"
+                                (click)="selectAdType('Common')"> Common AD
+                        </label>
+                        <span class="w-[12%] flex justify-center items-center text-lg text-red-500">OR</span>
+                        <label class="w-[45%] flex justify-start gap-1 items-center text-lg">
+                            <input type="radio" name="AD" [checked]="SelectedChannel.adcMasterChannelInfoAdAllowdFlg"
+                                (click)="selectAdType('Info')"> Info AD
+                        </label>
+                    </div>
+
+                    <div>
+                        <label class="text-lg font-semibold text-[#63040D]" for="choice">Valid: </label>
+                        <select [(ngModel)]="SelectedChannel.adcMasterChannelActivFlg" class="ml-2 p-1" id="choice"
+                            name="choice">
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="w-[50%] p-5 pr-0 flex flex-col h-full">
+                    <div class=" flex gap-3">
+                        <span class="text-lg font-semibold text-[#63040D]">Current Image:</span>
+                        <div class="border-[2px]">
+                            <img class="h-16 m-3" [src]="tempimg">
+                        </div>
+                    </div>
+
+                    <!-- <div>
+                        <label class="text-lg font-semibold text-[#63040D]" for="imageUpload">Change image:</label>
+                        <div class="w-[70%] mt-2 h-[8rem] border-[2px] flex justify-center items-center">
+                            <input [(ngModel)]="SelectedChannel.adcMastrChannelImage" class=" w-[80%] text-sm" type="file" id="imageUpload" name="imageUpload" accept="image/*" (change)="onFileChange($event)" />
+                        </div>
+                    </div> -->
+
+                    <div class="w-[70%] flex py-5 pr-0 flex-col h-full">
+                        <label class="text-lg font-semibold text-[#63040D]" for="imageUpload">Change image:</label>
+                        <div class="flex flex-col gap-3">
+                            <div class="w-[75%] mt-2 h-[8rem] p-2 border-[2px] flex justify-center items-center">
+                                <img *ngIf="SelectedPromoImageToBeAdded" class=" max-w-max h-full" alt=""
+                                    [src]="SelectedPromoImageToBeAdded" />
+                            </div>
+                            <input [(ngModel)]="SelectedChannel.adcMastrChannelImage" class="w-[80%] text-sm"
+                                type="file" id="imageUpload" name="imageUpload" accept="image/*"
+                                (change)="onFileChange($event)" />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class=" flex justify-center w-full items-end pb-6 ">
+
+                <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Save Channel</button>
+
+            </div>
+
+        </form>
+    </div>
+
+    <!-- Popup for add channel details -->
+    <div *ngIf="isPopupVisibleAddChannel"
+        class="fixed inset-0 z-20 flex justify-center items-center bg-black bg-opacity-50">
+        <form (ngSubmit)="saveChannelDetails()" class="w-[75%] bg-white flex justify-start flex-col ">
+
+            <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+                <button (click)="toggleAddChannel(-1)"
+                    class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="w-full flex justify-start p-5 pb-2 gap-8">
+                <span class="text-lg font-semibold text-[#63040D]">Channel-Id:<span
+                        class="ml-2 text-lg text-gray-500">{{SelectedChannel.adcMastrChannelId}}</span></span>
+            </div>
+
+            <div class="flex p-5 justify-start items-center">
+                <label class="w-[33%] flex justify-start gap-1 items-center text-lg">
+                    <input type="radio" name="based" [checked]="SelectedExtraDetails.adC_Server_Flg"
+                        (click)="selectserver('connect')"> Channel on AD connect Server
+                </label>
+                <span class="w-[12%] flex justify-center items-center text-lg text-red-500">OR</span>
+                <label class="w-[45%] flex justify-start gap-1 items-center text-lg">
+                    <input type="radio" name="based" [checked]="SelectedExtraDetails.third_Party_server_Flg"
+                        (click)="selectserver('party')"> Channel on 3rd Party Server
+                </label>
+            </div>
+
+            <div class="w-full flex rounded-lg  ">
+
+                <div class="w-[50%] flex flex-col gap-6 h-full p-5 pr-0">
+                    <div class="w-full">
+                        <label class="text-lg font-semibold text-[#63040D]" for="verticalname">Channel Org:</label>
+                        <input [(ngModel)]="SelectedExtraDetails.org_Name" name="channelOrg" class="ml-2 p-1"
+                            type="text" id="verticalname" [placeholder]="SelectedExtraDetails.org_Name" required />
+                    </div>
+
+                    <div class="w-full">
+                        <label class="text-lg font-semibold text-[#63040D]" for="verticalname">Adress:</label>
+                        <input [(ngModel)]="SelectedExtraDetails.org_Address" name="address" class="ml-2 p-1"
+                            type="text" id="verticalname" [placeholder]="SelectedExtraDetails.org_Address" required />
+                    </div>
+
+                </div>
+
+                <div class="w-[50%] flex flex-col gap-6 h-full p-5 pr-0">
+                    <div class="w-full">
+                        <label class="text-lg font-semibold text-[#63040D]" for="serverIpAddress">Server IP
+                            Adress:</label>
+                        <input [(ngModel)]="SelectedExtraDetails.iP_Address" name="serverIpAddress" class="ml-2 p-1"
+                            type="text" id="verticalname" [placeholder]="SelectedExtraDetails.iP_Address" required />
+                    </div>
+
+                    <div class="w-full">
+                        <label class="text-lg font-semibold text-[#63040D]" for="otherDetails">Other
+                            Details(GSTIN):</label>
+                        <input [(ngModel)]="SelectedExtraDetails.other_Detail" name="otherDetails" class="ml-2 p-1"
+                            type="text" id="verticalname" [placeholder]="SelectedExtraDetails.other_Detail" required />
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="w-full flex justify-between items-center mb-6 px-5 roundded-lg">
+                <div class="flex w-[20%] flex-col">
+                    <label class="text-lg font-semibold text-[#63040D]" for="country">Country:</label>
+                    <select (change)="onCountrySelect($event)" class="ml-2  p-1" name="country"
+                        [(ngModel)]="SelectedExtraDetails.country_id">
+                        <option *ngFor="let country of Countries" [value]="country.CNTRY_ID">
+                            {{ country.CNTRY_NM }}
+                        </option>
+                    </select>
+                </div>
+                <div class="flex w-[20%] flex-col">
+                    <label class="text-lg font-semibold text-[#63040D]" for="state">State:</label>
+                    <select (change)="onStateSelect($event)" class="ml-2 p-1" name="state"
+                        [(ngModel)]="SelectedExtraDetails.state_id">
+                        <option *ngFor="let state of State" [value]="state.STATE_ID">
+                            {{ state.STATE_NM }}
+                        </option>
+                    </select>
+                </div>
+                <div class="flex w-[20%] flex-col">
+                    <label class="text-lg font-semibold text-[#63040D]" for="city">City:</label>
+                    <select (change)="onCitySelect($event)" class="ml-2 p-1" name="city"
+                        [(ngModel)]="SelectedExtraDetails.city_id">
+                        <option *ngFor="let city of City" [value]="city.CITY_ID">
+                            {{ city.CITY_NM }}
+                        </option>
+                    </select>
+                </div>
+                <div class="flex w-[20%] flex-col">
+                    <label class="text-lg font-semibold text-[#63040D]" for="pincode">Pincode:</label>
+                    <select class="ml-2 p-1" name="pincode" [(ngModel)]="SelectedExtraDetails.pincd">
+                        <option *ngFor="let pin of Pincode" [value]="pin.ID">
+                            {{ pin.Value }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class=" flex justify-center w-full items-end pb-6 ">
+
+                <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Add Channel
+                    Details</button>
+
+            </div>
+
+        </form>
+    </div>
+
+    <!-- EditChannel -->
+    <div *ngIf="isPopupVisibleEditChannel"
+        class="fixed inset-0 z-20 flex justify-center items-center bg-black bg-opacity-50">
+        <form (ngSubmit)="EditChannelDetails()" class="w-[65%] bg-white flex justify-start flex-col ">
+
+            <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+                <button (click)="toggleEditChannel(-1)"
+                    class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="w-full flex justify-start p-5 pb-2 gap-8">
+                <span class="text-lg font-semibold text-[#63040D]">Channel-Id:<span
+                        class="ml-2 text-lg text-gray-500">{{SelectedChannel.adcMastrChannelId}}</span></span>
+            </div>
+
+            <div class="flex p-5 justify-start items-center">
+                <label class="w-[33%] flex justify-start gap-1 items-center text-lg">
+                    <input type="radio" name="based" [checked]="SelectedExtraDetails.adC_Server_Flg"
+                        (click)="selectserver('connect')"> Channel on AD connect Server
+                </label>
+                <span class="w-[12%] flex justify-center items-center text-lg text-red-500">OR</span>
+                <label class="w-[45%] flex justify-start gap-1 items-center text-lg">
+                    <input type="radio" name="based" [checked]="SelectedExtraDetails.third_Party_server_Flg"
+                        (click)="selectserver('party')"> Channel on 3rd Party Server
+                </label>
+            </div>
+
+            <div class="w-full flex rounded-lg  ">
+
+                <div class="w-[50%] flex flex-col gap-6 h-full p-5 pr-0">
+                    <div class="w-full">
+                        <label class="text-lg font-semibold text-[#63040D]" for="verticalname">Channel Org:</label>
+                        <input [(ngModel)]="SelectedExtraDetails.org_Name" name="channelOrg" class="ml-2 p-1"
+                            type="text" id="verticalname" [placeholder]="SelectedExtraDetails.org_Name" required />
+                    </div>
+
+                    <div class="w-full">
+                        <label class="text-lg font-semibold text-[#63040D]" for="verticalname">Adress:</label>
+                        <input [(ngModel)]="SelectedExtraDetails.org_Address" name="address" class="ml-2 p-1"
+                            type="text" id="verticalname" [placeholder]="SelectedExtraDetails.org_Address" required />
+                    </div>
+
+                </div>
+
+                <div class="w-[50%] flex flex-col gap-6 h-full p-5 pr-0">
+                    <div class="w-full">
+                        <label class="text-lg font-semibold text-[#63040D]" for="serverIpAddress">Server IP
+                            Adress:</label>
+                        <input [(ngModel)]="SelectedExtraDetails.iP_Address" name="serverIpAddress" class="ml-2 p-1"
+                            type="text" id="verticalname" [placeholder]="SelectedExtraDetails.iP_Address" required />
+                    </div>
+
+                    <div class="w-full">
+                        <label class="text-lg font-semibold text-[#63040D]" for="otherDetails">Other Details
+                            (GSTIN):</label>
+                        <input [(ngModel)]="SelectedExtraDetails.other_Detail" name="otherDetails" class="ml-2 p-1"
+                            type="text" id="verticalname" [placeholder]="SelectedExtraDetails.other_Detail" required />
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class=" flex justify-center w-full items-end pb-6 ">
+
+                <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Save Channel
+                    Details</button>
+
+            </div>
+
+        </form>
+    </div>
+
+    <!-- add user -->
+    <div *ngIf="isPopupVisibleAddSuser"
+        class="fixed inset-0 z-20 flex justify-center items-center bg-black bg-opacity-50">
+        <form #formRef="ngForm" novalidate (ngSubmit)="saveSuser(formRef)"
+            class="w-[65%] bg-white flex justify-start flex-col ">
+
+            <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+                <button (click)="toggleAddSuser(null)"
+                    class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+
+
+            <div class="w-full flex justify-between items-center pt-8 mb-6 px-5 roundded-lg">
+                <div class="w-[50%] flex">
+                    <label class="text-lg font-semibold text-[#63040D]" for="firstname">First Name <span
+                            class="text-red-600">*</span>:</label>
+                    <input [(ngModel)]="userData.firstName" name="firstname" class="ml-2 p-1" type="text"
+                        id="verticalname" [placeholder]="userData.firstName" required #firstNameRef="ngModel" />
+                </div>
+                <div class="w-[50%] flex">
+                    <label class="text-lg font-semibold text-[#63040D]" for="lastname">Last Name <span
+                            class="text-red-600">*</span>:</label>
+                    <input [(ngModel)]="userData.lastName" name="lastname" class="ml-2 p-1" type="text"
+                        id="verticalname" [placeholder]="userData.lastName" required #lastNameRef="ngModel" />
+                </div>
+            </div>
+
+            <div class="w-full flex justify-between items-center pt-5 mb-6 px-5 roundded-lg">
+                <div class="w-[50%] flex">
+                    <label class="text-lg font-semibold text-[#63040D]" for="phone">Phone Number <span
+                            class="text-red-600">*</span>:</label>
+                    <input [(ngModel)]="userData.mobileNumber" name="phone" class="ml-2 p-1" type="text"
+                        id="verticalname" [placeholder]="userData.mobileNumber" required #phoneRef="ngModel" />
+                </div>
+                <div class="w-[50%] flex">
+                    <label class="text-lg font-semibold text-[#63040D]" for="email">Email <span
+                            class="text-red-600">*</span>:</label>
+                    <input [(ngModel)]="userData.emailId" name="email" class="ml-2 p-1" type="text" id="verticalname"
+                        [placeholder]="userData.emailId" required #emailRef="ngModel" />
+                </div>
+            </div>
+
+            <div class=" flex-col justify-center items-center w-full mt-8 pb-6 ">
+
+                <div class="w-full flex justify-center items-center">
+                    <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Save S.User
+                        Details</button>
+                </div>
+
+                <!-- Error Message -->
+                <div *ngIf="formRef.submitted && formRef.invalid" class="text-red-600 text-center  mt-1 mb-1">
+                    ***Fill all the required fields.***
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- view user -->
+    <div *ngIf="isPopupVisibleViewSuser"
+        class="fixed inset-0 z-20 flex justify-center items-center bg-black bg-opacity-50">
+        <div class="w-[65%] bg-white flex justify-start flex-col">
+
+            <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+                <button (click)="toggleViewSuser(null)"
+                    class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="w-full flex justify-start items-center pt-8 px-10 roundded-lg">
+                <span class="text-lg w-[50%] font-semibold text-[#63040D]">S.user First Name:<span
+                        class="ml-2 text-lg text-gray-500">{{ userData.firstName }}</span></span>
+                <span class="text-lg w-[50%] font-semibold text-[#63040D]">S.user Last Name:<span
+                        class="ml-2 text-lg text-gray-500">{{ userData.lastName }}</span></span>
+            </div>
+
+            <div class="w-full flex justify-start mt-3 items-center px-10 roundded-lg">
+                <span class="text-lg w-[50%] font-semibold text-[#63040D]">Phone Number:<span
+                        class="ml-2 text-lg text-gray-500">{{ userData.mobileNumber }}</span></span>
+                <span class="text-lg w-[50%] font-semibold text-[#63040D]">Email:<span
+                        class="ml-2 text-lg text-gray-500">{{ userData.emailId }}</span></span>
+            </div>
+
+            <div class="w-full flex justify-start mt-3 items-center mb-8 px-10 roundded-lg">
+                <span class="text-lg w-[50%] font-semibold text-[#63040D]">AdcMpPin:<span
+                        class="ml-2 text-lg text-gray-500">{{ userData.AdcMpPin }}</span></span>
+                <span class="text-lg w-[50%] font-semibold text-[#63040D]">PortalPin:<span
+                        class="ml-2 text-lg text-gray-500">{{ userData.PortalPin }}</span></span>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- face conf. tool -->
+    <div *ngIf="isFaceConnectVisible"
+        class="fixed inset-0 z-20 flex justify-center items-center bg-black bg-opacity-50">
+        <form #formRef="ngForm" novalidate (ngSubmit)="AddfaceConnect(formRef)"
+            class="w-[80%] max-h-[35rem] overflow-y-scroll bg-white flex justify-start flex-col">
+
+            <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+                <button (click)="toggleFaceConnectTool()"
+                    class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="w-full flex justify-start px-10 ">
+                <span class="text-lg font-semibold text-[#63040D]">Channel Id:<span
+                        class="ml-2 text-lg text-gray-500">{{addFaceConnect.channelid}}</span></span>
+            </div>
+
+            <div class="w-full flex justify-start items-center pt-8 px-10 rounded-lg">
+                <div class="flex w-full">
+                    <label class="flex w-[33%] text-[#63040D] text-lg items-center space-x-2">
+                        <input [(ngModel)]="addFaceConnect.conf_Flg" type="checkbox" class="form-checkbox"
+                            name="options" value="conference" (change)="onConferenceAllowedChange($event)" />
+                        <span>Conference Allowed</span>
+                    </label>
+                    <label class="flex w-[33%] text-[#63040D] text-lg items-center space-x-2">
+                        <input [(ngModel)]="addFaceConnect.webinar_Flg" type="checkbox" class="form-checkbox"
+                            name="options" value="webinar" (change)="onWebinarAllowedChange($event)" />
+                        <span>Webinar Allowed</span>
+                    </label>
+                    <label class="flex w-[33%] text-[#63040D] text-lg items-center space-x-2">
+                        <input [(ngModel)]="addFaceConnect.liveStreaming_Flg" type="checkbox" class="form-checkbox"
+                            name="options" value="live-streaming" (change)="onLiveStreamingAllowedChange($event)" />
+                        <span>Live Streaming Allowed</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="flex pt-8 px-10 justify-start items-center">
+                <label class="w-[33%] flex justify-start gap-1 items-center text-lg">
+                    <input type="radio" name="billingAudit" (change)="onBillingAuditChange('main')" /> Billing Audit on
+                    Main Channel
+                </label>
+                <span class="w-[12%] flex justify-center items-center text-lg text-red-500">OR</span>
+                <label class="w-[45%] flex justify-start gap-1 items-center text-lg">
+                    <input type="radio" name="billingAudit" (change)="onBillingAuditChange('partners')" /> Billing Audit
+                    on Partners Channel
+                </label>
+            </div>
+
+            <div class="w-full pt-8 px-10 flex justify-start items-center roundded-lg">
+
+                <div class="w-[50%]">
+                    <label class="text-lg font-semibold text-[#63040D]" for="participantscount">Min. Users(max-10)<span
+                            class="text-red-600">*</span>: </label>
+                    <input [(ngModel)]="addFaceConnect.min_User_Counts" name="participantscount" class="ml-2 p-1"
+                        type="number" max="10" min="1" id="participantscount" required
+                        #participantscountRef="ngModel" />
+                </div>
+
+                <div class="w-[50%]">
+                    <label class="text-lg font-semibold text-[#63040D]" for="choice">Pay as you grow<span
+                            class="text-red-600">*</span>: </label>
+                    <select [(ngModel)]="addFaceConnect.pay_Grow_Flg" class="ml-2 p-1" id="choice" name="choice"
+                        required #choiceRef="ngModel">
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="w-full pt-8 px-10 flex justify-start items-center roundded-lg">
+
+                <div class="w-[50%]">
+                    <label class="text-lg font-semibold text-[#63040D]" for="smallparticipantscount">Small conf. max
+                        user allowed(max-200)<span class="text-red-600">*</span>: </label>
+                    <input [(ngModel)]="addFaceConnect.smalL_Conf_Count" name="smallparticipantscount" class="ml-2 p-1"
+                        type="number" max="200" min="10" id="smallparticipantscount" required
+                        #smallparticipantscountRef="ngModel" />
+                </div>
+
+                <div class="w-[50%]">
+                    <label class="text-lg font-semibold text-[#63040D]" for="storage">Storage Capacity(in GB)<span
+                            class="text-red-600">*</span>: </label>
+                    <select [(ngModel)]="addFaceConnect.storage_Allocatd" class="ml-2 p-1" id="storage" name="storage"
+                        required #storageRef="ngModel">
+                        <option value="1">1 GB</option>
+                        <option value="2">2 Gb</option>
+                        <option value="3">3 Gb</option>
+                        <option value="4">4 Gb</option>
+                        <option value="5">5 Gb</option>
+                        <option value="6">6 Gb</option>
+                        <option value="7">7 Gb</option>
+                        <option value="8">8 Gb</option>
+                        <option value="9">9 Gb</option>
+                        <option value="10">10 Gb</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="w-full pt-8 px-10 flex justify-start items-center roundded-lg">
+
+                <div class="w-[50%]">
+                    <label class="text-lg font-semibold text-[#63040D]" for="bigparticipantscount">Big conf. max user
+                        allowed(max-2000)<span class="text-red-600">*</span>: </label>
+                    <input [(ngModel)]="addFaceConnect.big_Conf_Count" name="bigparticipantscount" class="ml-2 p-1"
+                        type="number" max="2000" min="200" id="bigparticipantscount" required
+                        #bigparticipantscountRef="ngModel" />
+                </div>
+
+                <div class="w-[50%]">
+                    <label class="text-lg font-semibold text-[#63040D]" for="confhost">Conference max host(max 5)<span
+                            class="text-red-600">*</span>:</label>
+                    <input [(ngModel)]="addFaceConnect.max_Conf_host_Counts" name="confhost" class="ml-2 p-1"
+                        type="number" max="5" min="1" id="confhost" required #confhostRef="ngModel" />
+                </div>
+            </div>
+
+            <div class="w-full pt-8 px-10 flex justify-start items-center roundded-lg">
+
+                <div class="w-[50%]">
+                    <label class="text-lg font-semibold text-[#63040D]" for="destination">Recording Destination<span
+                            class="text-red-600">*</span>:</label>
+                    <input [(ngModel)]="addFaceConnect.recording_Destination_URL" type="text" name="destination"
+                        class="ml-2 p-1" id="destination" required #destinationRef="ngModel" placeholder="Enter the url"/>
+                </div>
+
+                <div class="w-[50%]">
+                    <label class="text-lg font-semibold text-[#63040D]" for="billingplan">Licence Billing Plan<span
+                            class="text-red-600">*</span>: </label>
+                    <select [(ngModel)]="addFaceConnect.billing_Planid" class="ml-2 p-1" id="billingplan" required
+                        #billingplanRef="ngModel" name="billingplan">
+                        <option value="" disabled selected>Select a billing plan</option>
+                        <option *ngFor="let package of packagelist" [value]="package.packId">
+                            {{ package.packName }}
+                        </option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="w-full pt-8 px-10 flex justify-start items-center roundded-lg">
+
+                <div class="w-[50%]">
+                    <label class="text-lg font-semibold text-[#63040D]" for="conftime">Planned conf. time(max-60)<span
+                            class="text-red-600">*</span>: </label>
+                    <input [(ngModel)]="addFaceConnect.conf_Min_Minutes" name="conftime" class="ml-2 p-1" type="number"
+                        max="60" min="10" id="conftime" required #conftimeRef="ngModel" />
+                </div>
+
+            </div>
+
+            <div class=" flex-col justify-center items-center w-full mt-8 pb-6 ">
+
+                <div class="w-full flex justify-center items-center">
+                    <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Add to channel</button>
+                </div>
+
+                <!-- Error Message -->
+                <div *ngIf="formRef.submitted && formRef.invalid || !connectTypeSelected || !billingTypeSelected" class="text-red-600 text-center  mt-1 mb-1">
+                    ***Fill all the required fields.***
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+</div>

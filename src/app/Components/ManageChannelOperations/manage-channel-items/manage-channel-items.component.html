@@ -1,0 +1,444 @@
+<div class="flex flex-col w-full">
+    <div class="w-full flex flex-col gap-10 justify-center items-center">
+        <div class="text-orange-500 w-full font-bold font-abcd text-2xl">
+            Manage Channel Item
+        </div>
+
+        <div class="flex w-[95%] gap-1 items-center flex-col">
+
+            <div class="w-[100%] mb-2 text-[12px] flex justify-start gap-8 flex-row">
+                <button (click)="toggleSubscription()" 
+                    [class.bg-[#d11225]]="isSubscriptionVisible"
+                    [class.bg-[#63040D]]="!isSubscriptionVisible"
+                    class=" text-white px-4 py-2 font-semibold">
+                    Sbscription
+                </button>
+                <button (click)="toggleCombos()" 
+                    [class.bg-[#d11225]]="isCombosVisible"
+                    [class.bg-[#63040D]]="!isCombosVisible"
+                    class=" text-white px-4 py-2 font-semibold">
+                    Combos 
+                </button>
+            </div>
+
+            <div class="w-full flex justify-between items-center">
+                <span class="text-lg font-semibold text-[#63040D]">Channel:<span class="ml-2 text-lg text-gray-500">{{userData.accT_NAME}}</span></span> 
+                <button *ngIf="isCombosVisible" class="bg-[#63040D] text-white px-4 py-2 font-semibold" (click)="togglePopup1()">
+                    Add Channel Item
+                </button>
+
+                <button *ngIf="isSubscriptionVisible" class="bg-[#63040D] text-white px-4 py-2 font-semibold" (click)="toggleAddSbscription()">
+                    Add Subscription
+                </button>                     
+            </div>
+
+            <div class="w-full">
+                <span class="text-lg font-semibold text-[#63040D]">Channel Id:<span class="ml-2 text-lg text-gray-500">{{userData.accT_ID}}</span></span>                      
+            </div>
+
+            <div *ngIf="isCombosVisible" class="w-full p-5 mt-4 bg-white border-[1px] flex flex-col justify-start border-black">
+                <div class="h-2 text-[15px] flex gap-5 justify-start font-semibold text-[#63040D] w-full mb-10">
+                    <span class="w-[7%] h-10">Serial#</span>
+                    <span class="w-[10%] h-10">Item Name</span>
+                    <span class="w-[10%] h-10">Item Id</span>
+                    <span class="w-[7%] h-10">Seq*</span>
+                    <span class="w-[7%] h-10">Valid</span>
+                    <span class="w-[20%] h-10">Action</span>
+                </div>
+
+                <div class="w-full text-[12px] flex font-semibold flex-col gap-1">
+                    <div *ngFor="let item of ChannelItemsArr, let i = index" class="w-full gap-5 py-2 flex justify-start">
+                        <div class="w-[7%] h-8">{{ i }}</div>
+                        <div class="w-[10%] h-8">{{ item.adcChannelItemName }}</div>
+                        <div class="w-[10%] h-8">{{ item.adcChannelItemId }}</div>
+                        <div class="w-[7%] h-8">{{ item.adcChannelPrioritySeqNumbr }}</div>
+                        <div class="w-[8%] h-8">
+                            <img [src]="item.adcChannelItemActivFlg === true ? valid : unvalid" alt="Validity" class="h-6 w-auto" />
+                        </div>
+                        <button (click)="togglePopup2(item)" class=" h-8">
+                            <img [src]="edit" alt="Edit" class="h-6 w-auto" />
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="isSubscriptionVisible" class="w-full mt-4 p-5 bg-white border-[1px] flex flex-col justify-start border-black">
+                <div class="h-2 text-[15px] flex gap-5 justify-start font-semibold text-[#63040D] w-full mb-10">
+                    <span class="w-[7%] h-10">Serial#</span>
+                    <span class="w-[8%] h-10">Subs-Id</span>
+                    <span class="w-[12%] h-10">Name</span>
+                    <span class="w-[8%] h-10">Geo</span>
+                    <span class="w-[7%] h-10">Status</span>
+                    <span class="w-[7%] h-10">Cost</span>
+                    <span class="w-[7%] h-10">Ott</span>
+                    <span class="w-[13%] h-10">Face-Connect</span>
+                    <span class="w-[10%] h-10">Details</span>
+                    <div class=" flex flex-col w-[15%] h-10">
+                        <div class=" w-full flex flex-col justify-center items-center h-5">
+                            <div class="w-full h-6 flex flex-col justify-end">
+                                <div class="w-full h-1 bg-red-500"></div>
+                            </div>
+                            <span class="px-2 absolute bg-white z-10">Actions</span>
+                            <div class=" w-full flex justify-between h-4">
+                                <div class="w-1 h-full bg-red-500"></div>
+                                <div class="w-1 h-full bg-red-500"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w-full text-[12px] flex font-semibold flex-col gap-1">
+                    <div class="w-full gap-5 py-2 flex justify-start">
+                        <div class="w-[7%] h-10">01</div>
+                        <div class="w-[8%] h-10">4576</div>
+                        <div class="w-[12%] h-10">Subs-One</div>
+                        <div class="w-[8%] h-10">India</div>
+                        <div class="w-[7%] h-10">
+                            <img [src]="valid" alt="Validity" class="h-6 w-auto" />
+                        </div>
+                        <div class="w-[7%] h-10">1050</div>
+                        <div class="w-[7%] h-10">
+                            <img [src]="valid" alt="Validity" class="h-6 w-auto" />
+                        </div>
+                        <div class="w-[13%] h-10">
+                            <img [src]="valid" alt="Validity" class="h-6 w-auto" />
+                        </div>
+                        <div class="w-[10%] h-10">
+                            <button class="text-white px-2 py-1 bg-green-500 text-[12px]">
+                                Detail
+                            </button>
+                        </div>
+                        <div class="w-[15%] h-10 flex justify-between items-start">
+                            <button (click)="toggleEditSbscription()" class=" h-6">
+                                <img [src]="edit" alt="Edit" class="h-6 w-auto" />
+                            </button>
+
+                            <button (click)="toggleActionForSbscription()" class="  border-[2px] border-green-500 h-6 px-1">
+                                <img [src]="action" alt="Edit" class="h-4 text-sm rotate-180  w-auto" />
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+ <!-- Add item Template -->
+<div *ngIf="isPopupVisible1" class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+    <form #formRef="ngForm" novalidate (ngSubmit)="addChannelItem(formRef)" class="w-[55%] bg-white flex flex-col">
+        <div class="w-full px-4 pt-8 items-center flex flex-row-reverse">
+            <button (click)="togglePopup1()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="w-full  p-5 flex justify-start gap-8">
+            <span class="text-lg font-semibold text-[#63040D]">Channel Id:<span class="ml-2 text-lg text-gray-500">{{this.userData.accT_ID}}</span></span>
+            <span class="text-lg font-semibold text-[#63040D]">Channel Name:<span class="ml-2 text-lg text-gray-500">{{this.userData.accT_NAME}}</span></span>
+        </div>
+
+        <div class="w-full flex rounded-lg mb-5">
+            <div class="w-[50%] flex flex-col gap-6 h-full p-5 pr-0">
+
+                <div>
+                    <label class="text-lg font-semibold text-[#63040D]" for="itemName">Item Name <span class="text-red-600">*</span>:</label>
+                    <input [(ngModel)]="AddChannelItem.itemName" name="itemName" class="ml-2 p-1" type="text" id="itemName" placeholder="" required />
+                </div>
+        
+            </div>
+        
+            <div class="w-[50%] p-5">
+                <label class="text-lg font-semibold text-[#63040D]" for="seqnumber">Channel Priority Seq Number <span class="text-red-600">*</span>:</label>
+                <input [(ngModel)]="AddChannelItem.sequenceNumber" name="seqnumber" class="ml-2 w-[20%] p-1" type="number" id="seqnumber" placeholder="" required />
+            </div>
+        </div>
+
+        <div class=" flex-col justify-center items-center w-full mt-8 pb-6 ">
+            
+            <div class="w-full flex justify-center items-center">
+                <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Add Channel Item</button>
+            </div>
+        
+             <!-- Error Message -->
+            <div *ngIf="formRef.submitted && formRef.invalid" class="text-red-600 text-center  mt-1 mb-1">
+                ***Fill all the required fields.***
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<!-- Edit Item Template -->
+<div *ngIf="isPopupVisible2" class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+    <form (ngSubmit)="editChannelItem()" class="w-[55%] bg-white flex flex-col">
+        <div class="w-full px-4 pt-8 items-center flex flex-row-reverse">
+            <button (click)="togglePopup2()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="w-full  p-5 flex justify-start gap-8">
+            <span class="text-lg font-semibold text-[#63040D]">Channel Id:<span class="ml-2 text-lg text-gray-500">{{this.userData.accT_ID}}</span></span>
+            <span class="text-lg font-semibold text-[#63040D]">Channel Name:<span class="ml-2 text-lg text-gray-500">{{this.userData.accT_NAME}}</span></span>
+            <span class="text-lg font-semibold text-[#63040D]">Item Id:<span class="ml-2 text-lg text-gray-500">{{EditChannelItem.itemId}}</span></span>
+        </div>
+
+        <div class="w-full flex rounded-lg mb-5">
+            <div class="w-[50%] flex flex-col gap-6 h-full p-5 pr-0">
+
+                <div>
+                    <label class="text-lg font-semibold text-[#63040D]" for="itemName">Item Name:</label>
+                    <input [(ngModel)]="EditChannelItem.itemName" name="itemName" class="ml-2 p-1" type="text" id="itemName" placeholder="" required />
+                </div>
+        
+                <div>
+                    <label class="text-lg font-semibold text-[#63040D]" for="choice">Valid:</label>
+                    <select [(ngModel)]="EditChannelItem.active" class="ml-2 p-1" id="choice" name="choice">
+                        <option [value]="true">Yes</option>
+                        <option [value]="false">No</option>
+                    </select>
+                </div> 
+            </div>
+        
+            <div>
+                <label class="text-lg font-semibold text-[#63040D]" for="seqnumber">Channel Priority Seq Number:</label>
+                <input [(ngModel)]="EditChannelItem.sequenceNumber" name="seqnumber" class="ml-2 p-1" type="number" id="seqnumber" placeholder="" required />
+            </div>
+        </div>
+
+        <div class="flex justify-center pb-6 w-full items-center">
+            <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Save Channel Item</button>
+        </div>
+    </form>
+</div>
+
+<!-- Add Subscription Template -->
+<div *ngIf="isAddSubscriptionVisible" class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+    <form class="w-[55%] bg-white flex flex-col">
+        <div class="w-full px-4 pt-8 items-center flex flex-row-reverse">
+            <button (click)="toggleAddSbscription()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="w-full  p-5 flex justify-start gap-8">
+            <span class="text-lg font-semibold text-[#63040D]">Subs Id:<span class="ml-2 text-lg text-gray-500">{{this.userData.accT_ID}}</span></span>
+        </div>
+
+        <div class="w-full flex m-5">
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="name">Name: </label>
+                <select class="ml-2 p-1" id="name" name="name">
+                  <option value="false">Name 1</option>
+                  <option value="true">Name 2</option>
+                </select>
+            </div>  
+        
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="country">Country: </label>
+                <select class="ml-2 p-1" id="country" name="country">
+                  <option value="false">Country 1</option>
+                  <option value="true">Country 2</option>
+                </select>
+            </div> 
+        </div>
+
+        <div class="w-full flex m-5">
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="name">Avaliable Combos: </label>
+                <select class="ml-2 p-1" id="name" name="name">
+                  <option value="false">combo 1</option>
+                  <option value="true">combo 2</option>
+                </select>
+            </div>  
+        
+            <div class="w-[50%]">
+
+                <div>
+                    <label class="text-lg font-semibold text-[#63040D]" for="cost">Cost:</label>
+                    <input name="cost" class="ml-2 p-1" type="text" id="cost" placeholder="" required />
+                </div>
+        
+            </div>
+        </div>
+
+        <div class="w-full flex m-5">
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="iptv">IPTV OTT falg: </label>
+                <select class="ml-2 p-1" id="iptv" name="iptv">
+                  <option value="false">Yes</option>
+                  <option value="true">No</option>
+                </select>
+            </div>  
+        
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="faceconnect">Face-Connect falg: </label>
+                <select class="ml-2 p-1" id="faceconnect" name="faceconnect">
+                  <option value="false">Yes</option>
+                  <option value="true">No</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="flex justify-center pb-6 w-full items-center mt-4">
+            <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Add Subscription</button>
+        </div>
+    </form>
+</div>
+
+<!-- Edit Subscription -->
+<div *ngIf="isEditSubscriptionVisible" class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+    <form class="w-[55%] bg-white flex flex-col">
+        <div class="w-full px-4 pt-8 items-center flex flex-row-reverse">
+            <button (click)="toggleEditSbscription()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="w-full  p-5 flex justify-start gap-8">
+            <span class="text-lg font-semibold text-[#63040D]">Subs Id:<span class="ml-2 text-lg text-gray-500">{{this.userData.accT_ID}}</span></span>
+        </div>
+
+        <div class="w-full flex m-5">
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="name">Name: </label>
+                <select class="ml-2 p-1" id="name" name="name">
+                  <option value="false">Name 1</option>
+                  <option value="true">Name 2</option>
+                </select>
+            </div>  
+        
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="country">Country: </label>
+                <select class="ml-2 p-1" id="country" name="country">
+                  <option value="false">Country 1</option>
+                  <option value="true">Country 2</option>
+                </select>
+            </div> 
+        </div>
+
+        <div class="w-full flex m-5">
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="name">Avaliable Combos: </label>
+                <select class="ml-2 p-1" id="name" name="name">
+                  <option value="false">combo 1</option>
+                  <option value="true">combo 2</option>
+                </select>
+            </div>  
+        
+            <div class="w-[50%]">
+
+                <div>
+                    <label class="text-lg font-semibold text-[#63040D]" for="cost">Cost:</label>
+                    <input name="cost" class="ml-2 p-1" type="text" id="cost" placeholder="" required />
+                </div>
+        
+            </div>
+        </div>
+
+        <div class="w-full flex m-5">
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="iptv">IPTV OTT falg: </label>
+                <select class="ml-2 p-1" id="iptv" name="iptv">
+                  <option value="false">Yes</option>
+                  <option value="true">No</option>
+                </select>
+            </div>  
+        
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="faceconnect">Face-Connect falg: </label>
+                <select class="ml-2 p-1" id="faceconnect" name="faceconnect">
+                  <option value="false">Yes</option>
+                  <option value="true">No</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="flex justify-center pb-6 w-full mt-4 items-center">
+            <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Edit Subscription</button>
+        </div>
+    </form>
+</div>
+
+<!-- Action for subscription -->
+<div *ngIf="isActionForSubscritionVisible" class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+    <form class="w-[45%] bg-white flex flex-col">
+        <div class="w-full px-4 pt-8 items-center flex flex-row-reverse">
+            <button (click)="toggleActionForSbscription()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="w-full  p-5 flex justify-start gap-8">
+            <span class="text-lg font-semibold text-[#63040D]">3rd Party Combo:<span class="ml-2 text-lg text-gray-500">Combo 1</span></span>
+        </div>
+
+        <div class="w-full flex m-5">
+            <div class="w-[100%] flex flex-col gap-6 h-full p-5 pr-0">
+
+                <div>
+                    <label class="text-lg font-semibold text-[#63040D]" for="url">Url:</label>
+                    <input name="url" class="ml-2 p-1" type="text" id="url" placeholder="" required />
+                </div>
+        
+            </div>
+        </div>
+
+        <div class="flex justify-center pb-6 w-full mt-4 items-center">
+            <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Add Combo Action to Subscription</button>
+        </div>
+    </form>
+</div>
+
+<!-- Action for Combo -->
+<div *ngIf="isActionforComboVisible" class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+    <form class="w-[55%] bg-white flex flex-col">
+        <div class="w-full px-4 pt-8 items-center flex flex-row-reverse">
+            <button (click)="toggleActionForCombo()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="w-full  p-5 flex justify-start gap-8">
+            <span class="text-lg font-semibold text-[#63040D]">Subs Id:<span class="ml-2 text-lg text-gray-500">167486</span></span>
+        </div>
+
+        <div class="w-full flex m-5">
+            <div class="w-[100%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="select">Select: </label>
+                <select class="ml-2 p-1" id="select" name="select">
+                  <option >3rd Party Combo</option>
+                  <option >Direct Channel content</option>
+                </select>
+            </div>  
+        </div>
+
+        <div class="w-full flex m-5">
+            <div class="w-[100%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="content">Direct Channel Content item: </label>
+                <select class="ml-2 p-1" id="content" name="content">
+                  <option >Item 1</option>
+                  <option >Item 2</option>
+                </select>
+            </div>  
+        </div>
+
+        <div class="flex justify-center pb-6 w-full mt-4 items-center">
+            <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Add Item Access to Subscription</button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,78 @@
+<div class="flex flex-col gap-3">
+    <div class="h-[80px]  flex flex-col justify-between" >
+        <div class="text-orange-500 font-bold font-abcd text-2xl">Allocate Promos too Screens</div>
+        <div class="flex flex-row gap-2">
+            <button (click)="DOOHCloudTvButtonToggle('DOOH')" class="bg-[#a00e1a] hover:bg-[#a9101d] text-white px-2 py-1">Manage My Promos(DOOH)</button>
+            <button (click)="DOOHCloudTvButtonToggle('Cloud')" class="bg-[#a00e1a] hover:bg-[#a9101d] text-white px-2 py-1">Manage My Promos(Cloud Tv)</button>
+        </div>
+    </div>
+
+    
+        <div class="overflow-x-auto bg-white rounded-md shadow-md shadow-gray-200 p-3 ">
+            <table class="mb-3  w-full">
+                <thead>
+                    <tr class="flex flex-row gap-8 ">
+                        <th>Serial#</th>
+                        <th>Repository-id</th>
+                        <th>Promo-id</th>
+                        <th>Promo-Name</th>
+                        <th>Dt(Created)</th>
+                        <th>Validated</th>
+                        <th>Dt(Validated)</th>
+                        <th>Published</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        @if(this.DOOHCloudTvButton === 'DOOH') {
+            <div class="bg-white p-3 shadow-md shadow-gray-200 rounded-md">
+                <div class="flex flex-col gap-3">
+                    <div class="underline text-base">Screen Slots Active for Your Account</div>
+                    <div class="overflow-x-auto">
+                        <table class=" w-full  ">
+                            <thead>
+                                <tr class="flex flex-row gap-8 p-3">
+                                    <th>Serial#</th>
+                                    <th>Screen-id</th>
+                                    <th>Screen-Name</th>
+                                    <th>Screen-Detail</th>
+                                    <th>Active</th>
+                                    <th>Dt-Detail</th>
+                                    <th>Duration</th>
+                                    <th>Select</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+        @else {
+            <div class="bg-white p-3">
+                <div class="flex flex-col gap-3">
+                    
+                    <div class="underline text-base ">Cloud TV/ Micro-Channel Active for your Account</div>
+                    <div class="overflow-x-auto">
+                        <table>
+                            <thead>
+                                <tr class="flex flex-row gap-8 p-3">
+                                    <th>Serial#</th>
+                                    <th>OTT/M-chnl id</th>
+                                    <th>OTT/M-chnl Name</th>
+                                    <th>OTT/M-chnl Dtl</th>
+                                    <th>Active</th>
+                                    <th>Dt-Detail</th>
+                                    <th>Duration</th>
+                                    <th>Select</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        }
+    
+</div>

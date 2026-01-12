@@ -1,0 +1,168 @@
+<div class="flex flex-col  mx-auto w-full">
+
+    <div class="w-full flex flex-col gap-6 mx-auto">
+
+        <!-- Heading and button -->
+        <div class="flex justify-between w-full ">
+            <div class="text-orange-500 font-bold font-abcd text-2xl">
+                Manage Schedule
+            </div>
+            <button (click)="Openpopup()" (click)="addForm()"
+                class="text-base px-2 py-1 text-white bg-orange-500 rounded-md shadow-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
+                type="button">
+                Add New Schedule
+            </button>
+        </div>
+
+        <!-- Table -->
+        <div class="w-full bg-white shadow-md shadow-gray-200  rounded-md mb-3 p-3 pt-3 flex justify-center items-center">
+            <table class="w-full  rounded-md mb-3">
+                <thead class="border-t border-b">
+                    <tr>
+                        <th class="pt-1 pb-1">S.no</th>
+                        <th>Id</th>
+                        <th class="w-1/6">Name</th>
+                        <th>Active</th>
+                        <th>Start Date Time</th>
+                        <th>End Date Time</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Table rows will go here -->
+
+                    <tr class="border-t" *ngFor="let item of Schedules; let i = index">
+                        <td class="text-center">{{i+1}}</td>
+                        <td class="w-1/6 text-center">{{ item.scheduleId }}</td>
+                        <td class="w-1/6 text-center">{{ item.scheduleName }}</td>
+
+                        @if (item.active === 'no') {
+                        <td><span class="material-symbols-outlined">close</span></td>
+                        }
+                        @else {
+                        <td><span class="material-symbols-outlined">done</span></td>
+                        }
+
+                        <td class="text-center">{{ item.startDateTime }} {{ item.hr1 }}.{{ item.min1 }}</td>
+                        <td class="text-center">{{ item.endDateTime }} {{ item.hr2 }}.{{ item.min2 }}</td>
+                        <td class="text-center">
+                            <span class="material-symbols-outlined hover:cursor-pointer"
+                                (click)="editEntry(i)">edit_square</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <ng-template #dialogTemplate>
+        <form class="bg-white rounded-md pb-3 w-full transition-all duration-1000" [formGroup]="scheduleForm"
+            (submit)="saveSchedule()">
+
+            <div class="mx-auto">
+
+                <div class="border-b w-full px-5 py-3 flex justify-between">
+                    <div class="text-lg font-semibold">Add new Schedule</div>
+                    <div>
+                        <span (click)="closePopup()"
+                            class="flex justify-center items-center material-symbols-outlined cursor-pointer hover:bg-gray-200 hover:rounded-full h-8 w-8 transition">
+                            close
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Schedule Id, name, active -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-3 px-4 py-4">
+                    <div>
+                        <div class="flex flex-col">
+                            <label class="font-semibold">Schedule Id</label>
+                            <input type="number" formControlName="scheduleId" class="custom-input"
+                                oninput="this.value = Math.abs(this.value)">
+                            <div class="text-red-500"
+                                *ngIf="scheduleForm.controls['scheduleId'].touched && scheduleForm.controls['scheduleId'].invalid && scheduleForm.controls['scheduleId'].dirty">
+                                <span *ngIf="scheduleForm.controls['scheduleId'].errors?.['required']">This is
+                                    Required</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Schedule Name -->
+                    <div>
+                        <div class="flex flex-col">
+                            <label class="font-semibold">Schedule Name</label>
+                            <input type="text" formControlName="scheduleName" class="custom-input">
+                            <div class="text-red-500"
+                                *ngIf="scheduleForm.controls['scheduleName'].touched && scheduleForm.controls['scheduleName'].invalid && scheduleForm.controls['scheduleName'].dirty">
+                                <span *ngIf="scheduleForm.controls['scheduleName'].errors?.['required']">This is
+                                    Required</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Active -->
+                    <div>
+                        <div class="flex flex-col">
+                            <label class="font-semibold">Active</label>
+                            <select formControlName="active" class="custom-input">
+                                <option value="yes" selected>Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Date and time -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 px-4 py-4">
+                    <!-- Start date and time -->
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <div class="flex flex-col">
+                            <label class="font-semibold">Start Date</label>
+                            <input type="date" formControlName="startDateTime" class="custom-input">
+                        </div>
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <div class="flex flex-col">
+                                <label class="font-semibold">hr</label>
+                                <input class="custom-input" type="number" id="hr1" formControlName="hr1" min="0"
+                                    max="23">
+                            </div>
+                            <div class="flex flex-col">
+                                <label class="font-semibold">min</label>
+                                <input class="custom-input" type="number" id="min1" formControlName="min1" min="0"
+                                    max="59">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- End date and time -->
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <div class="flex flex-col">
+                            <label class="font-semibold">End Date</label>
+                            <input type="date" formControlName="endDateTime" class="custom-input">
+                        </div>
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <div class="flex flex-col">
+                                <label class="font-semibold">hr</label>
+                                <input class="custom-input" type="number" id="hr2" formControlName="hr2" min="0"
+                                    max="23">
+                            </div>
+                            <div class="flex flex-col">
+                                <label class="font-semibold">min</label>
+                                <input class="custom-input" type="number" id="min2" formControlName="min2" min="0"
+                                    max="59">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Save button -->
+                <div class="p-4">
+                    <button type="submit" [disabled]="!scheduleForm.valid" (click)="closePopup()"
+                        class="inline-block px-6 py-3 text-white bg-orange-500 rounded-md shadow-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2">
+                        Save Schedule
+                    </button>
+                </div>
+            </div>
+        </form>
+    </ng-template>
+</div>

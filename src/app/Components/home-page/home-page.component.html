@@ -1,0 +1,837 @@
+<nav *ngIf="!isLoginVisible && !isSolutionsVisible &&!showadmonetization"
+    class="bg-red-600 w-full fixed z-10 top-0 left-0 ">
+    <div class="max-w-screen-xl flex lg:justify-between justify-end items-center mx-auto p-3 sm:p-4">
+        <!-- Left section with phone number and email -->
+        <div class="lg:space-x-6 space-x-1 hidden lg:flex rtl:space-x-reverse">
+
+
+            <!-- Phone with icon -->
+            <a href="tel:+918700693372" class="flex items-center md:space-x-2 space-x-1 rtl:space-x-reverse text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                    <path
+                        d="M6.62 10.79a15.91 15.91 0 006.57 6.57l2.2-2.2a1.63 1.63 0 011.73-.39 11.72 11.72 0 003.66.58 1.65 1.65 0 011.65 1.65V20a1.65 1.65 0 01-1.65 1.65A16.35 16.35 0 012 5.65 1.65 1.65 0 013.65 4h2.18a1.65 1.65 0 011.65 1.65 11.72 11.72 0 00.58 3.66 1.63 1.63 0 01-.39 1.73l-2.2 2.2z" />
+                </svg>
+                <span class="text-md font-semibold">+91-8700693372</span>
+            </a>
+
+
+            <!-- Email with icon -->
+            <a href="mailto:supporth&#64;all-day.in" class="flex items-center space-x-2 rtl:space-x-reverse text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M21.75 5.25H2.25m19.5 0v13.5a2.25 2.25 0 01-2.25 2.25H4.5A2.25 2.25 0 012.25 18.75V5.25m19.5 0L12 13.5 2.25 5.25" />
+                </svg>
+                <span class="text-md font-semibold">Support&#64;all-day.in</span>
+            </a>
+        </div>
+
+        <!-- Right section with menu items for desktop-->
+        <div class="hidden  lg:flex w-auto">
+            <ul class="font-medium flex space-x-8 rtl:space-x-reverse">
+
+                <li><button (click)="showAdMonetization()"
+                        class="font-semibold text-md block text-white hover:text-gray-200">AD-Monetization</button></li>
+
+                <!-- Dropdown for policies -->
+                <li class="relative" (mouseenter)="showDropdownForPolicy()"
+                    (mouseleave)="delayedHideDropdownForPolicy()">
+                    <a
+                        class="block hover:cursor-pointer font-semibold text-md text-white hover:text-gray-200">Policies</a>
+                    <ul *ngIf="isDropdownVisibleForPolicies"
+                        class="absolute left-0 mt-2 w-64 bg-white text-black  shadow-lg z-10"
+                        (mouseenter)="showDropdownForPolicy()" (mouseleave)="hideDropdownForPolicy()">
+                        <li><a (click)="openPopupForPrivacyPolicy()"
+                                class="block px-4 py-2 hover:bg-gray-200 hover:border-[2px] hover:cursor-pointer">Privacy
+                                Policy</a></li>
+                        <li><a (click)="openPopupForCancellationRefund()"
+                                class="block px-4 py-2 hover:bg-gray-200 hover:border-[2px] hover:cursor-pointer">Cancellation
+                                & Refund</a></li>
+                        <li><a (click)="openPopupForLicenceDelivery()"
+                                class="block px-4 py-2 hover:bg-gray-200 hover:border-[2px] hover:cursor-pointer">Licence
+                                Delivery</a></li>
+                    </ul>
+                </li>
+
+                <li class="relative" (mouseenter)="showDropdown()" (mouseleave)="delayedHideDropdown()">
+                    <a
+                        class="block hover:cursor-pointer font-semibold text-md text-white hover:text-gray-200">Solutions</a>
+                    <ul *ngIf="isDropdownVisibleForSolution"
+                        class="absolute left-0 mt-2 w-64 bg-white text-black  shadow-lg z-10"
+                        (mouseenter)="showDropdown()" (mouseleave)="hideDropdown()">
+                        <li><a (click)="openPopupForBrandAndMarketers()"
+                                class="block px-4 py-2 hover:bg-gray-200 hover:border-[2px] hover:cursor-pointer">For
+                                Brands & Marketers</a></li>
+                        <li><a (click)="openPopupForRetailBusiness()"
+                                class="block px-4 py-2 hover:bg-gray-200 hover:border-[2px] hover:cursor-pointer">For
+                                Retail Businesses</a></li>
+                        <li><a (click)="openPopupForMediaLivestream()"
+                                class="block px-4 py-2 hover:bg-gray-200 hover:border-[2px] hover:cursor-pointer">For
+                                Media channel & OTT providers </a></li>
+                        <li><a (click)="openPopupForTvManufactures()"
+                                class="block px-4 py-2 hover:bg-gray-200 hover:border-[2px] hover:cursor-pointer">For TV
+                                OEM & Manufacturers</a></li>
+                        <li><a (click)="openPopupForMicroChannels()"
+                                class="block px-4 py-2 hover:bg-gray-200 hover:border-[2px] hover:cursor-pointer">For
+                                Micro Channels</a></li>
+                        <li><a (click)="openPopupForTvOttViewers()"
+                                class="block px-4 py-2 hover:bg-gray-200  hover:border-[2px] hover:cursor-pointer">For
+                                TV & OTT Viewers</a></li>
+                    </ul>
+                </li>
+
+                <!-- Other menu items -->
+
+                <li class="relative" (mouseenter)="showDropdownForProduct()"
+                    (mouseleave)="delayedHideDropdownForPolicy()">
+                    <a
+                        class="block hover:cursor-pointer font-semibold text-md text-white hover:text-gray-200">Products</a>
+                    <ul *ngIf="isDropdownVisibleForProducts"
+                        class="absolute left-0 mt-2 w-64 bg-white text-black  shadow-lg z-10"
+                        (mouseenter)="showDropdownForProduct()" (mouseleave)="hideDropdownForProduct()">
+                        <li><a (click)="openPopupForIPTV()"
+                                class="block px-4 py-2 hover:bg-gray-200 hover:border-[2px] hover:cursor-pointer">AD-Connect
+                                IPTV</a></li>
+                        <li><a (click)="openPopupForDOOH()"
+                                class="block px-4 py-2 hover:bg-gray-200 hover:border-[2px] hover:cursor-pointer">AD-Connect
+                                DOOH</a></li>
+                        <li><a (click)="openPopupForLicencePricing()"
+                                class="block px-4 py-2 hover:bg-gray-200 hover:border-[2px] hover:cursor-pointer">Licence
+                                Pricing</a></li>
+                    </ul>
+                </li>
+
+
+                <li><button (click)="openPopupForContact()"
+                        class="font-semibold text-md block text-white hover:text-gray-200">Contact</button></li>
+
+
+                <li class="relative" (mouseenter)="showDropdownTC()" (mouseleave)="delayedHideDropdownTC()">
+                    <a class="block hover:cursor-pointer font-semibold text-md text-white hover:text-gray-200">T&C</a>
+                    <ul *ngIf="isDropdownVisibleForTC"
+                        class="absolute left-0 mt-2 w-64 bg-white text-black shadow-lg z-10"
+                        (mouseenter)="showDropdownTC()" (mouseleave)="hideDropdownTC()">
+                        <li><a (click)="openPopupForDemandSide()"
+                                class="block px-4 py-2 hover:bg-gray-200 hover:border-[2px] hover:cursor-pointer">For
+                                Demand Side Partners</a></li>
+                        <li><a (click)="openPopupForSupplySide()"
+                                class="block px-4 py-2 hover:bg-gray-200 hover:border-[2px] hover:cursor-pointer">For
+                                Supply Side Partners</a></li>
+                    </ul>
+                </li>
+
+                <li><button (click)="openPopupForSupport()"
+                        class="font-semibold text-md block text-white hover:text-gray-200">Support</button></li>
+
+                <!-- Login section with icon -->
+                <div (click)="showLoginComponent()" class="flex items-center hover:cursor-pointer">
+                    <img src="assets/adConnectIcon.jpg" alt="icon" class="w-6 h-6 mr-2 rounded-md">
+                    <li>
+                        <a class="font-semibold text-md block text-white hover:text-gray-200">
+                            Login
+                        </a>
+                    </li>
+                </div>
+            </ul>
+        </div>
+
+        <div (click)="showLoginComponent()" class="flex mr-4 lg:hidden items-center hover:cursor-pointer">
+            <img src="assets/adConnectIcon.jpg" alt="icon" class="w-6 h-6 mr-2 rounded-md">
+            <a class="font-semibold text-md block text-white hover:text-gray-200">
+                Login
+            </a>
+        </div>
+
+        <!-- Right section with menu items for mobile -->
+        <div class="lg:hidden">
+            <button (click)="toggleMenu()" class="text-white focus:outline-none">
+                <!-- Hamburger Icon -->
+                <svg *ngIf="!isMenuOpen" class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7">
+                    </path>
+                </svg>
+
+                <!-- Cross (X) Icon -->
+                <svg *ngIf="isMenuOpen" class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Dropdown Menu (Hidden by default on small screens) -->
+        <div [ngClass]="{'hidden': !isMenuOpen, 'block': isMenuOpen}"
+            class="lg:hidden p-4 flex flex-col space-y-4 mt-5 absolute right-0 top-12 bg-white w-[60%] sm:w-auto text-black">
+
+
+            <!-- Policies Dropdown -->
+            <div class="relative  text-sm">
+
+                <button (click)="toggleDropdownForPolicies()" class=" w-full h-full flex justify-between items-center">
+                    <a
+                        class="block hover:cursor-pointer font-semibold text-md text-black hover:text-gray-700">Policies</a>
+                    <svg *ngIf="!isDropdownVisibleForPolicies"
+                        class="w-3 rotate-90 hover:text-yellow-300 h-3 text-black" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M1 1l4 4-4 4" />
+                    </svg>
+
+                    <svg *ngIf="isDropdownVisibleForPolicies"
+                        class="w-3 -rotate-90 hover:text-yellow-300 h-3 text-black" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M1 1l4 4-4 4" />
+                    </svg>
+
+                </button>
+                <!-- Dropdown Content -->
+                <ul *ngIf="isDropdownVisibleForPolicies"
+                    class=" block hover:cursor-pointer font-semibold text-black hover:text-gray-700">
+                    <li><a (click)="openPopupForPrivacyPolicy()"
+                            class="block px-4 py-2 hover:bg-gray-200 hover:border-[2px] hover:cursor-pointer">Privacy
+                            Policy</a></li>
+                    <li><a (click)="openPopupForCancellationRefund()"
+                            class="block px-4 py-2 hover:bg-gray-200 hover:border-[2px] hover:cursor-pointer">Cancellation
+                            & Refund</a></li>
+                    <li><a (click)="openPopupForLicenceDelivery()"
+                            class="block px-4 py-2 hover:bg-gray-200 hover:border-[2px] hover:cursor-pointer">Licence
+                            Delivery</a></li>
+                </ul>
+            </div>
+
+            <!-- Solutions Dropdown -->
+            <div class="relative  text-sm">
+
+                <button (click)="toggleDropdownForSolution()" class=" w-full h-full flex justify-between items-center">
+                    <a
+                        class="block hover:cursor-pointer font-semibold text-md text-black hover:text-gray-700">Solutions</a>
+                    <svg *ngIf="!isDropdownVisibleForSolution"
+                        class="w-3 rotate-90 hover:text-yellow-300 h-3 text-black" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M1 1l4 4-4 4" />
+                    </svg>
+
+                    <svg *ngIf="isDropdownVisibleForSolution"
+                        class="w-3 -rotate-90 hover:text-yellow-300 h-3 text-black" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M1 1l4 4-4 4" />
+                    </svg>
+
+                </button>
+                <!-- Dropdown Content -->
+                <ul *ngIf="isDropdownVisibleForSolution"
+                    class=" block hover:cursor-pointer font-semibold text-black hover:text-gray-700">
+                    <li><a (click)="openPopupForBrandAndMarketers()"
+                            class="block px-4 py-2 hover:bg-gray-200 hover:border-[2px] hover:cursor-pointer">For Brands
+                            & Marketers</a></li>
+                    <li><a (click)="openPopupForRetailBusiness()"
+                            class="block px-4 py-2 hover:bg-gray-200 hover:border-[2px] hover:cursor-pointer">For Retail
+                            Businesses</a></li>
+                    <li><a (click)="openPopupForMediaLivestream()"
+                            class="block px-4 py-2 hover:bg-gray-200 hover:border-[2px] hover:cursor-pointer">For Media
+                            channel & OTT providers</a></li>
+                    <li><a (click)="openPopupForTvManufactures()"
+                            class="block px-4 py-2 hover:bg-gray-200 hover:border-[2px] hover:cursor-pointer">For TV OEM
+                            & Manufacturers</a></li>
+                    <li><a (click)="openPopupForMicroChannels()"
+                            class="block px-4 py-2 hover:bg-gray-200 hover:border-[2px] hover:cursor-pointer">For Micro
+                            Channels</a></li>
+                    <li><a (click)="openPopupForTvOttViewers()"
+                            class="block px-4 py-2 hover:bg-gray-200  hover:border-[2px] hover:cursor-pointer">For TV &
+                            OTT Viewers</a></li>
+                </ul>
+            </div>
+
+            <!-- Product Dropdown -->
+            <div class="relative  text-sm">
+
+                <button (click)="toggleDropdownForProducts()" class=" w-full h-full flex justify-between items-center">
+                    <a
+                        class="block hover:cursor-pointer font-semibold text-md text-black hover:text-gray-700">Products</a>
+                    <svg *ngIf="!isDropdownVisibleForProducts"
+                        class="w-3 rotate-90 hover:text-yellow-300 h-3 text-black" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M1 1l4 4-4 4" />
+                    </svg>
+
+                    <svg *ngIf="isDropdownVisibleForProducts"
+                        class="w-3 -rotate-90 hover:text-yellow-300 h-3 text-black" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M1 1l4 4-4 4" />
+                    </svg>
+
+                </button>
+                <!-- Dropdown Content -->
+                <ul *ngIf="isDropdownVisibleForProducts"
+                    class=" block hover:cursor-pointer font-semibold text-black hover:text-gray-700">
+                    <li><a (click)="openPopupForIPTV()"
+                            class="block px-4 py-2 hover:bg-gray-200 hover:border-[2px] hover:cursor-pointer">AD-Connect
+                            IPTV</a></li>
+                    <li><a (click)="openPopupForDOOH()"
+                            class="block px-4 py-2 hover:bg-gray-200 hover:border-[2px] hover:cursor-pointer">AD-Connect
+                            DOOH</a></li>
+                    <li><a (click)="openPopupForLicencePricing()"
+                            class="block px-4 py-2 hover:bg-gray-200 hover:border-[2px] hover:cursor-pointer">Licence
+                            Pricing</a></li>
+                </ul>
+            </div>
+
+            <!-- Other Menu Items -->
+            <a (click)="openPopupForContact()" class="font-semibold text-md block cursor-pointer">Contact</a>
+
+            <div class="relative  text-sm">
+
+                <button (click)="toggleDropdownForTC()" class=" w-full h-full flex justify-between items-center">
+                    <a class="block hover:cursor-pointer font-semibold text-md text-black hover:text-gray-700">T&C</a>
+                    <svg *ngIf="!isDropdownVisibleForTC" class="w-3 rotate-90 hover:text-yellow-300 h-3 text-black"
+                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M1 1l4 4-4 4" />
+                    </svg>
+
+                    <svg *ngIf="isDropdownVisibleForTC" class="w-3 -rotate-90 hover:text-yellow-300 h-3 text-black"
+                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M1 1l4 4-4 4" />
+                    </svg>
+
+                </button>
+
+                <!-- Dropdown Content -->
+                <ul *ngIf="isDropdownVisibleForTC"
+                    class=" block hover:cursor-pointer font-semibold text-black hover:text-gray-700">
+                    <li><a (click)="openPopupForDemandSide()"
+                            class="block px-4 py-2 hover:bg-gray-200 hover:border-[2px] hover:cursor-pointer">For Demand
+                            Side Partners</a></li>
+                    <li><a (click)="openPopupForSupplySide()"
+                            class="block px-4 py-2 hover:bg-gray-200 hover:border-[2px] hover:cursor-pointer">For Supply
+                            Side Partners</a></li>
+                </ul>
+            </div>
+
+
+            <a (click)="openPopupForSupport()" class="font-semibold text-md block cursor-pointer">Support</a>
+
+
+            <a href="tel:+918700693372" class="flex items-center space-x-2 rtl:space-x-reverse">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                    <path
+                        d="M6.62 10.79a15.91 15.91 0 006.57 6.57l2.2-2.2a1.63 1.63 0 011.73-.39 11.72 11.72 0 003.66.58 1.65 1.65 0 011.65 1.65V20a1.65 1.65 0 01-1.65 1.65A16.35 16.35 0 012 5.65 1.65 1.65 0 013.65 4h2.18a1.65 1.65 0 011.65 1.65 11.72 11.72 0 00.58 3.66 1.63 1.63 0 01-.39 1.73l-2.2 2.2z" />
+                </svg>
+                <span class="text-md font-semibold">+91-8700693372</span>
+            </a>
+
+            <!-- Email with icon -->
+            <a href="mailto:supporth&#64;all-day.in" class="flex items-center space-x-2 rtl:space-x-reverse">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M21.75 5.25H2.25m19.5 0v13.5a2.25 2.25 0 01-2.25 2.25H4.5A2.25 2.25 0 012.25 18.75V5.25m19.5 0L12 13.5 2.25 5.25" />
+                </svg>
+                <span class="text-md font-semibold">Support&#64;all-day.in</span>
+            </a>
+        </div>
+
+    </div>
+</nav>
+
+<!-- nav for ad monetization -->
+<nav *ngIf="!isLoginVisible && !isSolutionsVisible && showadmonetization"
+    class="bg-red-600 w-full fixed z-10 top-0 left-0 ">
+
+    <div class="max-w-screen-xl flex lg:justify-between justify-end items-center mx-auto p-3 sm:p-4">
+        <!-- Left section with phone number and email -->
+        <div class="lg:space-x-6 space-x-1 hidden lg:flex rtl:space-x-reverse">
+
+
+            <!-- Phone with icon -->
+            <a href="tel:+918700693372" class="flex items-center md:space-x-2 space-x-1 rtl:space-x-reverse text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                    <path
+                        d="M6.62 10.79a15.91 15.91 0 006.57 6.57l2.2-2.2a1.63 1.63 0 011.73-.39 11.72 11.72 0 003.66.58 1.65 1.65 0 011.65 1.65V20a1.65 1.65 0 01-1.65 1.65A16.35 16.35 0 012 5.65 1.65 1.65 0 013.65 4h2.18a1.65 1.65 0 011.65 1.65 11.72 11.72 0 00.58 3.66 1.63 1.63 0 01-.39 1.73l-2.2 2.2z" />
+                </svg>
+                <span class="text-md font-semibold">+91-8700693372</span>
+            </a>
+
+
+            <!-- Email with icon -->
+            <a href="mailto:supporth&#64;all-day.in" class="flex items-center space-x-2 rtl:space-x-reverse text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M21.75 5.25H2.25m19.5 0v13.5a2.25 2.25 0 01-2.25 2.25H4.5A2.25 2.25 0 012.25 18.75V5.25m19.5 0L12 13.5 2.25 5.25" />
+                </svg>
+                <span class="text-md font-semibold">Support&#64;all-day.in</span>
+            </a>
+        </div>
+
+        <!-- Right section with menu items for desktop-->
+        <div class="hidden  lg:flex w-auto">
+            <ul class="font-medium flex space-x-8 rtl:space-x-reverse">
+
+                <li><button (click)="showAdMonetization()"
+                        class="font-semibold text-md block text-white hover:text-gray-200">Home</button></li>
+
+
+                <li><button class="font-semibold text-md block text-white hover:text-gray-200" (click)="scrollToSection('solutions'); toggleMenu()">Solutions</button></li>
+                <li><button class="font-semibold text-md block text-white hover:text-gray-200" (click)="scrollToSection('partners'); toggleMenu()">Why Us</button></li>
+                <li><button class="font-semibold text-md block text-white hover:text-gray-200" (click)="scrollToSection('aboutus'); toggleMenu()">About Us</button></li>
+                <li><button class="font-semibold text-md block text-white hover:text-gray-200" (click)="scrollToSection('contactus'); toggleMenu()">Contact Us</button></li>
+
+
+                <!-- Login section with icon -->
+                <!-- <div (click)="showLoginComponent()" class="flex items-center hover:cursor-pointer">
+                    <img src="assets/adConnectIcon.jpg" alt="icon" class="w-6 h-6 mr-2 rounded-md">
+                    <li>
+                        <a class="font-semibold text-md block text-white hover:text-gray-200">
+                            Login
+                        </a>
+                    </li>
+                </div> -->
+            </ul>
+        </div>
+
+    </div>
+
+</nav>
+
+<!-- content for ad monetization -->
+<div *ngIf="!isLoginVisible && !isSolutionsVisible && showadmonetization" class="custom-theme-wrapper">
+
+    <div class="relative w-full h-full flex items-center justify-center">
+        <img [src]="carouselSlides[carouselIndex].img" class="w-full h-full object-cover" />
+        <div
+            class="absolute gap-2 mx-auto flex justify-end h-full mb-10 items-center flex-col bg-opacity-50 text-white p-6 rounded">
+            <span class="text-3xl font-semibold">{{carouselSlides[carouselIndex].caption.h3}}</span>
+            <span class="text-4xl font-bold">{{carouselSlides[carouselIndex].caption.h1}}</span>
+            <p class="text-xl" *ngIf="carouselSlides[carouselIndex].caption.p">
+                {{carouselSlides[carouselIndex].caption.p}}</p>
+        </div>
+        <button (click)="prevSlide()"
+            class="absolute left-2 top-1/2 -translate-y-1/2 bg-white bg-opacity-70 px-2 py-1 rounded-full">&#8592;</button>
+        <button (click)="nextSlide()"
+            class="absolute right-2 top-1/2 -translate-y-1/2 bg-white bg-opacity-70 px-2 py-1 rounded-full">&#8594;</button>
+    </div>
+
+    <section id="solutions" class="w-full flex justify-center items-center flex-col">
+        <span class="text-5xl font-semibold my-7 text-gray-800">Solutions & Services</span>
+        <div class="w-[85%]">
+            <div class="section-content w-full">
+                <div class=" flex justify-between items-start">
+                    <div class="w-[48%]">
+                        <div class="shadow rounded-lg border border-gray-100 bg-white">
+                            <div class="p-8">
+                                <p class="text-2xl font-semibold text-gray-900">Advertiser Services</p>
+                                <p class="text-gray-600 mt-5 text-lg">
+                                    Hire us your Brand Awareness and Product launch Team and we will assist your
+                                    business for Brand awareness, Product /services right fit audience penetration...
+                                </p>
+
+                                <ul class="mt-5 space-y-2">
+                                    <li>
+                                        <button (click)="openADCampaignsModal()"
+                                            class="flex items-center text-blue-600 hover:text-blue-800">
+                                            <span class="material-icons text-xl mr-1">arrow_forward</span>
+                                            Creating Ad Campaigns
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button (click)="openDSPPlatformModal()"
+                                            class="flex items-center text-blue-600 hover:text-blue-800">
+                                            <span class="material-icons text-xl mr-1">arrow_forward</span> DSP Platform
+                                            for Advertisers
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button (click)="openMOModal()"
+                                            class="flex items-center text-blue-600 hover:text-blue-800">
+                                            <span class="material-icons text-xl mr-1">arrow_forward</span> Malls &
+                                            Outdoor OOH Services
+                                        </button>
+                                    </li>
+                                </ul>
+
+                                <button class="mt-6 px-6 py-3 rounded-full text-white font-medium shadow 
+                 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600
+                 transition duration-300">
+                                    Click on Services to read more <i class="bi bi-arrow-right-short"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="w-[48%]">
+                        <div class="shadow rounded-lg border border-gray-100 bg-white">
+                            <div class="p-8">
+                                <p class="text-2xl font-semibold text-gray-900">Publisher Services</p>
+                                <p class="text-gray-600 mt-3 text-lg">
+                                    Hire us your Digital Strategy officer and we will maximize your Revenue from Ad
+                                    inventories.
+                                    The Publishing industry has reinvented itself to adapt to the pervasiveness of the
+                                    Internet...
+                                </p>
+
+                                <ul class="mt-5 space-y-2">
+                                    <li>
+                                        <button (click)="openDCModal()"
+                                            class="flex items-center text-blue-600 hover:text-blue-800">
+                                            <span class="material-icons text-xl mr-1">arrow_forward</span> Digital
+                                            Consultation
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button (click)="openADOperationModal()"
+                                            class="flex items-center text-blue-600 hover:text-blue-800">
+                                            <span class="material-icons text-xl mr-1">arrow_forward</span> AD Operations
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button (click)="openADMonetizationModal()"
+                                            class="flex items-center text-blue-600 hover:text-blue-800">
+                                            <span class="material-icons text-xl mr-1">arrow_forward</span> AD
+                                            Monetization SSP Platform
+                                        </button>
+                                    </li>
+                                </ul>
+
+                                <button class="mt-6 px-6 py-3 rounded-full text-white font-medium shadow 
+                 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600
+                 transition duration-300">
+                                    Click on Services to read more <i class="bi bi-arrow-right-short"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section id="partners" class="bg-gray-900 w-full mt-10 py-16">
+        <div class="w-full flex justify-center items-center flex-col">
+            <!-- Heading -->
+            <span class="text-4xl font-bold text-center text-white mb-10">Why Us</span>
+
+            <div class="text-white w-[90%] flex flex-col gap-2 mx-auto">
+                <!-- Intro Text -->
+                <h4 class="font-semibold mb-3">
+                    Working with us gives you an added advantage...
+                </h4>
+                <p class="mb-4 text-lg leading-relaxed text-gray-300">
+                    Admediaworld offerings adjust to real time market situations to engage users,
+                    analyse their business requirements and maximize monetization. Our dynamic inventory
+                    tagging formats enable publishers to use Ad campaigns through scalable turnkey solutions.
+                </p>
+                <p class="mb-10 text-lg leading-relaxed text-gray-300">
+                    We have multiple omni-channel integration platform options with effortlessly set up
+                    VAST, Header Bidding, Java script and SDK. Admediaworld delivers relevant ads across
+                    the web, mobile and CTV to improve user experience across multiple devices so that we
+                    provide value ad and revenue optimization across various channels.
+                </p>
+
+                <!-- Grid Section -->
+                <div class="flex justify-start items-start gap-10">
+                    <!-- Left Image -->
+                    <div class="md:col-span-7">
+                        <img src="../../../assets/ad-monetization/whyus_img1.jpg" alt="Why Us"
+                            class="rounded-lg shadow-lg w-full" />
+                    </div>
+
+                    <!-- Right Inventory Types -->
+                    <div class="flex flex-col justify-start gap-2 items-start">
+                        <span class="text-2xl font-semibold mb-5">Inventory Types</span>
+                        <ul class="space-y-3">
+                            <li class="flex text-xl items-center text-gray-200">
+                                <span class="material-icons text-xl mr-1">arrow_forward</span>
+                                Websites
+                            </li>
+                            <li class="flex text-xl items-center text-gray-200">
+                                <span class="material-icons text-xl mr-1">arrow_forward</span>
+                                Mobile Apps
+                            </li>
+                            <li class="flex text-xl items-center text-gray-200">
+                                <span class="material-icons text-xl mr-1">arrow_forward</span>
+                                CTV
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section id="aboutus" class="bg-white flex flex-col justify-center my-10 gap-4 items-center padding-80">
+        <span class="text-5xl font-semibold my-7 text-gray-800">Our Mission & Values</span>
+        <div class="container">
+            <div class="section-content">
+                <span class="text-xl"><b>We provide a safe and equitable Digital Futures for a World
+                        where digital advancements are accessible by everyone.</b></span>
+                <br>
+                <p class="text-lg">
+                    Admediaworld mission is to empower advertisers and distribution channels to
+                    deliver creative advertising eco-system that captures consumer attentions and
+                    empower enterprises to explore their maximum potential across current and
+                    future emerging digital environments at scale.</p>
+                <p class="text-lg">
+                    We are a group company of All Day Digital who owns a first omni- channel
+                    multi-industry Phygital marketplace with a Brand All-Day.</p>
+                <span class="text-xl"><b>Our Organization Values:-</b></span><br>
+                <ul class="item-list">
+                    <li class="flex justify-start items-center"><span
+                            class="material-icons text-xl mr-1">arrow_forward</span>Trust & Accountability</li>
+                    <li class="flex justify-start items-center"><span
+                            class="material-icons text-xl mr-1">arrow_forward</span>Reliability & Consistency</li>
+                    <li class="flex justify-start items-center"><span
+                            class="material-icons text-xl mr-1">arrow_forward</span>Facts Based Approach</li>
+                    <li class="flex justify-start items-center"><span
+                            class="material-icons text-xl mr-1">arrow_forward</span>Growth & Ownership</li>
+                </ul>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="contactus" class="bg-gray-900 py-16">
+        <div class="container mx-auto px-6 flex justify-center items-center flex-col gap-4">
+
+            <span class="text-4xl font-bold text-center text-white mb-10">Get In Touch</span>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Card 1 -->
+                <div class="bg-white rounded-lg shadow-md p-8">
+                    <h4 class="text-xl font-semibold text-gray-900 mb-3">All Day Digital</h4>
+                    <p class="text-gray-700 leading-relaxed">
+                        Plot no. 530, Udyog Vihar Phase 5,<br />
+                        Gurugram 122016 (Haryana) India.
+                    </p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-white rounded-lg shadow-md p-8">
+                    <h4 class="text-xl font-semibold text-gray-900 mb-3">
+                        Accounts &amp; Partnership Manager (MENA &amp; Asia Pac)
+                    </h4>
+                    <p class="flex items-center text-gray-700">
+                        <i class="bi bi-envelope-at text-gray-600 text-lg mr-2"></i>
+                        <a href="mailto:support@all-day.in" class="text-blue-600 hover:text-blue-800 underline">
+                            support&#64;all-day.in
+                        </a>
+                    </p>
+                    <!-- Uncomment if you want phone -->
+                    <!-- <p class="flex items-center mt-3 text-gray-700">
+          <i class="bi bi-telephone-plus text-gray-600 text-lg mr-2"></i>
+          +91 9971017431
+        </p> -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+
+<!-- Container for content below navbar -->
+<div *ngIf="!isLoginVisible && !isSolutionsVisible &&!showadmonetization" class="  pt-12">
+    <!-- Adjust pt value to match the navbar height -->
+    <!-- Image Slider and Platform Text -->
+    <div class="flex flex-col items-center ">
+        <!-- Image slider component -->
+        <app-image-slider></app-image-slider>
+
+        <!-- Platform to Connect text -->
+        <div class=" text-center sm:px-4 sm:py-6 px-2 py-3  w-full">
+            <div class="sm:text-4xl text-2xl font-bold mt-2 sm:mb-2">Platform to Connect</div>
+        </div>
+    </div>
+
+    <!-- Image cards -->
+    <div class="overflow-x-auto w-full whitespace-nowrap py-4 px-4">
+        <div class="inline-flex space-x-6">
+            <!-- Card 1 -->
+            <div class="min-w-[200px]">
+                <!-- Image Div -->
+                <div
+                    class="relative overflow-hidden transform transition-transform duration-300 ease-in-out hover:scale-105">
+                    <img src="assets/businessesAndMarketers.jpg" alt="Image 1"
+                        class="w-full h-48 object-cover bg-white border border-gray-200 rounded-md ">
+                </div>
+
+                <!-- Text Div -->
+                <div class="text-center text-md font-semibold text-gray-700 mt-4">
+                    Businesses & Markets
+                </div>
+            </div>
+
+
+            <!-- Card 2 -->
+            <div class="min-w-[200px]">
+                <!-- Image Div -->
+                <div
+                    class="relative overflow-hidden transform transition-transform duration-300 ease-in-out hover:scale-105">
+                    <img src="assets/screenInventoryOwners.jpg" alt="Image 1"
+                        class="w-full h-48 object-cover bg-white border border-gray-200 rounded-md">
+                </div>
+
+                <!-- Text Div -->
+                <div class="text-center text-md font-semibold text-gray-700 mt-4">
+                    Screen Inventory Owners
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="min-w-[200px]">
+                <!-- Image Div -->
+                <div
+                    class="relative overflow-hidden transform transition-transform duration-300 ease-in-out hover:scale-105">
+                    <img src="assets/contentCreators.jpg" alt="Image 1"
+                        class="w-full h-48 object-cover bg-white border border-gray-200 rounded-md">
+                </div>
+
+                <!-- Text Div -->
+                <div class="text-center text-md font-semibold text-gray-700 mt-4">
+                    Content Creators
+                </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="min-w-[200px]">
+                <!-- Image Div -->
+                <div
+                    class="relative overflow-hidden transform transition-transform duration-300 ease-in-out hover:scale-105">
+                    <img src="assets/ottProviders.jpg" alt="Image 1"
+                        class="w-full h-48 object-cover bg-white border border-gray-200 rounded-md">
+                </div>
+
+                <!-- Text Div -->
+                <div class="text-center text-md font-semibold text-gray-700 mt-4">
+                    OTT Providers
+                </div>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="min-w-[200px]">
+                <!-- Image Div -->
+                <div
+                    class="relative overflow-hidden transform transition-transform duration-300 ease-in-out hover:scale-105">
+                    <img src="assets/tvUsers.jpg" alt="Image 1"
+                        class="w-full h-48 object-cover bg-white border border-gray-200 rounded-md">
+                </div>
+
+                <!-- Text Div -->
+                <div class="text-center text-md font-semibold text-gray-700 mt-4">
+                    TV Users
+                </div>
+            </div>
+
+            <!-- Card 6 -->
+            <div class="min-w-[200px] ">
+                <!-- Image Div -->
+                <div
+                    class="relative overflow-hidden transform transition-transform duration-300 ease-in-out hover:scale-105">
+                    <img src="assets/eventSponsors.jpg" alt="Image 1"
+                        class="w-full h-48 object-cover bg-white border border-gray-200 rounded-md">
+                </div>
+
+                <!-- Text Div -->
+                <div class="text-center text-md font-semibold text-gray-700 mt-4">
+                    Event Sponsors
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Footer -->
+<footer *ngIf="!isLoginVisible && !isSolutionsVisible" class="bg-red-600 text-white py-4 text-center">
+    <p class="font-bold text-xs sm:text-sm">
+        &copy; 2024 AD CONNECT ALL RIGHTS RESERVED
+    </p>
+</footer>
+
+
+
+<!-- Conditionally render Login Component -->
+<!-- Dialog Template -->
+
+<ng-template #dialogTemplateForSupport>
+    <app-support></app-support>
+</ng-template>
+
+<ng-template #dialogTemplateForIPTV>
+    <app-iptv></app-iptv>
+</ng-template>
+
+<ng-template #dialogTemplateForDOOH>
+    <app-dooh></app-dooh>
+</ng-template>
+
+<ng-template #dialogTemplateForLicencePricing>
+    <app-licence-pricing></app-licence-pricing>
+</ng-template>
+
+<ng-template #dialogTemplateForContact>
+    <app-contact></app-contact>
+</ng-template>
+
+<ng-template #dialogTemplateForPrivacyPolicy>
+    <app-private-policy></app-private-policy>
+</ng-template>
+
+<ng-template #dialogTemplateForCancellationRefund>
+    <app-cancellation-refund></app-cancellation-refund>
+</ng-template>
+
+<ng-template #dialogTemplateForLicenceDelivery>
+    <app-licence-delivery></app-licence-delivery>
+</ng-template>
+
+<ng-template #dialogTemplateForBrands>
+    <app-brands-for-marketers></app-brands-for-marketers>
+</ng-template>
+
+<ng-template #dialogTemplateForRetail>
+    <app-retail-business></app-retail-business>
+</ng-template>
+
+<ng-template #dialogTemplateForMediaLivestream>
+    <app-meia-and-livestream></app-meia-and-livestream>
+</ng-template>
+
+<ng-template #dialogTemplateForTvManufactures>
+    <app-tv-manufactures></app-tv-manufactures>
+</ng-template>
+
+<ng-template #dialogTemplateForMicroChannels>
+    <app-micro-channels></app-micro-channels>
+</ng-template>
+
+<ng-template #dialogTemplateForTvOttViewers>
+    <app-tv-and-ott-viewers></app-tv-and-ott-viewers>
+</ng-template>
+
+<ng-template #dialogTemplateForDemanSide>
+    <app-demand-side></app-demand-side>
+</ng-template>
+
+<ng-template #dialogTemplateForSupplySide>
+    <app-supply-side></app-supply-side>
+</ng-template>
+
+<ng-template #dialogTemplateForLogin>
+    <app-login></app-login>
+</ng-template>
+
+<!-- <app-brands-for-marketers *ngIf="isSolutionsVisible"></app-brands-for-marketers> -->

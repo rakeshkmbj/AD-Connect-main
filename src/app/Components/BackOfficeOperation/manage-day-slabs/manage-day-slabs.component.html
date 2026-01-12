@@ -1,0 +1,276 @@
+<div class="flex flex-col   w-full">
+
+    <div class="w-full flex flex-col gap-6 ">
+
+        <!-- Heading and button -->
+        <div class="flex justify-between">
+            <div class="text-orange-500 font-bold font-abcd text-2xl">
+                Manage Day Slab
+            </div>
+            <button (click)="Openpopup()"
+                class="text-base px-2 py-1 text-white bg-orange-500 rounded-md shadow-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
+                type="button">
+                Add New Slab
+            </button>
+        </div>
+
+        <!-- table -->
+        <div class="bg-white  dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+            <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
+                <div class="w-full md:w-1/2">
+                    <form class="flex items-center">
+                        <label for="simple-search" class="sr-only">Search</label>
+                        <div class="relative w-full">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                                    fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <input type="text" id="simple-search" [(ngModel)]="searchTerm" name="searchTerm"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                placeholder="Search" required="">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="overflow-x-auto p-6">
+                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead class="text-sm text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr class="">
+                            <th class="pt-1 pb-1">S.no</th>
+                            <th>Id</th>
+                            <th class="w-1/6">Name</th>
+                            <th>Active</th>
+                            <th>Start Date Time</th>
+                            <th>End Date Time</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Table rows -->
+                        <tr class="border-b dark:border-gray-700" *ngFor="let item of filteredSlabs; let i = index">
+                            <td class="py-1">{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
+                            <td class="py-1">{{ item.daY_SLAB_ID }}</td>
+                            <td class="py-1">{{ item.daY_SLAB_NAME }}</td>
+
+                            @if (item.slaB_ACTIV_FLG === false) {
+                            <td class="py-1 text-red-500"><span class="material-symbols-outlined">close</span></td>
+                            }
+                            @else {
+                            <td class="py-1 text-green-500"><span class="material-symbols-outlined">done</span></td>
+                            }
+
+                            <td class="py-1">{{item.slaB_START_TIME | date}}
+                                {{item.slaB_START_TIME|date:'hh:mm':'IST'}}</td>
+                            <td class="py-1">{{ item.slaB_END_TIME | date}} {{item.slaB_END_TIME|date:'hh:mm':'IST'}}
+                            </td>
+                            <td class="py-1">
+                                <span class="material-symbols-outlined hover:cursor-pointer text-red-500"
+                                    (click)="populateFormFields(item)">edit_square</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <nav class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4"
+                aria-label="Table navigation">
+                <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
+                    Showing
+                    <span class="font-semibold text-gray-900 dark:text-white">{{ startItem }}-{{
+                        endItem }}</span>
+                    of
+                    <span class="font-semibold text-gray-900 dark:text-white">{{ totalItems }}</span>
+                </span>
+                <ul class="inline-flex items-stretch -space-x-px">
+                    <li>
+                        <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1"
+                            class="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                            <span class="sr-only">Previous</span>
+                            <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                    d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </li>
+                    <li>
+                        <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages"
+                            class="flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                            <span class="sr-only">Next</span>
+                            <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+    </div>
+</div>
+
+<ng-template #dialogTemplate>
+    <form class="bg-white rounded-md pb-3 w-full transition-all duration-1000" [formGroup]="daySlabForm"
+        (submit)="saveSlab(daySlabForm.value)">
+
+        <div class="mx-auto flex flex-col gap-6">
+
+            <div class="border-b w-full px-5 py-3 flex justify-between">
+                <div class="text-lg font-semibold">Add new Day Slab</div>
+                <div>
+                    <span (click)="closePopup()"
+                        class="flex justify-center items-center material-symbols-outlined cursor-pointer hover:bg-gray-200 hover:rounded-full h-8 w-8 transition">
+                        close
+                    </span>
+                </div>
+            </div>
+
+            <!-- Form fields -->
+            <div [class.lg:grid-cols-3]="this.editForm" [class.lg:grid-cols-2]="!this.editForm"
+                class="grid grid-cols-1 md:grid-cols-2 gap-3 px-4">
+
+                @if(this.editForm) {
+                <div>
+                    <div class="flex flex-col">
+                        <label class="font-semibold">Slab Id</label>
+                        <input type="text" formControlName="daY_SLAB_ID" class="custom-input" readonly>
+                    </div>
+                </div>
+                }
+
+                <!-- Slab Name -->
+                <div>
+                    <div class="flex flex-col">
+                        <label class="font-semibold">Slab Name</label>
+                        <input type="text" formControlName="daY_SLAB_NAME" placeholder="My Slab Name"
+                            class="custom-input" required>
+                        <div
+                            *ngIf="daySlabForm.get('daY_SLAB_NAME')!.invalid && (daySlabForm.get('daY_SLAB_NAME')!.dirty || daySlabForm.get('daY_SLAB_NAME')!.touched)">
+                            <small class="text-red-500" *ngIf="daySlabForm.get('daY_SLAB_NAME')?.errors?.['required']">
+                                required.</small>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Active -->
+                <div>
+                    <div class="flex flex-col">
+                        <label class="font-semibold">Active</label>
+                        <select formControlName="slaB_ACTIV_FLG" class="custom-input" required>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                        <div
+                            *ngIf="daySlabForm.get('slaB_ACTIV_FLG')!.invalid && (daySlabForm.get('slaB_ACTIV_FLG')!.dirty || daySlabForm.get('slaB_ACTIV_FLG')!.touched)">
+                            <small class="text-red-500" *ngIf="daySlabForm.get('slaB_ACTIV_FLG')?.errors?.['required']">
+                                required.</small>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Start and End Date/Time -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 px-4 py-4">
+
+                <!-- Start Date/Time -->
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <!-- Start Date -->
+                    <div class="flex flex-col">
+                        <label class="font-semibold">Start Date</label>
+                        <input type="date" formControlName="slaB_START_TIME" class="custom-input" required>
+                        <div
+                            *ngIf="daySlabForm.get('slaB_START_TIME')!.invalid && (daySlabForm.get('slaB_START_TIME')!.dirty || daySlabForm.get('slaB_START_TIME')!.touched)">
+                            <small class="text-red-500"
+                                *ngIf="daySlabForm.get('slaB_START_TIME')?.errors?.['required']">
+                                required.</small>
+                        </div>
+                    </div>
+
+                    <!-- Hours -->
+                    <div class="flex flex-col">
+                        <label class="font-semibold">hr</label>
+                        <input class="custom-input" type="number" id="hr1" formControlName="hr1" min="0" max="23"
+                            required>
+                        <div
+                            *ngIf="daySlabForm.get('hr1')!.invalid && (daySlabForm.get('hr1')!.dirty || daySlabForm.get('hr1')!.touched)">
+                            <small class="text-red-500"
+                                *ngIf="daySlabForm.get('hr1')?.errors?.['required']">required.</small>
+                        </div>
+                    </div>
+
+                    <!-- Minutes -->
+                    <div class="flex flex-col">
+                        <label class="font-semibold">min</label>
+                        <input class="custom-input" type="number" id="min1" formControlName="min1" min="0" max="59"
+                            required>
+                        <div
+                            *ngIf="daySlabForm.get('min1')!.invalid && (daySlabForm.get('min1')!.dirty || daySlabForm.get('min1')!.touched)">
+                            <small class="text-red-500"
+                                *ngIf="daySlabForm.get('min1')?.errors?.['required']">required.</small>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- End Date/Time -->
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <!-- End Date -->
+                    <div class="flex flex-col">
+                        <label class="font-semibold">End Date</label>
+                        <input type="date" formControlName="slaB_END_TIME" class="custom-input" required>
+                        <div
+                            *ngIf="daySlabForm.get('slaB_END_TIME')!.invalid && (daySlabForm.get('slaB_END_TIME')!.dirty || daySlabForm.get('slaB_END_TIME')!.touched)">
+                            <small class="text-red-500" *ngIf="daySlabForm.get('slaB_END_TIME')?.errors?.['required']">
+                                required.</small>
+                        </div>
+                    </div>
+
+                    <!-- Hours -->
+                    <div class="flex flex-col">
+                        <label class="font-semibold">hr</label>
+                        <input class="custom-input" type="number" id="hr2" formControlName="hr2" min="0" max="23"
+                            required>
+                        <div
+                            *ngIf="daySlabForm.get('hr2')!.invalid && (daySlabForm.get('hr2')!.dirty || daySlabForm.get('hr2')!.touched)">
+                            <small class="text-red-500"
+                                *ngIf="daySlabForm.get('hr2')?.errors?.['required']">required.</small>
+                        </div>
+                    </div>
+
+                    <!-- Minutes -->
+                    <div class="flex flex-col">
+                        <label class="font-semibold">min</label>
+                        <input class="custom-input" type="number" id="min2" formControlName="min2" min="0" max="59"
+                            required>
+                        <div
+                            *ngIf="daySlabForm.get('min2')!.invalid && (daySlabForm.get('min2')!.dirty || daySlabForm.get('min2')!.touched)">
+                            <small class="text-red-500"
+                                *ngIf="daySlabForm.get('min2')?.errors?.['required']">required.</small>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Submit button -->
+            <div class="px-4 pb-4">
+                <button type="submit" [disabled]="!daySlabForm.valid" (click)="closePopup()"
+                    class="inline-block px-4 py-2 text-white rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2
+                               {{ daySlabForm.valid ? 'bg-orange-500 hover:bg-orange-600' : 'bg-orange-500 cursor-not-allowed' }}">
+                    {{ this.buttonLabel }}
+                </button>
+
+            </div>
+        </div>
+    </form>
+</ng-template>

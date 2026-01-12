@@ -1,0 +1,120 @@
+<!-- Main Modal -->
+<div class="w-full flex flex-col justify-start gap-6 p-4 relative">
+
+  <!-- Close Button -->
+  <button type="button" (click)="modalHide()" class="absolute top-4 right-4 text-gray-600 hover:text-red-500 text-2xl font-bold">
+    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+    </svg>
+  </button>
+
+  <!-- Title -->
+  <h4 class="text-orange-500 underline sm:text-xl mt-[2rem] sm:mt-0">AD Monetization SSP Platform</h4>
+
+  <!-- Body -->
+  <div class="flex flex-col gap-4 text-sm">
+    <h5 class="font-semibold">Increase Your Revenue your ad inventories</h5>
+    <p>
+      As a Supply-Side Platform for Publishers and App developers We use to manage and sell their advertising inventories across multiple AD exchanges networks and Demand Side Platforms.
+    </p>
+
+    <!-- Image + Formats -->
+    <div class="flex flex-col sm:flex-row gap-4">
+      <div class="sm:w-1/2 w-full">
+        <img class="rounded-md w-full" src="../../../../assets/ad-monetization/adm_img1.jpg" />
+      </div>
+      <div class="sm:w-1/2 w-full">
+        <ul class="border border-gray-300 rounded-md text-sm">
+          <li class="bg-orange-500 text-white font-semibold px-3 py-2 rounded-t-md">View our AD Formats</li>
+          <li (click)="openModal()" class="cursor-pointer px-3 py-2 hover:bg-gray-100"><i class="bi bi-arrow-right-short"></i> Display Monetization</li>
+          <li (click)="openModal1()" class="cursor-pointer px-3 py-2 hover:bg-gray-100"><i class="bi bi-arrow-right-short"></i> Video Monetization</li>
+          <li (click)="openModal2()" class="cursor-pointer px-3 py-2 hover:bg-gray-100"><i class="bi bi-arrow-right-short"></i> In-App Monetization</li>
+        </ul>
+      </div>
+    </div>
+
+    <p>
+      Display video, in-app, on websites and on OTT Platforms and on any nonstandard format. You name it and we can monetize it. Premium direct demands from top advertisers are awaiting your inventory.
+    </p>
+    <p>
+      The key feature of our demand-side platforms is that instead of buying inventory on publishers, what you buy is the ability to reach specific audience segments based on the DSP targeting capabilities, across a range of publisher sites.
+    </p>
+    <p>AdMediaworld SSP Platform enable publishers to</p>
+    <ul class="list-disc pl-5">
+      <li>Connect with multiple buyers</li>
+      <li>Set pricings</li>
+      <li>Set availability of AD inventories</li>
+      <li>And control access to their inventory based on various criteria such as User data, ad format and pricing</li>
+    </ul>
+    <p>
+      We maximize revenue for the publishers and ensures that advertisers can access the AD inventory they need to reach their target audience
+    </p>
+    <img class="rounded-md w-[60%]" src="../../../../assets/ad-monetization/adm_img2.jpg" />
+  </div>
+</div>
+
+<!-- Display Monetization Modal -->
+<ng-template #template>
+  <div class="w-full flex flex-col justify-start gap-4 p-4 relative">
+    <button type="button" (click)="modalHide1()" class="absolute top-4 right-4 text-gray-600 hover:text-red-500 text-2xl font-bold">
+      <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+    <h4 class="text-orange-500 underline sm:text-xl mt-[2rem] sm:mt-0">Display Monetization</h4>
+    <p>Tap into one of the largest marketplaces of premium campaigns and get the most of your ad space with CPC and CPM rates</p>
+    <ul class="list-disc pl-5">
+      <li>Access to Adexchange (ADX) and other premium demands</li>
+      <li>Premium Direct Campaign at the highest CPM</li>
+      <li>Available for Desktop, Mobile and Tablet (AMP & APP Support)</li>
+      <li>Compatible with Google Ad Manager</li>
+    </ul>
+    <p class="text-xs">Sizes: 728x90, 300x250, 300x600, 160x600, 970x90, 970x250, 300x1050 and 320x50 (IAB Standards)</p>
+    <img class="rounded-md w-[70%]" src="../../../../assets/ad-monetization/adm_img3.jpg" />
+  </div>
+</ng-template>
+
+<!-- Video Monetization Modal -->
+<ng-template #template1>
+  <div class="w-full flex flex-col justify-start gap-4 p-4 relative">
+    <button type="button" (click)="modalHide2()" class="absolute top-4 right-4 text-gray-600 hover:text-red-500 text-2xl font-bold">
+      <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+    <h4 class="text-orange-500 underline sm:text-xl mt-[2rem] sm:mt-0">Video Monetization</h4>
+    <h6 class="font-semibold">Monetize your Video Content (in-stream)...</h6>
+    <p>We can Provide you with VAST/VPAID or IMA ad tag that you can use directly inside your own video player.</p>
+    <img class="rounded-md w-[70%]" src="../../../../assets/ad-monetization/adm_img4.jpg" />
+    <p><strong>Monetize Every Pageview of your videos...</strong></p>
+    <img class="rounded-md w-[70%]" src="../../../../assets/ad-monetization/adm_img5.jpg" />
+  </div>
+</ng-template>
+
+<!-- In-App Monetization Modal -->
+<ng-template #template2>
+  <div class="w-full flex flex-col max-h-[35rem] overflow-y-scroll justify-start gap-4 p-4 relative">
+    <button type="button" (click)="modalHide3()" class="absolute top-4 right-4 text-gray-600 hover:text-red-500 text-2xl font-bold">
+      <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+    <h4 class="text-orange-500 underline sm:text-xl mt-[2rem] sm:mt-0">In-App Monetization</h4>
+    <h6 class="font-semibold">Monetize your mobile App</h6>
+    <img class="rounded-md w-[70%]" src="../../../../assets/ad-monetization/adm_img6.jpg" />
+    <p><strong>AI Powered App monetization Platform to super charge your app revenue...</strong></p>
+    <ul class="list-disc pl-5">
+      <li>Multiple AD formats</li>
+      <li>Easy implementation</li>
+      <li>Integrate with AdExchange</li>
+      <li>Live & Detail Reporting Dashboard</li>
+      <li>Premium Direct Demands</li>
+      <li>Premium Support</li>
+    </ul>
+    <p><strong>Rewarded Advertising -</strong> One of the highest performing formats...</p>
+    <p><strong>Interstitial-Mobile Ads -</strong> Provides rich interactive ads...</p>
+    <p><strong>Banner-Ads -</strong> Mobile banner Ads deliver high impression values...</p>
+    <p><strong>Native-Ads -</strong> match the overall look and feel...</p>
+    <p><strong>IN-APP Ads -</strong> IN-APP Add can help in engaging user...</p>
+  </div>
+</ng-template>

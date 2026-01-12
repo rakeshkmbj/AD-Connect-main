@@ -1,0 +1,478 @@
+<div class="flex  flex-col lg:w-[80%] w-[100%]   ">
+
+    <div class="w-[100%]  flex flex-col gap-6">
+
+        <!-- to display the heading of the table and button -->
+        <div class="flex justify-between">
+            <div class="text-orange-500 font-bold font-abcd text-2xl">
+                Manage Layout
+            </div>
+            <button (click)="Openpopup()"
+                class="inline-block text-base  px-2 py-1 text-white bg-orange-500 rounded-md shadow-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2">
+                Add new Layout
+            </button>
+        </div>
+
+
+        <div class="bg-white  dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+            <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
+                <div class="w-full md:w-1/2">
+                    <form class="flex items-center">
+                        <label for="simple-search" class="sr-only">Search</label>
+                        <div class="relative w-full">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor"
+                                    viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <input type="text" id="simple-search" [(ngModel)]="searchTerm" name="searchTerm"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                placeholder="Search" required="">
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- <div *ngIf="this.isLoading" class="flex justify-center items-start h-screen"></div>
+                <div class="flex flex-col justify-start items-center space-y-4 mt-8">
+                    <div class="w-16 h-16 border-t-4 border-b-4 border-green-500 rounded-full animate-spin"></div>
+                    <p class="text-center text-gray-700">Loading, please wait...</p>
+            </div> -->
+            
+
+            <div *ngIf="!this.isLoading" class="overflow-x-auto p-6">
+                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead class="text-sm text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th class="pt-1 pb-1">S.no</th>
+                            <th class="">Id</th>
+                            <th class="w-1/6 ">Name</th>
+                            <th class="">Window</th>
+                            <th class="">Active</th>
+                            <th class=""> Pic </th>
+                            <th class="">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-t" *ngFor="let item of filteredLayouts; let i = index ">
+                    
+                            <td class="py-1">{{i+1}}</td>
+                            <td class="py-1">{{item.aD_LAYOUT_ID}}</td>
+                            <td class="py-1">{{item.aD_LAYOUT_NAME}}</td>
+                            @if (item.aD_SCREEN_SINGLE_WINDOW_FLG=== true) {
+                            <td class="py-1">
+                                    Single Window
+                            </td>
+                            }
+                            @else {
+                            <td class="py-1">
+                                    Double Window
+                                </td>
+                            }
+                            <td class="py-1">
+                                <span class="material-symbols-outlined">done</span>
+                            </td>
+                            <td class="py-1">-</td>
+                            <td class="py-1">
+                                <span (click)="editEntry()"
+                                    class="material-symbols-outlined hover:cursor-pointer text-red-500">edit_square</span>
+                            </td>
+                    
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+
+            <nav class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4"
+                aria-label="Table navigation">
+                <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
+                    Showing
+                    <span class="font-semibold text-gray-900 dark:text-white">{{ startItem }}-{{
+                        endItem }}</span>
+                    of
+                    <span class="font-semibold text-gray-900 dark:text-white">{{ totalItems }}</span>
+                </span>
+                <ul class="inline-flex items-stretch -space-x-px">
+                    <li>
+                        <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1"
+                            class="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                            <span class="sr-only">Previous</span>
+                            <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                    d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </li>
+                    <li>
+                        <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages"
+                            class="flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                            <span class="sr-only">Next</span>
+                            <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        
+    </div>
+<!-- </div> -->
+
+<!-- form -->
+<ng-template #dialogTemplate>
+    <div class="">
+
+        <form (submit)="saveLayout(layoutForm.value)" [formGroup]="layoutForm"
+            class=" bg-[#FFFFFF] relative mb-3 pb-4 gap-0  rounded-md flex flex-col">
+
+
+            <!-- id,name,active -->
+            <div class=" flex w-[100%] flex-col  gap-7 justify-between  ">
+
+                <div class="border-b w-full px-5 py-3 relative flex justify-between">
+                    <div class="text-lg font-semibold">Add new Layout</div>
+                    <div class="">
+                        <span (click)="closePopup()"
+                            class=" flex  justify-center items-center material-symbols-outlined cursor-pointer hover:bg-gray-200 hover:rounded-full h-8 w-8  transition  ">
+                            close
+                        </span>
+                    </div>
+                </div>
+
+                <div [class.w-[800px]]="!this.editForm" [class.lg:grid-cols-3]="this.editForm"
+                    [class.lg:grid-cols-2]="!this.editForm" class="  grid grid-cols-1  md:grid-cols-2 gap-3 px-4">
+
+                    <!-- layout id -->
+                    @if(this.editForm) {
+                    <div class=" ">
+                        <div class="flex flex-col ">
+                            <label class="font-semibold">Layout Id</label>
+                            <input formControlName="aD_LAYOUT_ID" type="number" class=" custom-input"
+                                oninput="this.value = Math.abs(this.value)">
+                            <!-- <div class="text-red-500"> 
+                                                                    <span *ngIf="layoutForm.controls['layoutId'].errors?.['required']">This is
+                                                                                Required</span>
+                                                                </div> -->
+                        </div>
+                    </div>
+                    }
+
+
+
+                    <!-- Layout Name -->
+                    <div class=" ">
+                        <div class="col-span-4 flex flex-col ">
+                            <label class="font-semibold">Layout Name </label>
+                            <input formControlName="aD_LAYOUT_NAME" type="text" class="custom-input">
+                            <div class="text-red-500">
+                                <!-- <span *ngIf="layoutForm.controls['scheduleName'].errors?.['required']">This is
+                                                Required</span> -->
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <!-- Active-->
+                    <div class="">
+                        <div class="flex flex-col  ">
+                            <label class="font-semibold">Active</label>
+                            <select formControlName="aD_LAYOUT_ACTIV_FLG" class="custom-input">
+                                <option value="yes" selected>Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="font-semibold p-4">
+                Layout Templates
+            </div>
+
+            <!-- templates and radio buttons -->
+            <div
+                class="grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 px-4   grid-cols-1  justify-between md:gap-0 gap-3 ">
+
+                <!-- Template 1 -->
+                <div class="flex sm:flex-col flex-row items-center md:gap-30 gap-3">
+                    <div class="flex flex-col justify-center items-center">
+                        <div class="w-44 h-28 border border-black"></div>
+                        <div class="flex items-center justify-between gap-1">
+                            <label class="font-semibold" for="template1" >T1</label>
+                            <input formControlName="template" value="template1" id="template1" type="radio"
+                                >
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col">
+                        <div class="font-semibold">W1</div>
+                        <div class="flex sm:flex-row flex-col gap-3 justify-evenly">
+                            <div class="flex flex-col">
+                                <label class="font-semibold">L Ratio</label>
+                                <input [readOnly]="selectedTemplate !== 'template1'" formControlName="template1LengthRatio" class="custom-input" type="number" min="0"
+                                    max="100">
+                            </div>
+                            <div class=" flex flex-col">
+                                <label class="font-semibold">W Ratio</label>
+                                <input [readOnly]="selectedTemplate !== 'template1'" formControlName="template1WidthRatio" class="custom-input" type="number" min="0"
+                                    max="100">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Template 2 -->
+                <div class="flex sm:flex-col flex-row items-center md:gap-30 gap-3">
+                    <div class="flex flex-col sm:items-center">
+                        <div class="w-24 h-28 border border-black"></div>
+                        <div class="flex items-center justify-between gap-1">
+                            <label class="font-semibold">T2</label>
+                            <input formControlName="template" value="template2" type="radio" value="template2"
+                                >
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col">
+                        <div class="font-semibold">W1</div>
+                        <div class="flex sm:flex-row flex-col gap-3 justify-evenly">
+                            <div class="flex flex-col">
+                                <label class="font-semibold">L Ratio</label>
+                                <input [readOnly]="selectedTemplate !== 'template2'" formControlName="template2LengthRatio" class="custom-input" type="number" min="0"
+                                    max="100">
+                            </div>
+                            <div class=" flex flex-col">
+                                <label class="font-semibold">W Ratio</label>
+                                <input [readOnly]="selectedTemplate !== 'template2'" formControlName="template2WidthRatio" class="custom-input" type="number" min="0"
+                                    max="100">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- template3 -->
+                <div class="flex sm:flex-col flex-row items-center md:gap-30 gap-3 ">
+                    <div class="flex flex-col justify-center items-center">
+                        <div class="">
+                            <div class="w-44 h-20 border border-black "></div>
+                            <div class="w-44 h-8 border-b border-l border-r border-black"></div>
+                        </div>
+
+                        <div class="flex items-center justify-between gap-1">
+                            <label class="font-semibold">T3</label>
+                            <input formControlName="template" value="template3" type="radio"
+                                >
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col  ">
+
+                        <div class="flex flex-col ">
+                            <div class="flex flex-row items-baseline  gap-1">
+                                <label class="font-semibold">Separator Length</label>
+                                <input [disabled]="selectedTemplate !== 'template3'" formControlName="template3SeperatorLengthFlag" type="radio">
+                            </div>
+
+                            <div class="flex flex-row items-baseline gap-1">
+                                <label class="font-semibold">Separator Width</label>
+                                <input [disabled]="selectedTemplate !== 'template3'" formControlName="template3SeperatorWidthFlag" type="radio">
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col">
+                            <div class="font-semibold">W1</div>
+                            <div class="flex flex-row justify-between sm:gap-2 gap-0">
+                                <div class="flex flex-col sm:gap-2 gap-0  ">
+                                    <label class="">L Ration</label>
+                                    <input [readOnly]="selectedTemplate !== 'template3'" formControlName="template3W1Length" class="custom-input" type="number"
+                                        min="0" max="100">
+
+                                </div>
+                                <div class=" flex flex-col sm:gap-2 gap-0 ">
+                                    <label class="font-semibold">W Ration</label>
+                                    <input [readOnly]="selectedTemplate !== 'template3'" formControlName="template3W1Width" class="custom-input" type="number" min="0"
+                                        max="100">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="flex flex-col">
+                            <div class="font-semibold">W2</div>
+                            <div class="flex justify-evenly sm:gap-2 gap-0">
+                                <div class="flex flex-col sm:gap-2 gap-0">
+                                    <label class="font-semibold">L Ration</label>
+                                    <input [readOnly]="selectedTemplate !== 'template3'" formControlName="template3W2Length" class="custom-input" type="number"
+                                        min="0" max="100">
+
+                                </div>
+                                <div class=" flex flex-col sm:gap-2 gap-0">
+                                    <label class="font-semibold">W Ration</label>
+                                    <input [readOnly]="selectedTemplate !== 'template3'" formControlName="template3W2Width" class="custom-input" type="number" min="0"
+                                        max="100">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- template4 -->
+                <div class=" flex sm:flex-col flex-row items-center md:gap-30 gap-3">
+                    <div class="flex flex-col justify-center items-center">
+                        <div class="">
+                            <div class="w-24 h-20 border border-black"></div>
+                            <div class="w-24 h-8 border-b border-l border-r border-black"></div>
+                        </div>
+                        <div class="flex items-center justify-between gap-1">
+                            <label class="font-semibold">T4</label>
+                            <input formControlName="template"  value="template4"
+                                type="radio">
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col  ">
+
+                        <div class="flex flex-col ">
+                            <div class="flex flex-row items-baseline  gap-1">
+                                <label class="font-semibold">Separator Length</label>
+                                <input [disabled]="selectedTemplate !== 'template4'" formControlName="template4SeperatorLengthFlag" type="radio">
+                            </div>
+
+                            <div class="flex flex-row items-baseline gap-1">
+                                <label class="font-semibold">Separator Width</label>
+                                <input [disabled]="selectedTemplate !== 'template4'" formControlName="template4SeperatorWidthFlag" type="radio">
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col">
+                            <div class="font-semibold">W1</div>
+                            <div class="flex flex-row justify-between sm:gap-2 gap-0">
+                                <div class="flex flex-col sm:gap-2 gap-0  ">
+                                    <label class="font-semibold">L Ration</label>
+                                    <input [readOnly]="selectedTemplate !== 'template4'" formControlName="template4W1Length" class="custom-input" type="number"
+                                        min="0" max="100">
+
+                                </div>
+                                <div class=" flex flex-col sm:gap-2 gap-0 ">
+                                    <label class="font-semibold">W Ration</label>
+                                    <input [readOnly]="selectedTemplate !== 'template4'" formControlName="template4W1Width" class="custom-input" type="number" min="0"
+                                        max="100">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="flex flex-col">
+                            <div class="font-semibold">W2</div>
+                            <div class="flex justify-evenly sm:gap-2 gap-0">
+                                <div class="flex flex-col sm:gap-2 gap-0">
+                                    <label class="font-semibold">L Ration</label>
+                                    <input [readOnly]="selectedTemplate !== 'template4'" formControlName="template4W2Length" class="custom-input" type="number"
+                                        min="0" max="100">
+
+                                </div>
+                                <div class=" flex flex-col sm:gap-2 gap-0">
+                                    <label class="font-semibold">W Ration</label>
+                                    <input [readOnly]="selectedTemplate !== 'template4'" formControlName="template4W2Width" class="custom-input" type="number" min="0"
+                                        max="100">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- template5 -->
+                <div class=" flex sm:flex-col flex-row items-center md:gap-30 gap-3">
+                    <div class="flex flex-col justify-center items-center">
+                        <div class="flex flex-row gap-0">
+                            <div class="w-28 h-28 border border-black "></div>
+                            <div class="w-14 h-28 border-b border-t border-r border-black"></div>
+                        </div>
+                        <div class="flex items-center justify-between gap-1">
+                            <label class="font-semibold">T5</label>
+                            <input formControlName="template"  value="template5"
+                                type="radio">
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col  ">
+
+                        <div class="flex flex-col ">
+                            <div class="flex flex-row items-baseline  gap-1">
+                                <label class="font-semibold">Separator Length</label>
+                                <input [disabled]="selectedTemplate !== 'template5'" formControlName="template5SeperatorLengthFlag" type="radio">
+                            </div>
+
+                            <div class="flex flex-row items-baseline gap-1">
+                                <label class="font-semibold">Separator Width</label>
+                                <input [disabled]="selectedTemplate !== 'template5'" formControlName="template5SeperatorWidthFlag" type="radio">
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col">
+                            <div>W1</div>
+                            <div class="flex flex-row justify-between sm:gap-2 gap-0">
+                                <div class="flex flex-col sm:gap-2 gap-0  ">
+                                    <label class="font-semibold">L Ration</label>
+                                    <input [readOnly]="selectedTemplate !== 'template5'" formControlName="template5W1Length" (value)="template5W1Length"
+                                        class="custom-input" type="number" min="0" max="100"
+                                        (ngModelChange)="template5W1Length = 100-template5W2Length!">
+
+                                </div>
+                                <div class=" flex flex-col sm:gap-2 gap-0 ">
+                                    <label class="font-semibold">W Ration</label>
+                                    <input [readOnly]="selectedTemplate !== 'template5'" formControlName="template5W1Width" class="custom-input" type="number" min="0"
+                                        max="100">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="flex flex-col">
+                            <div class="font-semibold">W2</div>
+                            <div class="flex justify-evenly sm:gap-2 gap-0">
+                                <div class="flex flex-col sm:gap-2 gap-0">
+                                    <label class="font-semibold">L Ration</label>
+                                    <input [readOnly]="selectedTemplate !== 'template5'" formControlName="template5W2Length" (value)="template5W2Length"
+                                        class="custom-input" type="number" min="0" max="100"
+                                        (ngModelChange)="template5W2Length = 100-template5W1Length!">
+
+                                </div>
+                                <div class=" flex flex-col sm:gap-2 gap-0">
+                                    <label class="font-semibold">W Ration</label>
+                                    <input [readOnly]="selectedTemplate !== 'template5'" formControlName="template5W2Width" class="custom-input" type="number" min="0"
+                                        max="100">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="p-4">
+                <button type="submit" (click)="closePopup()"
+                    class=" inline-block px-6 py-3   text-white bg-orange-500 rounded-md shadow-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2">
+                    Save Layout
+                </button>
+            </div>
+
+
+        </form>
+
+    </div>
+</ng-template>

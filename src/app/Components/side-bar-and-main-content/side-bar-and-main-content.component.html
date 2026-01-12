@@ -1,0 +1,1071 @@
+<button data-drawer-target="sidebar-multi-level-sidebar" data-drawer-toggle="sidebar-multi-level-sidebar"
+    aria-controls="sidebar-multi-level-sidebar" type="button"
+    class="inline-flex bg-black items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+    <span class="sr-only">Open sidebar</span>
+    <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <path clip-rule="evenodd" fill-rule="evenodd"
+            d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z">
+        </path>
+    </svg>
+</button>
+
+<div class="bg-[#EDF1F7] mb-10 ">
+
+    <aside *ngIf="isSidebarVisible"  id="sidebar-multi-level-sidebar scrollbar1"
+        class="fixed w-[250px] z-20 mt-16 top-0 left-0  h-screen transition-transform translate-x-0"
+        aria-label="Sidebar">
+        <div class="h-full  py-4 overflow-y-auto bg-[#63040D] dark:bg-gray-800">
+            <ul class="space-y-2 font-medium">
+                <!-- <li>
+            <a href="#"
+              class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+              <svg
+                class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
+                <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z" />
+                <path
+                  d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
+              </svg>
+              <span class="ms-3">Dashboard</span>
+            </a>
+          </li> -->
+        <div [ngSwitch]="userData?.admediA_APP_NAME">
+
+            <!-- Case for ADC Backoffice Operation -->
+            <div *ngSwitchCase="' ADC  Backoffice Operation'">
+                <li *ngIf="userData?.admediA_APP_NAME === ' ADC  Backoffice Operation'" class="">
+                    <div type="button"
+                        class="flex border-b border-[#8E2B2A] hover:cursor-pointer items-center w-full p-2 text-base  transition duration-75"
+                        aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                        <div class="flex hover:text-yellow-300   whitespace-nowrap text-sideMenuColor font-semibold text-lg">
+                            ADC BackOffice
+                            Operation</div>
+            
+                    </div>
+                
+                    <ul *ngIf="userData?.admediA_APP_NAME === ' ADC  Backoffice Operation'" id="dropdown-example" class="  py-2 space-y-2 ">
+                
+                        <li>
+                            <div type="button"
+                                class="flex border-b border-[#8E2B2A] hover:cursor-pointer   flex-row justify-between items-center  w-full p-2 text-sm  transition duration-75"
+                                aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                                <div class="text-white hover:text-yellow-300 ">
+                                    BO User
+                                    Management</div>
+                                <svg class="w-3 hover:text-yellow-300 h-3 text-sideMenuColor" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M1 1l4 4-4 4" />
+                                </svg>
+                            </div>
+                
+                        </li>
+                    </ul>
+                
+                    <!-- ------------------------ -->
+                    <ul id="dropdown-example" class="  py-2 space-y-2 ">
+                
+                        <li>
+                            <div type="button"
+                                class="flex border-b border-[#8E2B2A] hover:cursor-pointer   flex-row justify-between items-center  w-full p-2 text-sm  transition duration-75"
+                                aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                                <a [routerLink]="['backoffice/BOB2BAccountManagement']" class="text-white hover:text-yellow-300 ">Manage
+                                    B2B Acct Mgnt</a>
+                
+                            </div>
+                
+                        </li>
+                    </ul>
+                
+                    <ul id="dropdown-example" class="  py-2 space-y-2 ">
+                        <li>
+                            <div type="button" (click)="toggleDropdownForBackOffice()"
+                                class="flex justify-between  border-b border-[#8E2B2A] hover:cursor-pointer items-center w-full p-2 text-sm  transition duration-75"
+                                aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                                <div class="text-white  ">
+                                    BO DOOH
+                                    Management</div>
+                                <svg *ngIf="isDropdownOpenForBackOffice" class="w-3 hover:text-yellow-300 h-3 text-sideMenuColor"
+                                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M1 1l4 4 4-4" />
+                                </svg>
+                                <svg *ngIf="!isDropdownOpenForBackOffice" class="w-3 hover:text-yellow-300 h-3 text-sideMenuColor"
+                                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M1 1l4 4-4 4" />
+                                </svg>
+                
+                
+                            </div>
+                            <ul [class.hidden]="!isDropdownOpenForBackOffice">
+                                <li class="p-2">
+                                    <a [routerLink]="['/backoffice/managescreen']" class="subMenu">Manage
+                                        Screen</a>
+                                </li>
+                                <li class="p-2">
+                                    <a [routerLink]="['/backoffice/manageplaylist']" class="subMenu">Manage
+                                        Playlist</a>
+                                </li>
+                                <li class="p-2">
+                                    <a [routerLink]="['/backoffice/manageschedule']" class="subMenu">Manage
+                                        Schedule</a>
+                                </li>
+                                <li class="p-2">
+                                    <a [routerLink]="['/backoffice/managelayout']" class="subMenu">Manage
+                                        Layout</a>
+                                </li>
+                                <li class="p-2">
+                                    <a [routerLink]="['/backoffice/managedayslabs']" class="subMenu">Manage
+                                        Day Slabs</a>
+                                </li>
+                
+                                <li class="p-2">
+                                    <a [routerLink]="['/backoffice/manageuptime']" class="subMenu">Manage
+                                        Uptime</a>
+                                </li>
+                                <li class="p-2">
+                                    <a [routerLink]="['/backoffice/viewdailyscreenruns']" class="subMenu">View
+                                        Daily Screen Runs</a>
+                                </li>
+                                <li class="p-3 ">
+                
+                                    <ul [class.hidden]="!BackOfficeManageScreen" id="dropdown-example" class="hidden  py-2 space-y-2">
+                                        <li>
+                                            <div type="button" (click)="toggleDropdownBackOfficeManageWorkFlow()"
+                                                class="flex pl-1 flex-row  items-center justify-between  hover:cursor-pointer  hover:text-yellow-300"
+                                                aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                                                <!-- <svg
+                                                                                                                                                                                class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
+                                                                                                                                                                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 21">
+                                                                                                                                                                                <path
+                                                                                                                                                                                  d="M15 12a1 1 0 0 0 .962-.726l2-7A1 1 0 0 0 17 3H3.77L3.175.745A1 1 0 0 0 2.208 0H1a1 1 0 0 0 0 2h.438l.6 2.255v.019l2 7 .746 2.986A3 3 0 1 0 9 17a2.966 2.966 0 0 0-.184-1h2.368c-.118.32-.18.659-.184 1a3 3 0 1 0 3-3H6.78l-.5-2H15Z" />
+                                                                                                                                                                              </svg> -->
+                                                <div class="text-white pl-5 hover:text-yellow-300 whitespace-nowrap ">
+                
+                                                    BO Media & Ecomm Workflow</div>
+                                                <div>
+                                                    <svg class="w-3 hover:text-yellow-300 h-3 text-sideMenuColor " aria-hidden="true"
+                                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2" d="m1 1 4 4 4-4" />
+                                                    </svg>
+                                                    <!-- <div>
+                                                                                                {{be}}
+                                                                                            </div> -->
+                                                </div>
+                
+                
+                                            </div>
+                                            <ul [class.hidden]="!BackOfficeManageWorkFlow" id="dropdown-example"
+                                                class="hidden  py-2 space-y-2">
+                                                <li [routerLink]="['/backoffice/mediaValidation']"
+                                                    class="relative flex flex-row gap-2 justify-between items-center subMenu hover:cursor-pointer">
+                                                    <a>Media Validation</a>
+                                                    <div class="relative flex items-center">
+                                                        <!-- Notification icon -->
+                                                        <span class="material-symbols-outlined text-white text-2xl">
+                                                            notifications
+                                                        </span>
+                                                        <!-- Badge with count -->
+                                                        <div *ngIf="bellCount[0]?.adConnectBoMediaValdtnNotProcessedCount"
+                                                            class=" bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                                                            {{bellCount[0]?.adConnectBoMediaValdtnNotProcessedCount}}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                
+                                                <li [routerLink]="['/backoffice/ecomWorkflow']"
+                                                    class="relative flex flex-row gap-2 justify-between items-center subMenu hover:cursor-pointer">
+                                                    <a>Ecomm Workflow</a>
+                                                    <div class="relative flex items-center">
+                                                        <!-- Notification icon -->
+                                                        <span class="material-symbols-outlined text-white text-2xl">
+                                                            notifications
+                                                        </span>
+                                                        <!-- Badge with count -->
+                                                        <div
+                                                            class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                                                            {{bellCount[0]?.adConnectEcommValdnNotProcessedCount}}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                
+                                            </ul>
+                
+                                        </li>
+                
+                                    </ul>
+                
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                
+                    <ul id="dropdown-example" class="  py-2 space-y-2 ">
+                
+                        <li>
+                            <div type="button"
+                                class="flex border-b border-[#8E2B2A] hover:cursor-pointer   flex-row justify-between items-center  w-full p-2 text-sm  transition duration-75"
+                                aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                                <a [routerLink]="['backoffice/manageScreenPlayers']" class="text-white  hover:text-yellow-300 ">
+                                    BO Manage Screen Players</a>
+                
+                            </div>
+                
+                        </li>
+                    </ul>
+                
+                    <ul id="dropdown-example" class="  py-2 space-y-2 ">
+                
+                        <li>
+                            <div type="button" (click)="toggleDropdownBackOfficeManageWorkFlow()"
+                                class="flex border-b border-[#8E2B2A] hover:cursor-pointer   flex-row justify-between items-center  w-full p-2 text-sm  transition duration-75"
+                                aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                                <div class="text-white  hover:text-yellow-300 ">
+                                    BO Media
+                                    And Ecomm Workflow
+                                </div>
+                                <svg *ngIf="BackOfficeManageWorkFlow" class="w-3 hover:text-yellow-300 h-3 text-sideMenuColor"
+                                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M1 1l4 4 4-4" />
+                                </svg>
+                                <svg *ngIf="!BackOfficeManageWorkFlow" class="w-3 hover:text-yellow-300 h-3 text-sideMenuColor"
+                                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M1 1l4 4-4 4" />
+                                </svg>
+                
+                            </div>
+                            <ul [class.hidden]="!BackOfficeManageWorkFlow" id="dropdown-example" class="hidden px-2 py-2 space-y-2">
+                                <li [routerLink]="['/backoffice/mediaValidation']"
+                                    class="relative flex flex-row gap-2 justify-between  items-center subMenu hover:cursor-pointer">
+                                    <a>Media Validation</a>
+                                    <div class="relative flex items-center">
+                                        <!-- Notification icon -->
+                                        <span class="material-symbols-outlined text-white text-2xl">
+                                            notifications
+                                        </span>
+                                        <!-- Badge with count -->
+                                        <div *ngIf="bellCount[0]?.adConnectBoMediaValdtnNotProcessedCount"
+                                            class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center">
+                                            {{bellCount[0]?.adConnectBoMediaValdtnNotProcessedCount}}
+                                        </div>
+                                    </div>
+                                </li>
+                
+                                <li [routerLink]="['/backoffice/ecomWorkflow']"
+                                    class="relative flex flex-row gap-2 p-2 justify-between items-center subMenu hover:cursor-pointer">
+                                    <a>Ecomm Workflow</a>
+                                    <div class="relative flex items-center">
+                                        <!-- Notification icon -->
+                                        <span class="material-symbols-outlined text-white text-2xl">
+                                            notifications
+                                        </span>
+                                        <!-- Badge with count -->
+                                        <div
+                                            class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center">
+                                            {{bellCount[0]?.adConnectEcommValdnNotProcessedCount}}
+                                        </div>
+                                    </div>
+                                </li>
+                
+                            </ul>
+                
+                        </li>
+                    </ul>
+                    <ul id="dropdown-example" class="  py-2 space-y-2 ">
+                
+                        <li>
+                            <div type="button"
+                                class="flex border-b border-[#8E2B2A] hover:cursor-pointer   flex-row justify-between items-center  w-full p-2 text-sm  transition duration-75"
+                                aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                                <div class="text-white  hover:text-yellow-300 ">
+                                    BO Cloud TV Management
+                                </div>
+                
+                            </div>
+                
+                        </li>
+                    </ul>
+                    <ul id="dropdown-example" class="  py-2 space-y-2 ">
+                
+                        <li>
+                            <div type="button"
+                                class="flex border-b border-[#8E2B2A] hover:cursor-pointer   flex-row justify-between items-center  w-full p-2 text-sm  transition duration-75"
+                                aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                                <div class="text-white hover:text-yellow-300 ">
+                                    BO Micro Channel Management
+                                </div>
+                
+                            </div>
+                
+                        </li>
+                    </ul>
+                    <ul id="dropdown-example" class="  py-2 space-y-2 ">
+                
+                        <li>
+                            <div type="button"
+                                class="flex border-b border-[#8E2B2A] hover:cursor-pointer   flex-row justify-between items-center  w-full p-2 text-sm  transition duration-75"
+                                aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                                <div class="text-white hover:text-yellow-300 ">
+                                    BO D2C & B2B User Management
+                                </div>
+                
+                            </div>
+                
+                        </li>
+                    </ul>
+                    <ul id="dropdown-example" class="  py-2 space-y-2 ">
+                
+                        <li>
+                            <div type="button"
+                                class="flex border-b border-[#8E2B2A] hover:cursor-pointer   flex-row justify-between items-center  w-full p-2 text-sm  transition duration-75"
+                                aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                                <div class="text-white  hover:text-yellow-300 ">
+                                    BO Data Analytics & MIS
+                                </div>
+                
+                            </div>
+                
+                        </li>
+                    </ul>
+                
+                </li>
+            </div>
+
+            <!-- Case for ADC Digital Menu Board -->
+            <div *ngSwitchCase ="'ADC Demand  Side Operations '">
+                <!-- for demand side -->
+                 <li *ngIf="userData?.admediA_APP_NAME === 'ADC Demand  Side Operations '" class="" class="">
+                        <div type="button"
+                            class="flex border-b border-[#8E2B2A] hover:cursor-pointer items-center w-full p-2 text-base  transition duration-75"
+                            aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                            <div class="flex hover:text-yellow-300   whitespace-nowrap text-sideMenuColor font-semibold text-lg">
+                                ADC Demand Side
+                                Operation</div> 
+                        </div>
+                            
+                            <ul [class.hidden]="!isDropdownOpenForDemand" id="dropdown-example" class="hidden  py-2 space-y-2">
+                                <li class="p-2 border-b border-[#8E2B2A]">
+                                    <div type="button" (click)="toggleDropdownDemandSideManageUsers()"
+                                        class="flex flex-row gap-1   items-center justify-between  hover:cursor-pointer  hover:text-yellow-300"
+                                        aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                
+                                        <div class="text-white  hover:text-yellow-300 ">
+                                            Manage DSP
+                                            Users & Sub-accounts</div>
+                                        <svg *ngIf="DemandSideManageUsers" class="w-3 hover:text-yellow-300 h-3 text-sideMenuColor" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1l4 4 4-4" />
+                                        </svg>
+                                        <svg *ngIf="!DemandSideManageUsers" class="w-3 hover:text-yellow-300 h-3 text-sideMenuColor" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1l4 4-4 4" />
+                                        </svg>
+                
+                                    </div>
+                                    <ul [class.hidden]="!DemandSideManageUsers" id="dropdown-example" class="hidden  py-2 space-y-2">
+                                        <li>
+                                            <a [routerLink]="['/demand-side/manageUsers']" class="subMenu">Manage
+                                                DSP Users</a>
+                                        </li>
+                                        <li>
+                                            <a [routerLink]="['/demand-side/manageSubAccounts']" class="subMenu">Manage
+                                                DSP Subaccts</a>
+                                        </li>
+                                    </ul>
+                
+                                </li>
+
+                                <li type="button"
+                                        class="flex border-b border-[#8E2B2A] hover:cursor-pointer   flex-row justify-between items-center  w-full p-2 text-sm  transition duration-75"
+                                        aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                                    <a [routerLink]="['/demand-side/myContentRepository']" class="text-white hover:text-yellow-300 ">DSP
+                                        Content Repository</a>
+                                </li>
+
+                                <li type="button"
+                                        class="flex border-b border-[#8E2B2A] hover:cursor-pointer   flex-row justify-between items-center  w-full p-2 text-sm  transition duration-75"
+                                        aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                                    <a [routerLink]="['/demand-side/allocatePromos']" class="text-white hover:text-yellow-300 ">DSP
+                                        Impression Run MIS</a>
+                                </li>
+                                
+                                <li type="button"
+                                        class="flex border-b border-[#8E2B2A] hover:cursor-pointer   flex-row justify-between items-center  w-full p-2 text-sm  transition duration-75"
+                                        aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                                    <a [routerLink]="['/demand-side/myTransactionHistory']" class="text-white hover:text-yellow-300 ">DSP
+                                        Media Validation Report</a>
+                                </li>
+                            </ul>
+                        </li>
+                <!-- Your ADC Digital Menu Board related HTML here -->
+            </div>
+
+            <!-- Case for ADC Data Collection -->
+            <div *ngSwitchCase="'ADC Suply Side Operations '">
+                <!-- Your ADC Data Collection related HTML here -->
+                <!-- supply side operation -->
+                <li *ngIf="userData?.admediA_APP_NAME === 'ADC Suply Side Operations '" class="" class="">
+                            <div type="button"
+                                class="flex border-b border-[#8E2B2A] hover:cursor-pointer items-center w-full p-2 text-base  transition duration-75"
+                                aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                                <div class="flex hover:text-yellow-300   whitespace-nowrap text-sideMenuColor font-semibold text-lg">Supply
+                                    Side Operation</div>
+                            </div>
+                                
+                            <ul [class.hidden]="!DropdownOpenForSupply" id="dropdown-example" class="hidden py-2 space-y-2">
+                
+                                
+                                <li class="">
+                                    <div type="button" (click)="toggleDropdownSupplySideManageUsers()"
+                                        class="flex border-b border-[#8E2B2A] hover:cursor-pointer items-center justify-between w-full p-2 text-sm  transition duration-75"
+                                        aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                                       
+                                        <div class="text-white hover:text-yellow-300 ">
+                                            Manage SSP 
+                                            Users & Subaccts</div>
+                                        <svg *ngIf="SupplySideManageUsers" class="w-3 hover:text-yellow-300 h-3 text-sideMenuColor" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1l4 4 4-4" />
+                                        </svg>
+                                        <svg *ngIf="!SupplySideManageUsers" class="w-3 hover:text-yellow-300 h-3 text-sideMenuColor" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1l4 4-4 4" />
+                                        </svg>
+                
+                                    </div>
+                                    <ul [class.hidden]="!SupplySideManageUsers" id="dropdown-example" class="hidden  py-2 space-y-2">
+                                        <li>
+                                            <a [routerLink]="['/supply-side/manageUsers']" class="subMenu">Manage
+                                                SSP Users</a>
+                                        </li>
+                                        <li>
+                                            <a [routerLink]="['/supply-side/manageSubAccounts']" class="subMenu">Manage
+                                                SSP Subaccts</a>
+                                        </li>
+                                    </ul>
+                
+                                </li>
+                
+                               
+                                <li class="">
+                                    <div type="button" (click)="toggleDropdownSupplySideManageScreens()"
+                                        class="flex border-b border-[#8E2B2A] hover:cursor-pointer items-center justify-between w-full p-2 text-sm  transition duration-75"
+                                        aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                                        
+                                        <div class="text-white hover:text-yellow-300 ">
+                                            Manage SSP Screens</div>
+                                        <svg *ngIf="SupplySideManageScreen" class="w-3 hover:text-yellow-300 h-3 text-sideMenuColor" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1l4 4 4-4" />
+                                        </svg>
+                                        <svg *ngIf="!SupplySideManageScreen" class="w-3 hover:text-yellow-300 h-3 text-sideMenuColor" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1l4 4-4 4" />
+                                        </svg>
+                
+                                    </div>
+                                    <ul [class.hidden]="!SupplySideManageScreen" id="dropdown-example"  class="hidden py-2 space-y-2">
+                                        <li>
+                                            <a href="#" class="subMenu">
+                                                Manage Screen Setup
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a [routerLink]="['/supply-side/manageScreenSubscriptions']" class="subMenu">
+                                                Manage Screen Subscriptions
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a [routerLink]="['/supply-side/MyScreensSurgeSetups']" class="subMenu">My Screen Surge
+                                                Setup</a>
+                                        </li>
+                                    </ul>
+                
+                                </li>
+                
+                               
+                                <li class="">
+                                    <div type="button" (click)="toggleDropdownSupplySideMyAccountMonetization()"
+                                        class="flex border-b border-[#8E2B2A] hover:cursor-pointer items-center justify-between w-full p-2 text-sm  transition duration-75"
+                                        aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                                    
+                                        <div class="text-white hover:text-yellow-300 ">
+                                           SSP Account Monetization & MIS
+                                        </div>
+                                        <svg *ngIf="SupplySideMyAccountMonetization" class="w-3 hover:text-yellow-300 h-3 text-sideMenuColor" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1l4 4 4-4" />
+                                        </svg>
+                                        <svg *ngIf="!SupplySideMyAccountMonetization" class="w-3 hover:text-yellow-300 h-3 text-sideMenuColor" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1l4 4-4 4" />
+                                        </svg>
+                
+                                    </div>
+                                    <ul [class.hidden]="!SupplySideMyAccountMonetization" id="dropdown-example" class="hidden py-2 space-y-2">
+                                        <li>
+                                            <a [routerLink]="['/supply-side/myReceivedPayments']" class="subMenu">My Received Payments</a>
+                                        </li>
+                                        <li>
+                                            <a [routerLink]="['/supply-side/myScreenMIS']" class="subMenu">My Screen 360 Degree View</a>
+                                        </li>
+                                    </ul>
+                
+                                </li>
+
+                                
+                                <li>
+                                    <div type="button"
+                                        class="flex border-b border-[#8E2B2A] hover:cursor-pointer   flex-row justify-between items-center  w-full p-2 text-sm  transition duration-75"
+                                        aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                                        <a [routerLink]="['/supply-side/mycontentrepository']" class="text-white hover:text-yellow-300 ">Manage
+                                            My content Repository</a>
+                                
+                                    </div>
+                                
+                                </li>
+                                
+                            </ul>
+                </li>
+            </div>
+
+            <!-- Case for Cloud Tv oprations -->
+            <div *ngSwitchCase="'ADC  Cloud TV Operations '">
+                <li *ngIf="userData?.admediA_APP_NAME === 'ADC  Cloud TV Operations '" class="">
+                    <div type="button"
+                        class="flex border-b border-[#8E2B2A] hover:cursor-pointer items-center w-full p-2 text-base  transition duration-75"
+                        aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                        <div class="flex hover:text-yellow-300 whitespace-nowrap text-sideMenuColor font-semibold text-lg">Cloud TV</div>
+                    </div>
+            
+                    <!-- Manage CLD TV Chronology -->
+                    <ul id="dropdown-example" class="py-2 space-y-2">
+                        <li>
+                            <div type="button" (click)="toggleDropdownForCloudTv1()"
+                                class="flex justify-between border-b border-[#8E2B2A] hover:cursor-pointer items-center w-full p-2 text-sm transition duration-75"
+                                aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                                <div class="text-white">Manage CLD TV Chronology</div>
+                                <svg *ngIf="isDropdownOpenForBackOffice" class="w-3 hover:text-yellow-300 h-3 text-sideMenuColor"
+                                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1l4 4 4-4" />
+                                </svg>
+                                <svg *ngIf="!isDropdownOpenForBackOffice" class="w-3 hover:text-yellow-300 h-3 text-sideMenuColor"
+                                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1l4 4-4 4" />
+                                </svg>
+                            </div>
+                            <ul [class.hidden]="!DropdownOpenForCloudTv1">
+                                <li class="p-2">
+                                    <a [routerLink]="['/cloud-tv/manage-verticals']" class="subMenu">Manage Verticals</a>
+                                </li>
+                                <li class="p-2">
+                                    <a [routerLink]="['/cloud-tv/manage-prod-lines']" class="subMenu">Manage Prod-lines</a>
+                                </li>
+                                <li class="p-2">
+                                    <a [routerLink]="['/cloud-tv/manage-channels']" class="subMenu">Manage Channels</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+            
+                    <!-- Create TV On Cloud -->
+                    <ul>
+                        <li>
+                            <div type="button"
+                                class="flex border-b border-[#8E2B2A] hover:cursor-pointer   flex-row justify-between items-center  w-full p-2 text-sm  transition duration-75"
+                                aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                                <a [routerLink]="['cloud-tv/create-tv-on-cloud']" class="text-white  hover:text-yellow-300 ">
+                                    Create Tv On Cloud
+                                </a>
+                
+                            </div>
+                
+                        </li>
+                    </ul>
+            
+                    <!-- Manage TV Users -->
+                    <ul id="dropdown-example" class="py-2 space-y-2">
+                        <li>
+                            <div type="button" (click)="toggleDropdownForCloudTv4()"
+                                class="flex justify-between border-b border-[#8E2B2A] hover:cursor-pointer items-center w-full p-2 text-sm transition duration-75"
+                                aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                                <div class="text-white">Manage TV Users</div>
+                                <svg *ngIf="isDropdownOpenForBackOffice" class="w-3 hover:text-yellow-300 h-3 text-sideMenuColor"
+                                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1l4 4 4-4" />
+                                </svg>
+                                <svg *ngIf="!isDropdownOpenForBackOffice" class="w-3 hover:text-yellow-300 h-3 text-sideMenuColor"
+                                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1l4 4-4 4" />
+                                </svg>
+                            </div>
+                            <ul [class.hidden]="!DropdownOpenForCloudTv4">
+                                <li class="p-2">
+                                    <a [routerLink]="['/cloud-tv/d2c-users']" class="subMenu">D2C User</a>
+                                </li>
+                                <li class="p-2">
+                                    <a [routerLink]="['/cloud-tv/b2b-users']" class="subMenu">B2B User</a>
+                                </li>
+                                <li class="p-2">
+                                    <a [routerLink]="['/cloud-tv/cldtv-users']" class="subMenu">CLD TV User</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                     <!-- Mannage content providers -->
+                    <ul>
+                        <li>
+                            <div type="button"
+                                class="flex border-b border-[#8E2B2A] hover:cursor-pointer   flex-row justify-between items-center  w-full p-2 text-sm  transition duration-75"
+                                aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                                <a [routerLink]="['cloud-tv/manage-content-providers']" class="text-white  hover:text-yellow-300 ">
+                                    Manage Content Providers
+                                </a>
+                
+                            </div>
+                
+                        </li>
+                    </ul>
+
+                    <!-- Manage oems -->
+                    <ul>
+                        <li>
+                            <div type="button"
+                                class="flex border-b border-[#8E2B2A] hover:cursor-pointer   flex-row justify-between items-center  w-full p-2 text-sm  transition duration-75"
+                                aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                                <a [routerLink]="['cloud-tv/manage-oems']" class="text-white  hover:text-yellow-300 ">
+                                    Manage OEMs
+                                </a>
+                
+                            </div>
+                
+                        </li>
+                    </ul>
+                   
+                </li>
+            </div>
+
+            <!-- Case for Micro Channel oprations -->
+            <div *ngSwitchCase="'ADC  Micro Channels Operations '">
+                <li *ngIf="userData?.admediA_APP_NAME === 'ADC  Micro Channels Operations '" class="">
+                    <div type="button"
+                        class="flex border-b border-[#8E2B2A] hover:cursor-pointer items-center w-full p-2 text-base  transition duration-75"
+                        aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                        <div class="flex hover:text-yellow-300 whitespace-nowrap text-sideMenuColor font-semibold text-lg">Micro Channel Operations</div>
+                    </div>
+            
+                    <!-- Manage channel Chronology -->
+                    <ul id="dropdown-example" class="py-2 space-y-2">
+                        <li>
+                            <div type="button" (click)="toggleDropdownForCloudTv2()"
+                                class="flex justify-between border-b border-[#8E2B2A] hover:cursor-pointer items-center w-full p-2 text-sm transition duration-75"
+                                aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                                <div class="text-white">Manage Channel Chronology</div>
+                                <svg *ngIf="isDropdownOpenForBackOffice" class="w-3 hover:text-yellow-300 h-3 text-sideMenuColor"
+                                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1l4 4 4-4" />
+                                </svg>
+                                <svg *ngIf="!isDropdownOpenForBackOffice" class="w-3 hover:text-yellow-300 h-3 text-sideMenuColor"
+                                    aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1l4 4-4 4" />
+                                </svg>
+                            </div>
+                            <ul [class.hidden]="!DropdownOpenForCloudTv2">
+                                <li class="p-2">
+                                    <a [routerLink]="['/manage-ch-opr/manage-channel-items']" class="subMenu">Manage Channel Items</a>
+                                </li>
+                                <li class="p-2">
+                                    <a [routerLink]="['/manage-ch-opr/manage-channel-subitems']" class="subMenu">Manage Channel Subitems</a>
+                                </li>
+                                <li class="p-2">
+                                    <a [routerLink]="['/manage-ch-opr/key-install-on-server']" class="subMenu">Key Installs On your Server</a>
+                                </li>
+                                <li class="p-2">
+                                    <a [routerLink]="['/manage-ch-opr/manage-channel-users']" class="subMenu">Manage Channel Users</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                   
+                </li>
+            </div>
+            
+        </div>
+                
+
+                
+            </ul>
+        </div>
+    </aside>
+
+    <div class="p-4 sm:ml-64 ">
+        <div class="p-4 rounded-lg  lg:mt-16">
+
+            <!-- <app-abcd></app-abcd> -->
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="isProfileDropdownOpen"
+    class=" top-0 pt-20 fixed w-full bg-white border border-gray-200 p-4 z-10">
+    <div class="text-gray-800 font-semibold text-lg mb-2">{{ userData?.useR_NAME }}</div>
+    <div class="text-gray-600 mb-1">User ID: {{ userData?.useR_ID }}</div>
+    <div class="text-gray-600 mb-1">Role ID: {{ userData?.admediA_ROLE_ID }}</div>
+    <div class="text-gray-600 mb-1">Role Name: {{ userData?.admediA_ROLE_NAME }}</div>
+    <div class="text-gray-600 mb-2">Mobile Number: {{ userData?.useR_MOBILE }}</div>
+    <button (click)="logout()"
+        class="w-full text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 text-center">
+        Logout
+    </button>
+</div>
+
+
+<div class=" w-full lg:hidden block z-50 bottom-0 fixed" id="navbar-default">
+    <ul
+        class="font-medium flex justify-evenly items-center p-4 md:p-0 mt-4 border border-gray-100 bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+
+        <!-- Info Icon -->
+        <li class="flex items-center">
+            <span class="material-symbols-outlined text-slate-500 text-2xl hover:cursor-pointer">info</span>
+        </li>
+
+        <!-- Notification Icon with Badge -->
+        <li class="relative flex items-center">
+            <div class="relative flex items-center">
+                <span
+                    class="material-symbols-outlined text-slate-500 text-2xl hover:cursor-pointer">notifications</span>
+                <div *ngIf="bellCount[0]?.adConnectTotalAlarmsUnread"
+                    class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center">
+                    {{bellCount[0]?.adConnectTotalAlarmsUnread}}
+                </div>
+            </div>
+        </li>
+
+        <!-- Cart Icon with Count -->
+        <li class="relative flex items-center">
+            <div class="relative flex items-center">
+                <span
+                    class="material-symbols-outlined text-slate-500 text-2xl hover:cursor-pointer">shopping_cart</span>
+                <div class="absolute -right-2 -top-2 text-base text-slate-500">0</div>
+            </div>
+        </li>
+
+        <!-- Profile Icon with Dropdown -->
+        <li class="relative flex items-center">
+            <span class="material-symbols-outlined text-slate-500 text-2xl hover:cursor-pointer"
+                (click)="toggleProfileDropdown()">person</span>
+        </li>
+        
+
+    </ul>
+</div>
+        
+
+        
+
+        <!-- Cloud  Tv operation -->
+        <!-- <li ngIf="userData?.admediA_APP_NAME === ''">
+            <button type="button" (click)="toggleDropdownForCloudTv()"
+                class="flex border-b border-[#8E2B2A] items-center w-full p-2 text-base text-gray-900 transition duration-75  group  dark:text-white dark:hover:bg-gray-700"
+                aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                
+                <span
+                    class="flex-1 hover:text-yellow-300 ms-3 text-left rtl:text-right whitespace-nowrap text-sideMenuColor ">Cloud
+                    Tv</span>
+                <svg class="w-3 h-3 hover:text-yellow-300 text-sideMenuColor" aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m1 1 4 4 4-4" />
+                </svg>
+            </button>
+            <ul [class.hidden]="!DropdownOpenForCloudTv" id="dropdown-example" class="hidden py-2 space-y-2">
+
+               
+                <li class="p-2">
+                    <div type="button" (click)="toggleDropdownCloudTvSettings()"
+                        class="flex flex-row gap-1 items-center justify-between  hover:cursor-pointer  hover:text-yellow-300"
+                        aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                        <div class="text-white pl-5 hover:text-yellow-300 ">
+                            Manage Default Settings
+                        </div>
+                        <svg class="w-3 hover:text-yellow-300 h-3 text-sideMenuColor " aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m1 1 4 4 4-4" />
+                        </svg>
+
+                    </div>
+                    <ul [class.hidden]="!CloudTvSettings" id="dropdown-example" class="hidden  py-2 space-y-2">
+                        <li class="cursor-pointer">
+                            <a class="subMenu">
+                                Cloud Tv Banner</a>
+                        </li>
+                        <li class="cursor-pointer">
+                            <a class="subMenu">
+                                Cloud Tv View Settings</a>
+                        </li>
+                    </ul>
+
+                </li>
+
+               
+                <li class="p-2">
+                    <div type="button" (click)="toggleDropdownCloudTvChronology()"
+                        class="flex flex-row gap-3 items-center justify-between hover:cursor-pointer hover:text-yellow-300"
+                        aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                        <div class="text-white pl-5 hover:text-yellow-300 ">
+                            Manage Chronology</div>
+                        <svg class="w-3 hover:text-yellow-300 h-3 text-sideMenuColor " aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m1 1 4 4 4-4" />
+                        </svg>
+
+                    </div>
+                    <ul [class.hidden]="!CloudTvChronology" id="dropdown-example" class="hidden py-2 space-y-2">
+                        <li class="cursor-pointer">
+                            <a class="subMenu">
+                                Manage Verticals
+                            </a>
+                        </li>
+                        <li class="cursor-pointer">
+                            <a class="subMenu">Manage Product Lines</a>
+                        </li>
+                        <li class="cursor-pointer">
+                            <a class="subMenu">Manage Items</a>
+                        </li>
+                        <li class="cursor-pointer">
+                            <a class="subMenu">Manage Sub Items</a>
+                        </li>
+                    </ul>
+
+                </li>
+
+                <li class="p-2">
+                    <div type="button" (click)="toggleDropdownCloudTvContent()"
+                        class="flex flex-row gap-3 items-center justify-between hover:cursor-pointer hover:text-yellow-300"
+                        aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                      
+                        <div class="text-white pl-5 hover:text-yellow-300 ">
+                            Manage Content
+                        </div>
+                        <svg class="w-3 hover:text-yellow-300 h-3 text-sideMenuColor " aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m1 1 4 4 4-4" />
+                        </svg>
+
+                    </div>
+                    <ul [class.hidden]="!CloudTvContent" id="dropdown-example" class="hidden py-2 space-y-2">
+                        <li class="cursor-pointer">
+                            <a class="subMenu">3rd party Videos</a>
+                        </li>
+                        <li class="cursor-pointer">
+                            <a class="subMenu">3rd Party Audios</a>
+                        </li>
+                        <li class="cursor-pointer">
+                            <a class="subMenu">ADC Videos</a>
+                        </li>
+                        <li class="cursor-pointer">
+                            <a class="subMenu">ADC Audios</a>
+                        </li>
+                        <li class="cursor-pointer">
+                            <a class="subMenu">3rd Party Natives</a>
+                        </li>
+                        <li class="cursor-pointer">
+                            <a class="subMenu">ADCNatives</a>
+                        </li>
+                    </ul>
+
+                </li>
+
+               
+                <li class="p-2">
+                    <div type="button" (click)="toggleDropdownCloudTvContentPartners()"
+                        class="flex flex-row gap-3 items-center justify-between hover:cursor-pointer hover:text-yellow-300"
+                        aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                       
+                        <div class="text-white pl-5 hover:text-yellow-300 ">
+                            Manage Content Partners
+                        </div>
+                        <svg class="w-3 hover:text-yellow-300 h-3 text-sideMenuColor " aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m1 1 4 4 4-4" />
+                        </svg>
+
+                    </div>
+                    <ul [class.hidden]="!CloudTvContentPartners" id="dropdown-example" class="hidden py-2 space-y-2">
+                        <li class="cursor-pointer">
+                            <a class="subMenu">Manage Partners</a>
+                        </li>
+                        <li class="cursor-pointer">
+                            <a class="subMenu">Manage Partner Users</a>
+                        </li>
+                    </ul>
+
+                </li>
+
+               
+                <li class="p-2">
+                    <div type="button" (click)="toggleDropdownCloudTvDevicePartners()"
+                        class="flex flex-row gap-3 items-center justify-between hover:cursor-pointer hover:text-yellow-300"
+                        aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                       
+                        <div class="text-white pl-5 hover:text-yellow-300 ">
+                            Manage Device Partners
+                        </div>
+                        <svg class="w-3 hover:text-yellow-300 h-3 text-sideMenuColor " aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m1 1 4 4 4-4" />
+                        </svg>
+
+                    </div>
+                    <ul [class.hidden]="!CloudTvDevicePartners" id="dropdown-example" class="hidden py-2 space-y-2">
+                        <li class="cursor-pointer">
+                            <a class="subMenu">Manage Partners</a>
+                        </li>
+                        <li class="cursor-pointer">
+                            <a class="subMenu">Manage Partner Users</a>
+                        </li>
+                    </ul>
+
+                </li>
+
+               
+                <li class="p-2">
+                    <div type="button" (click)="toggleDropdownCloudTvConsumers()"
+                        class="flex flex-row gap-3 items-center justify-between hover:cursor-pointer hover:text-yellow-300"
+                        aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                        
+                        <div class="text-white pl-5 hover:text-yellow-300 ">
+                            Manage Consumers
+                        </div>
+                        <svg class="w-3 hover:text-yellow-300 h-3 text-sideMenuColor " aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m1 1 4 4 4-4" />
+                        </svg>
+
+                    </div>
+                    <ul [class.hidden]="!CloudTvConsumers" id="dropdown-example" class="hidden py-2 space-y-2">
+                        <li class="cursor-pointer">
+                            <a class="subMenu">View Reg Consumers</a>
+                        </li>
+                        <li class="cursor-pointer">
+                            <a class="subMenu">Consumers Subs.</a>
+                        </li>
+                        <li class="cursor-pointer">
+                            <a class="subMenu">Consumer Device Usage</a>
+                        </li>
+                        <li class="cursor-pointer">
+                            <a class="subMenu">Consumers Views and Eyeballs</a>
+                        </li>
+                        <li class="cursor-pointer">
+                            <a class="subMenu">Consumers Push Sales</a>
+                        </li>
+                        <li class="cursor-pointer">
+                            <a class="subMenu">Consumers Payments</a>
+                        </li>
+                        <li class="cursor-pointer">
+                            <a class="subMenu">Consumers Data Analytics</a>
+                        </li>
+                    </ul>
+
+                </li>
+
+                
+                <li class="p-2">
+                    <div type="button" (click)="toggleDropdownCloudTvPackages()"
+                        class="flex flex-row gap-3 items-center justify-between hover:cursor-pointer hover:text-yellow-300"
+                        aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                       
+                        <div class="text-white pl-5 hover:text-yellow-300 ">
+                            Manage Subs. Packages
+                        </div>
+                        <svg class="w-3 hover:text-yellow-300 h-3 text-sideMenuColor " aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m1 1 4 4 4-4" />
+                        </svg>
+
+                    </div>
+                    <ul [class.hidden]="!CloudTvPackages" id="dropdown-example" class="hidden py-2 space-y-2">
+                        <li class="cursor-pointer">
+                            <a class="subMenu">Manage Packages</a>
+                        </li>
+                        <li class="cursor-pointer">
+                            <a class="subMenu">Manage Prices and Discounts</a>
+                        </li>
+                        <li class="cursor-pointer">
+                            <a class="subMenu">Manage Add-ons & X-sales</a>
+                        </li>
+
+                    </ul>
+
+                </li>
+
+                
+                <li class="p-2">
+                    <div type="button" (click)="toggleDropdownCloudTvMarketPlaces()"
+                        class="flex flex-row gap-3 items-center justify-between hover:cursor-pointer hover:text-yellow-300"
+                        aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                        
+                        <div class="text-white pl-5 hover:text-yellow-300 ">
+                            Manage Market Places
+                        </div>
+                        <svg class="w-3 hover:text-yellow-300 h-3 text-sideMenuColor " aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m1 1 4 4 4-4" />
+                        </svg>
+
+                    </div>
+                    <ul [class.hidden]="!CloudTvMarketPlaces" id="dropdown-example" class="hidden py-2 space-y-2">
+                        <li class="cursor-pointer">
+                            <a class="subMenu">Map Cont. (All-Day Ecom)</a>
+                        </li>
+                        <li class="cursor-pointer">
+                            <a class="subMenu">Map VOD Cont. (AD Connect) </a>
+                        </li>
+
+                    </ul>
+
+                </li>
+
+               
+                <li class="p-2">
+                    <div type="button" (click)="toggleDropdownCloudTvAdCampaigns()"
+                        class="flex flex-row gap-3 items-center justify-between hover:cursor-pointer hover:text-yellow-300"
+                        aria-controls="dropdown-example" data-collapse-toggle="dropdown-example">
+                       
+                        <div class="text-white pl-5 hover:text-yellow-300 ">
+                            Manage AD Campaigns
+                        </div>
+                        <svg class="w-3 hover:text-yellow-300 h-3 text-sideMenuColor " aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m1 1 4 4 4-4" />
+                        </svg>
+
+                    </div>
+                    <ul [class.hidden]="!CloudTvAdCampaigns" id="dropdown-example" class="hidden py-2 space-y-2">
+                        <li class="cursor-pointer">
+                            <a class="subMenu">Manage Ads interupts</a>
+                        </li>
+                        <li class="cursor-pointer">
+                            <a class="subMenu">Manage Programatic Ads tags</a>
+                        </li>
+
+                    </ul>
+
+                </li>
+            </ul>
+        </li> -->

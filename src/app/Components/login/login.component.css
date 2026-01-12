@@ -1,0 +1,19 @@
+/* Removes the spinner from the number input */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield; /* Firefox */
+}
+
+.custom-snackbar {
+  background-color: #4caf50; /* Green color */
+  color: white;
+}
+
+.custom-snackbar .mat-simple-snackbar-action {
+  color: white; /* Action button color */
+}

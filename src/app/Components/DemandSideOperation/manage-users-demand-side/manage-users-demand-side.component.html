@@ -1,0 +1,93 @@
+<div class="flex flex-col gap-3 ">
+    <!-- Manage Users & Sub-Accounts section -->
+    <div class="flex flex-col gap-3">
+        <div>
+            <div class="text-orange-500 font-bold font-abcd text-2xl">Manage Users & Sub-Accounts</div>
+            <div class="text-orange-500 font-bold text-lg">Manage My Users</div>
+        </div>
+
+        <!-- Buttons section -->
+        <div class="flex flex-col md:flex-row gap-4">
+            <button class="bg-[#a00e1a] hover:bg-[#a9101d] text-white px-2 py-1 mb-2 md:mb-0 md:mr-4">Display My Direct
+                Users</button>
+            <button class="bg-[#a00e1a] hover:bg-[#a9101d] text-white px-2 py-1">Add New Direct User</button>
+        </div>
+    </div>
+
+    <!-- Table and PIN Details section -->
+    <div class="flex flex-col  md:gap-3">
+        <!-- Table section -->
+        <div class="overflow-x-auto bg-white shadow-md shadow-gray-200 p-3 rounded-md">
+            <table class=" w-full">
+                <thead class="">
+                    <tr class="">
+                        <th>S#</th>
+                        <th>user-id</th>
+                        <th>User-name</th>
+                        <th>Mobile #</th>
+                        <th>Role-allocated</th>
+                        <th>Active</th>
+                        <th>Prim.</th>
+                        <th>Sec.</th>
+                        <th>App_PIN Details</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Table rows will go here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- PIN Details section -->
+        <div class="bg-white p-3 w-[80%] md:w-[60%] lg:w-[30%] rounded-md shadow-md shadow-gray-200 mt-3 md:mt-0">
+            <div class="font-semibold">PIN Details</div>
+            <div class="flex flex-col gap-1">
+                <div>Webapp PIN : <span>-------------</span></div>
+                <div>ScreenPlayer PIN : <span>-------------</span></div>
+                <div>E-comm PIN : <span>--------------</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- add new direct user div -->
+    <div class="bg-white grid gap-3 p-3 lg:w-[70%] md:w-[80%] w-full rounded-md shadow-md shadow-gray-200">
+        <div class="font-semibold">User id :</div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="flex flex-col gap-2">
+                <label class="font-semibold" for="">Enter Mobile Number</label>
+                <input class="custom-input" type="text">
+            </div>
+            <div class="flex flex-col gap-2">
+                <label class="font-semibold" for="">Role-Allocated</label>
+                <select class="custom-input" name="" id="">
+                    <option value="">Super Admin</option>
+                    <option value="">Admin</option>
+                </select>
+            </div>
+            <div class="flex flex-col gap-2">
+                <label class="font-semibold" for="">Webapp PIN</label>
+                <input class="custom-input" type="text">
+            </div>
+            <div class="flex flex-col gap-2">
+                <label class="font-semibold" for="">ScreenPlayer PIN</label>
+                <input class="custom-input" type="text">
+            </div>
+            <div class="flex flex-col gap-2">
+                <label class="font-semibold" for="">E-comm PIN</label>
+                <input class="custom-input" type="text">
+            </div>
+            <div class="flex flex-col gap-2">
+                <label class="font-semibold" for="">Active</label>
+                <select class="custom-input" name="" id="">
+                    <option value="">Yes</option>
+                    <option value="">No</option>
+                </select>
+            </div>
+        </div>
+        <div>
+            <button class="bg-sideBarColor text-white px-2 py-1">Save User</button>
+        </div>
+    </div>
+
+</div>

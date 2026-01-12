@@ -1,0 +1,29 @@
+ul {
+    padding-left: 20px;
+    list-style: disc;
+    margin-bottom: 10px;
+    li {
+        margin: 5px 0;
+    }
+}
+
+.monetization-format {
+    li.list-group-item.active {
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: bold;
+        background: linear-gradient(90deg, #ff5c72, #a485f2);
+        cursor: default;
+        border: 0;
+        color: #fff;
+    }
+    li.list-group-item {
+        cursor: pointer;
+        color: #3568b1;
+        text-decoration: underline;
+    }
+
+ li {
+    margin: 0;
+}
+}

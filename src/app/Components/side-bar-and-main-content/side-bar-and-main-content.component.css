@@ -1,0 +1,43 @@
+.subMenu {
+    display: flex; /* flex */
+    align-items: center; /* items-center */
+    width: 100%; /* w-full */
+    padding: 0.5rem; /* p-2 */
+    transition: all 75ms; /* transition duration-75 */
+    border-radius: 0.5rem; /* rounded-lg */
+    padding-left: 1.75rem; /* pl-11 */
+    color: white; /* text-white */
+
+    /* Dark mode text */
+    color: white; /* dark:text-white */
+}
+
+.subMenu:focus {
+    color: #fbbf24; /* focus:text-yellow-400 */
+}
+
+.subMenu:hover {
+    color: black; /* hover:text-black */
+    background-color: #b0b996; /* hover:bg-gray-100 */
+}
+
+/* scrollbar  */
+/* width */
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #808080;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #CE5C67;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: black;
+}

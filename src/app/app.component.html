@@ -1,0 +1,10 @@
+<!-- navbar -->
+<div class="flex flex-col w-full">
+    <app-home-page *ngIf="!isLoggedIn"></app-home-page>
+    <app-nav-bar *ngIf="isLoggedIn"></app-nav-bar>
+    <app-side-bar-and-main-content *ngIf="isLoggedIn"></app-side-bar-and-main-content>
+  
+  <!-- Router outlet for routed components -->
+  <!-- <router-outlet></router-outlet> -->
+  
+</div>

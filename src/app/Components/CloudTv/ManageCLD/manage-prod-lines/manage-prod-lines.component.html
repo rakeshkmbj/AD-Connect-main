@@ -1,0 +1,387 @@
+<div class="flex flex-col w-full">
+    <div class="w-full flex flex-col gap-10 justify-center items-center">
+        <div class="text-orange-500 w-full font-bold font-abcd text-2xl">
+            Manage Product Line
+        </div>
+
+        <div class="flex w-[95%] gap-6 flex-col">
+            <div class="w-full flex justify-between items-center flex-row-reverse">
+                <button class="bg-[#63040D] text-white px-4 py-2 font-semibold" (click)="togglePopup()">
+                    Add Product Line
+                </button>
+            
+                <div>
+                    <label class="text-lg font-semibold text-[#63040D]" for="choice">Select Vertical: </label>
+                    <select (change)="onVerSelect($event)" class="ml-2 p-1" id="choice" name="choice">
+                        <option *ngFor="let item of verArr" [value]="item.verName">{{ item.verName }}</option>
+                    </select>
+                </div>
+            </div>            
+
+            <div class="w-full p-5 bg-white border-[1px] flex flex-col justify-start border-black">
+                <div class="h-2 gap-5 flex text-[15px] justify-start font-semibold text-[#63040D] w-full mb-10">
+                    <span class="w-[8%] h-10">Serial#</span>
+                    <span class="w-[8%] h-10">Vertical</span>
+                    <span class="w-[20%] h-10">Product Name</span>
+                    <span class="w-[8%] h-10">Image</span>
+                    <span class="w-[8%] h-10">Valid</span>
+                    <div class=" flex flex-col w-[25%] h-10">
+                        <div class=" w-full flex flex-col justify-center items-center h-5">
+                            <div class="w-full h-6 flex flex-col justify-end">
+                                <div class="w-full h-1 bg-red-500"></div>
+                            </div>
+                            <span class="px-2 absolute bg-white z-10">Actions</span>
+                            <div class=" w-full flex justify-between h-4">
+                                <div class="w-1 h-full bg-red-500"></div>
+                                <div class="w-1 h-full bg-red-500"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w-full flex text-[12px] font-semibold flex-col gap-1">
+                    <div *ngFor="let item of sampleData, let i = index" class="w-full gap-5 py-2 flex justify-start">
+                        <div class="w-[8%] h-8">{{ i }}</div>
+                        <div class="w-[8%] h-8">{{ item.verName }}</div>
+                        <div class="w-[20%] h-8">{{ item.prouctName }}</div>
+                        <div class="w-[8%] h-8">
+                            <img [src]="item.image" alt="{{ item.verName }}" class="h-full w-auto" />
+                        </div>
+                        <div class="w-[8%] h-8">
+                            <img [src]="item.activeflg === true ? valid : unvalid" alt="Validity" class="h-6 w-auto" />
+                        </div>
+                        <div class="w-[25%] flex justify-between items-center">
+                            <button (click)="toggleEditPopup(i,item)" class="h-8">
+                                <img [src]="edit" alt="Edit" class="h-6 w-auto" />
+                            </button>
+
+                            <button (click)="toggleADMonitization()" class="bg-green-500 px-4 py-2 hover:bg-green-600 text-white font-semibold">IP-TV AD Monitization</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Popup Template -->
+    <div *ngIf="isPopupVisible" class="fixed z-20 inset-0 flex justify-center items-center bg-black bg-opacity-50">
+        <form #formRef="ngForm" novalidate (ngSubmit)="addProuctLine(formRef)" class="w-[65%] bg-white flex flex-col">
+
+            <div class="w-full items-center px-4 pt-8  flex flex-row-reverse">
+                <button (click)="togglePopup()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                      </svg>
+                </button>
+            </div>
+
+            <div class="w-full  p-5 flex justify-start gap-8">
+                <!-- <span class="text-lg font-semibold text-[#63040D]">Serial#:<span class="ml-2 text-lg text-gray-500">{{ selectedVertical.serial }}</span></span>             -->
+                <span class="text-lg font-semibold text-[#63040D]">Vertical :<span class="ml-2 text-lg text-gray-500">{{ selectedVertical.verName }}</span></span>            
+            </div>
+
+            <div class="w-full flex rounded-lg mb-5 ">
+
+                <div class="w-[50%] flex flex-col gap-6 h-full p-5 pr-0">
+                    
+                    <div>
+                        <label class="text-lg font-semibold text-[#63040D]" for="verticalname">Product Line name <span class="text-red-600">*</span>:</label>
+                        <input [(ngModel)]="selectedVertical.prouctName" name="verticalName" class="ml-2 p-1" type="text" id="verticalname" placeholder="" required #ProductLineRef="ngModel" />
+                    </div>
+            
+                    <div>
+                        <label class="text-lg font-semibold text-[#63040D]" for="valid">
+                            Valid <span class="text-red-600">*</span>:
+                        </label>
+                        <select [(ngModel)]="selectedVertical.activeflg" class="ml-2 p-1" id="choice" name="valid" required #validRef="ngModel">
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+                    
+                </div>
+
+                <div class="w-[50%] flex py-5 pr-0 flex-col h-full">
+                    <label class="text-lg font-semibold text-[#63040D]" for="imageUpload">Attach an image <span class="text-red-600">*</span>:</label>
+                    <div class="flex flex-col gap-3">
+                        <div class="w-[55%] mt-2 h-[8rem] p-2 border-[2px] flex justify-center items-center">
+                            <img *ngIf="SelectedProductLineImageToBeAdded" class=" max-w-max h-full" alt="" [src]="SelectedProductLineImageToBeAdded"/>
+                        </div>
+                        <input [(ngModel)]="selectedVertical.image" class="w-[80%] text-sm" type="file" id="imageUpload" name="imageUpload" accept="image/*" (change)="onFileChange($event)" required #fileRef/>
+
+                        <div *ngIf="formRef?.submitted && !SelectedProductLineImageToBeAdded" 
+                                class="text-red-600 text-sm">
+                            * File is required *
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class=" flex-col justify-center items-center w-full mt-8 pb-6 ">
+            
+                <div class="w-full flex justify-center items-center">
+                    <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Save Product Line</button>
+                </div>
+            
+                 <!-- Error Message -->
+                <div *ngIf="formRef.submitted && formRef.invalid" class="text-red-600 text-center  mt-1 mb-1">
+                    ***Fill all the required fields.***
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- Edit popup -->
+    <div *ngIf="isEitPopupVisible" class="fixed z-20 inset-0 flex justify-center items-center bg-black bg-opacity-50">
+        <form (ngSubmit)="editProductLine()" class="w-[65%] bg-white flex flex-col">
+
+            <div class="w-full items-center px-4 pt-8  flex flex-row-reverse">
+                <button (click)="toggleEditPopup(-1)" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                      </svg>
+                </button>
+            </div>
+
+            <div class="w-full  p-5 flex justify-start gap-8">
+                <!-- <span class="text-lg font-semibold text-[#63040D]">Serial#:<span class="ml-2 text-lg text-gray-500">{{ selectedVertical.serial }}</span></span>             -->
+                <span class="text-lg font-semibold text-[#63040D]">Vertical:<span class="ml-2 text-lg text-gray-500">{{ selectedVertical.verName }}</span></span>            
+            </div>
+
+            <div class="w-full flex rounded-lg mb-5 ">
+
+                <div class="w-[50%] flex flex-col gap-6 h-full p-5 pr-0">
+                    
+                    <div>
+                        <label class="text-lg font-semibold text-[#63040D]" for="verticalname">Product Line name :</label>
+                        <input [(ngModel)]="selectedVertical.prouctName" name="verticalName" class="ml-2 p-1" type="text" id="verticalname" placeholder="" required />
+                    </div>
+            
+                    <div>
+                        <label class="text-lg font-semibold text-[#63040D]" for="choice">Valid:</label>
+                        <select [(ngModel)]="selectedVertical.activeflg" class="ml-2 p-1" id="choice" name="choice">
+                            <option [value]="true">Yes</option>
+                            <option [value]="false">No</option>
+                        </select>
+                    </div>
+
+                    <!-- <div>
+
+                        <span *ngIf="selectedVertical.sequence !== ''" class="text-lg font-semibold text-[#63040D]">Sequence:<span class="ml-2 text-lg text-gray-500">{{ selectedVertical.sequence }}</span></span>
+                        
+                        <label *ngIf="selectedVertical.sequence === ''" class="text-lg font-semibold text-[#63040D]" for="seq">Sequence:</label>
+                        <select *ngIf="selectedVertical.sequence === ''" [(ngModel)]="selectedVertical.sequence" required="true" class="ml-2 p-1" id="choice" name="seq">
+                            <option *ngFor="let seq of sequence" [value]="seq">{{ seq }}</option>
+                        </select>                       
+                    </div> -->
+
+                    <div class=" flex gap-3">
+                        <span class="text-lg font-semibold text-[#63040D]">Current Image:</span>
+                        <div class="border-[2px]">
+                            <img class="h-16 m-3" [src]="tempimg">
+                        </div>
+                    </div>
+
+                </div>              
+
+                <div class="w-[50%] flex py-5 pr-0 flex-col h-full">
+                    <label class="text-lg font-semibold text-[#63040D]" for="imageUpload">Change image:</label>
+                    <div class="flex flex-col gap-3">
+                        <div class="w-[55%] mt-2 h-[8rem] p-2 border-[2px] flex justify-center items-center">
+                            <img *ngIf="SelectedProductLineImageToBeAdded" class=" max-w-max h-full" alt="" [src]="SelectedProductLineImageToBeAdded"/>
+                        </div>
+                        <input [(ngModel)]="currentImagefile" class="w-[80%] text-sm" type="file" id="imageUpload" name="imageUpload" accept="image/*" (change)="onFileChange($event)" />
+                    </div>
+                </div>
+
+            </div>
+
+            <div class=" flex justify-center pb-6 w-full items-end">
+
+                <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Save Product Line</button>
+
+            </div>
+
+        </form>
+    </div>
+
+    <div *ngIf="isPopupADMonitization" class="fixed z-20 inset-0 flex justify-center items-center bg-black bg-opacity-50">
+
+        <div class="w-[85%] bg-white flex justify-start flex-col max-h-[75vh] overflow-y-scroll ">
+    
+    
+            <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+                <button (click)="toggleADMonitization()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                      </svg>
+                </button>
+            </div>
+    
+            <div class="w-full flex justify-between p-5 pb-0 mt-3 gap-8">
+                <div class="flex justify-between gap-8 ">
+                    <span class="text-lg font-semibold text-[#63040D]">ProductLine id:<span class="ml-2 text-lg text-gray-500">7878</span></span> 
+                    <span class="text-lg font-semibold text-[#63040D]">Name:<span class="ml-2 text-lg text-gray-500">Entertainment</span></span>            
+                </div>
+    
+                <button (click)="toggleAddAdInterval()" class="bg-[#63040D] text-white px-4 h-10 font-semibold">Add New AD-Interval</button>
+            </div>
+    
+            <div class="w-full p-5 bg-white flex items-center flex-col gap-6 justify-start ">
+                <div class="h-2 text-[11px] flex justify-start font-semibold text-[#63040D] w-full mb-5">
+                    <span class="w-[6%] h-10">Serial#</span>
+                    <span class="w-[6%] h-10">Country</span>
+                    <span class="w-[8%] h-10">PAN-Country</span>
+                    <span class="w-[7%] h-10">State</span>
+                    <span class="w-[7%] h-10">AD-Int Id</span>
+                    <span class="w-[8%] h-10">Name</span>
+                    <span class="w-[6%] h-10">Seq. no</span>
+                    <span class="w-[7%] h-10">Max-Insert</span>
+                    <span class="w-[9%] h-10">Int-Duration</span>
+                    <span class="w-[11%] h-10">Prime Int-Duration</span>
+                    <span class="w-[10%] h-10">Sec Int-Duration</span>
+                    <span class="w-[5%] h-10">After</span>
+                    <span class="w-[5%] h-10">Status</span>
+                    <span class="w-[5%] h-10">Action</span>
+                </div>
+    
+                <div class="w-full flex h-[7rem] font-semibold flex-col ">
+                    <div class="w-full text-[9px] py-2 flex justify-start">
+                        <span class="w-[6%] h-10">01</span>
+                        <span class="w-[6%] h-10">India</span>
+                        <span class="w-[8%] h-10"></span>
+                        <span class="w-[7%] h-10">Punjab</span>
+                        <span class="w-[7%] h-10">14787</span>
+                        <span class="w-[8%] h-10">Ent-first</span>
+                        <span class="w-[6%] h-10">01</span>
+                        <span class="w-[7%] h-10">3</span>
+                        <span class="w-[9%] h-10">20</span>
+                        <span class="w-[11%] h-10">10</span>
+                        <span class="w-[10%] h-10">5</span>
+                        <span class="w-[5%] h-10">1 min</span>
+                        <div class="w-[5%] h-10">
+                            <img [src]="valid" class="h-4">
+                        </div>
+                        <button class="w-[5%] -mt-3 h-10">
+                            <img [src]="edit" class="h-4">
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    
+    </div>
+
+    <div *ngIf="isPopupAddAdInterval" class="fixed inset-0 z-20 flex justify-center items-center bg-black bg-opacity-50">
+        <form class="w-[55%] bg-white max-h-[35rem] overflow-y-scroll flex justify-start flex-col ">
+            
+            <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+                <button (click)="toggleAddAdInterval()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="w-full flex justify-start p-5 pb-2 gap-8">
+                <span class="text-lg font-semibold text-[#63040D]">Productline Id:<span class="ml-2 text-lg text-gray-500">147858</span></span>  
+                <span class="text-lg font-semibold text-[#63040D]">Name:<span class="ml-2 text-lg text-gray-500">Entertainment</span></span>                      
+            </div>
+
+            <div class=" w-full p-5 flex justify-start items-center">
+                <div class=" w-[50%]">
+                    <label class="text-lg font-semibold text-[#63040D]" for="country">Country:</label>
+                    <select class="ml-2 p-1" id="country" name="country">
+                        <option value="audio">India</option>
+                        <option value="video">China</option>
+                    </select>
+                </div>
+
+                <div class=" w-[50%]">
+                    <label class="text-lg font-semibold text-[#63040D]">
+                        <input
+                        class="text-lg font-semibold text-[#63040D]" type="checkbox" id="panIndiaCheckbox" (change)="onPanIndiaCheckedChange($event)" >
+                        Pan India
+                    </label>
+                </div>
+
+            </div>
+
+            <div class=" w-full p-5 flex justify-start items-center">
+                <div *ngIf="isPanIndiaChecked" class=" w-[50%]">
+                    <label class="text-lg font-semibold text-[#63040D]" for="state">State:</label>
+                    <select class="ml-2 p-1" id="state" name="state">
+                        <option value="audio">Uttar Pradesh</option>
+                        <option value="video">Gujrat</option>
+                    </select>
+                </div>
+
+                <div  class=" w-[50%]">
+                    <label class="text-lg font-semibold text-[#63040D]" for="interval">AD-Interval Name:</label>
+                    <select class="ml-2 p-1" id="interval" name="interval">
+                        <option value="">Interval 1</option>
+                        <option value="">Interval 1</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class=" w-full p-5 flex justify-start items-center">
+                <div  class=" w-[50%]">
+                    <label class="text-lg font-semibold text-[#63040D]" for="seq">Sequence Number:</label>
+                    <input  name="seq" class="ml-2 p-1" type="number" min="1" max="10" id="seq" required />
+                </div>
+
+                <div  class=" w-[50%]">
+                    <label class="text-lg font-semibold text-[#63040D]" for="insertion">Max AD Insertion:</label>
+                    <input  name="insertion" class="ml-2 p-1" type="number" min="1" max="10" id="insertion" required />
+                </div>
+            </div>
+
+            <div class=" w-full p-5 flex justify-start items-center">
+                <div  class=" w-[50%]">
+                    <label class="text-lg font-semibold text-[#63040D]" for="duration">Interval Duration (sec):</label>
+                    <input  name="duration" class="ml-2 p-1" type="number" min="1" max="50" id="duration" required />
+                </div>
+
+                <div  class=" w-[50%]">
+                    <label class="text-lg font-semibold text-[#63040D]" for="primeinsertion">Prime AD-Insert Dur. (sec):</label>
+                    <input  name="primeinsertion" class="ml-2 p-1" type="number" min="1" max="20" id="primeinsertion" required />
+                </div>
+            </div>
+
+            <div class=" w-full p-5 flex justify-start items-center">
+                <div  class=" w-[50%]">
+                    <label class="text-lg font-semibold text-[#63040D]" for="duration">Sec AD Insert Dur. (sec):</label>
+                    <input  name="duration" class="ml-2 p-1" type="number" min="1" max="20" id="duration" required />
+                </div>
+
+                <div  class=" w-[50%]">
+                    <label class="text-lg font-semibold text-[#63040D]" for="primeinsertion">Interval Break After (min):</label>
+                    <input  name="primeinsertion" class="ml-2 p-1" type="number" min="1" max="360" id="primeinsertion" required />
+                </div>
+            </div>
+
+            <div class="w-[50%] p-5">
+                <label class="text-lg font-semibold text-[#63040D]">
+                    <input
+                    class="text-lg font-semibold text-[#63040D]" type="checkbox" id="rewardCheckbox">
+                    Rewarded AD Support
+                </label>
+            </div>
+
+            <div class=" flex justify-center w-full items-end pb-6 ">
+
+                <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Add AD-Interval</button>
+
+            </div>
+
+        </form>
+    </div>
+
+
+</div>

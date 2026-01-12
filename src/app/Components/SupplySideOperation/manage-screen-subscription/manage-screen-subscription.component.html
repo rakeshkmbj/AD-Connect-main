@@ -1,0 +1,496 @@
+<div class="flex flex-col w-full">
+    <div class="w-full flex flex-col gap-10 justify-center items-center">
+      <div class="text-orange-500 w-full font-bold font-abcd text-2xl">
+        Manage Screens Subscriptions
+      </div>
+  
+      <div class="flex w-[95%] gap-6 items-center flex-col">
+        <div class="w-[100%] flex justify-between flex-row">
+          
+
+            <div class="border-[2px] bg-white rounded-full flex justify-start items-center p-2">
+                <!-- Manage Screens Button -->
+                <button
+                  class="px-4 py-2 font-semibold rounded-full"
+                  [ngClass]="{
+                    'bg-[#63040D] text-white': activeButton === 'manageScreens',
+                    'bg-white text-black': activeButton !== 'manageScreens'
+                  }"
+                  (click)="setActive('manageScreens')"
+                >
+                  Manage Screens
+                </button>
+      
+                <!-- Screens Annual Payments Button -->
+                <button
+                  class="px-4 py-2 font-semibold rounded-full"
+                  [ngClass]="{
+                    'bg-[#63040D] text-white': activeButton === 'annualPayments',
+                    'bg-white text-black': activeButton !== 'annualPayments'
+                  }"
+                  (click)="setActive('annualPayments')"
+                >
+                  Screens Annual Payments
+                </button>
+              </div>
+
+            <div *ngIf="showManageScreens" class=" flex justify-start items-center p-2">
+
+                <div>
+                  <label class="text-lg font-semibold text-[#63040D]" for="screentype">
+                    Select Screen Type:
+                  </label>
+                  <select
+                    class="ml-2 p-1"
+                    id="screentype"
+                    name="screentype"
+                    (change)="fetchScreenData($event)"
+                  >
+                    <option value="Commertial Screen">Commertial Screen</option>
+                    <option value="Self Content Screen">Self Content Screen</option>
+                    <option value="Hybrid Screen">Hybrid Screen</option>
+                  </select>
+                </div>    
+
+              </div>         
+
+        </div>
+        <!-- Manage Screens -->
+        <div *ngIf="showManageScreens" class="w-full p-5 bg-white border-[1px] flex flex-col justify-start border-black">
+            <div class="h-2 text-[12px] flex justify-start font-semibold text-[#63040D] w-full mb-10">
+                <span class="w-[7%] h-10">Serial#</span>
+                <span class="w-[7%] h-10">Acc Id</span>
+                <span class="w-[9%] h-10">SubAcc Id</span>
+                <span class="w-[9%] h-10">Screen Id</span>
+                <span class="w-[8%] h-10">Type</span>
+                <span class="w-[11%] h-10">Location Detail</span>
+                <span class="w-[9%] h-10">Activated</span>
+                <span class="w-[10%] h-10">Sent Status</span>
+                <div class=" flex flex-col w-[30%] h-10">
+                    <div class=" w-full flex flex-col justify-center items-center h-5">
+                        <div class="w-full h-6 flex flex-col justify-end">
+                            <div class="w-full h-1 bg-red-500"></div>
+                        </div>
+                        <span class="px-2 absolute bg-white z-10">Actions</span>
+                        <div class=" w-full flex justify-between h-4">
+                            <div class="w-1 h-full bg-red-500"></div>
+                            <div class="w-1 h-full bg-red-500"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<!-- for loop lagana he -->
+            <div class="w-full text-[10px] flex font-semibold flex-col gap-1">  
+                <div *ngFor="let item of ScreenArray, let i = index" class="w-full py-2 flex justify-start">
+                    <span class="w-[7%] h-10">{{ i }}</span>
+                    <span class="w-[7%] h-10">{{ item.accountid }}</span>
+                    <span class="w-[9%] h-10">{{ item.subacctid }}</span>
+                    <span class="w-[9%] h-10">{{ item.screenId }}</span>
+                    <span class="w-[8%] h-10">{{ item.type }}</span>
+                    <span class="w-[11%] h-10">{{ item.screenLocation }}</span>
+                    <span class="w-[9%] h-10"><img [src]="item.screenActivatedFlg === true ? valid : unvalid" alt="" class="h-7 w-7"></span>
+                    <span class="w-[10%] h-10"><img [src]="item.screenValidatedWithMappedFlg === true ? valid : unvalid" alt="" class="h-7 w-7"></span>
+
+                    <div class="w-[30%]  flex justify-between items-center">
+
+                        <button  class=" h-8">
+                            <img [src]="edit" alt="Edit" class="h-6 w-auto" />
+                        </button>
+
+                        <button (click)="toggleAddDetail(item)" class="bg-green-500 text-xs text-white px-2 py-1">
+                            Add Details
+                        </button>
+                        <button (click)="toggleAddMoreImages(item.screenId)"  class="bg-green-500 text-xs text-white px-2 py-1">
+                            Add Images
+                        </button>
+
+                        <button  class="bg-green-500 text-xs text-white px-2 py-1">
+                            Send for Activation
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+      </div>
+</div>
+
+
+<!-- Add Screen Details -->
+<div *ngIf="isPopupVisibleAddDetails" class="fixed inset-0 z-20 flex justify-center items-center bg-black bg-opacity-50">
+    <form (ngSubmit)="addScreenDetails()" class="w-[65%] h-[70%] overflow-y-auto bg-white flex justify-start flex-col ">
+        
+        <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+            <button (click)="toggleAddDetail()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        
+        <div class="w-full flex justify-start p-5 pb-2 gap-8">
+            <span class="text-lg font-semibold text-[#63040D]">Screen Id:<span class="ml-2 text-lg text-gray-500">{{ newScreen.reg_Screen_id }}</span></span>   
+            <span class="text-lg font-semibold text-[#63040D]">Screen Type:<span class="ml-2 text-lg text-gray-500">{{ newScreen.ScreenType }}</span></span>                      
+        </div>
+
+        <div class="w-full flex ">
+            
+            <div class="w-[100%] flex h-full p-5 pr-0">
+                <div class="w-[40%]">
+                    <label class="text-lg font-semibold text-[#63040D]" for="screenname">Screen Name:</label>
+                    <input  name="screenname" class="ml-2 p-1" type="text" id="screenname"/>
+                </div>
+
+                <div class="w-[60%]">
+                    <label class="text-lg font-semibold text-[#63040D]" for="screenplacement">
+                      Placement of Screen:
+                    </label>
+                    <select class="ml-2 p-1" name="country" [(ngModel)]="newScreen.scrn_Placemnt_Catgryid">
+                      <option value="" disabled>Select Placement</option>
+                      <option *ngFor="let category of PlacementCategory" [value]="category.adcInventoryCategoryPlacementMasterId">
+                        {{ category.adInvntryCatgryName }}
+                      </option>
+                    </select>
+                  </div>                  
+                
+            </div>
+
+        </div>
+
+        <div class="w-full flex justify-between items-center mb-6 px-5 roundded-lg">
+            <div class="flex w-[20%] flex-col">
+                <label class="text-lg font-semibold text-[#63040D]" for="country">Country:</label>
+                <select (change)="onCountrySelect($event)" class="ml-2  p-1" name="country" [(ngModel)]="newScreen.scrn_Countryid">
+                    <option *ngFor="let country of Countries" [value]="country.CNTRY_ID">
+                      {{ country.CNTRY_NM }}
+                    </option>
+                </select>
+            </div>
+            <div class="flex w-[20%] flex-col">
+                <label class="text-lg font-semibold text-[#63040D]" for="state">State:</label>
+                <select (change)="onStateSelect($event)" class="ml-2 p-1" name="state" [(ngModel)]="newScreen.scrn_Stateid">
+                    <option *ngFor="let state of State" [value]="state.STATE_ID">
+                      {{ state.STATE_NM }}
+                    </option>
+                </select>
+            </div>
+            <div class="flex w-[20%] flex-col">
+                <label class="text-lg font-semibold text-[#63040D]" for="city">City:</label>
+                <select (change)="onCitySelect($event)" class="ml-2 p-1" name="city" [(ngModel)]="newScreen.scrn_Cityid">
+                    <option *ngFor="let city of City" [value]="city.CITY_ID">
+                      {{ city.CITY_NM }}
+                    </option>
+                </select>
+            </div>
+            <div class="flex w-[20%] flex-col">
+                <label class="text-lg font-semibold text-[#63040D]" for="pincode">Pincode:</label>
+                <select class="ml-2 p-1" name="pincode" [(ngModel)]="newScreen.scrn_Pincd">
+                    <option *ngFor="let pin of Pincode" [value]="pin.Value">
+                      {{ pin.Value }}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="w-full flex justify-between items-center mb-6 px-5 roundded-lg">
+            <div class="flex w-[20%] flex-col">
+                <label class="text-lg font-semibold text-[#63040D]" for="type">Screen Display Type:</label>
+                <select class="ml-2 p-1" name="type" [(ngModel)]="newScreen.scrn_Disp_Typ">
+                  <option value="Full Screen">Full Screen</option>
+                  <option value="Pic in Pic">Pic in Pic</option>
+                  <option value="Sized Dimension">Sized Dimension</option>
+                </select>
+            </div>
+              
+            <div class="flex w-[20%] flex-col">
+                <label class="text-lg font-semibold text-[#63040D]" for="place">Screen Place type:</label>
+                <select class="ml-2 p-1" name="place" [(ngModel)]="newScreen.scrn_Place_Typ">
+                    <option>IN-DOOR</option>
+                    <option>OUT-DOOR</option>
+                </select>
+            </div>
+
+            <div class="flex w-[20%] flex-col">
+                <label class="text-lg font-semibold text-[#63040D]" for="make">Screen Make:</label>
+                <select class="ml-2 p-1" name="make" [(ngModel)]="newScreen.scrn_Make">
+                  <option value="LG">LG</option>
+                  <option value="Apple">Apple</option>
+                  <option value="Android">Android</option>
+                  <option value="Google">Google</option>
+                  <option value="other">Other</option>
+                </select>
+            </div>
+              
+            <div class="flex w-[20%] flex-col">
+                <label class="text-lg font-semibold text-[#63040D]" for="uptime">Screen Uptime:</label>
+                <select class="ml-2 p-1" name="uptime" [(ngModel)]="newScreen.scrn_Uptimeid">
+                    <option value="1">12 Hours</option>
+                    <option value="2">15 Hours</option>
+                    <option value="3">24 Hours</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="w-full flex justify-between items-center mb-6 px-5 roundded-lg">
+            <div class="flex w-[20%] flex-col">
+                <label class="text-lg font-semibold text-[#63040D]" for="layout">Screen Layout:</label>
+                <select class="ml-2 p-1" name="layout" [(ngModel)]="newScreen.scrn_Layoutid">
+                  <option value="Layout 1">Layout 1</option>
+                  <option value="Layout 2">Layout 2</option>
+                </select>
+              </div>
+              
+              <div class="flex p-2 gap-2 justify-between border-[2px] w-[20%] flex-col">
+                <div class="flex justify-between">
+                  <div class="h-20 w-[60%] border-[2px] gap-2 flex p-1">
+                    <span>L1</span>
+                    <span>W1</span>
+                  </div>
+                  <div class="h-20 w-[36%] border-[2px] gap-2 flex flex-col p-1">
+                    <span>L1</span>
+                    <span>W1</span>
+                  </div>
+                </div>
+              
+                <div class="flex justify-between items-center">
+                  <label class="w-[60%] flex justify-start gap-1 items-center text-lg">
+                    <input 
+                      type="radio" 
+                      name="based" 
+                      [checked]="newScreen.scrn_Layoutid === 'Layout 1'" 
+                      disabled
+                    > L1
+                  </label>
+                  <label class="w-[36%] flex justify-start gap-1 items-center text-lg">
+                    <input 
+                      type="radio" 
+                      name="based" 
+                      [checked]="newScreen.scrn_Layoutid === 'Layout 2'" 
+                      disabled
+                    > L2
+                  </label>
+                </div>
+              </div>
+              
+            
+              <div class="flex w-[20%] flex-col">
+                <label class="text-lg font-semibold text-[#63040D]" for="slabs">Screen on Slabs:</label>
+                <select class="ml-2 p-1" (change)="SalbSelected()" name="slabs" [(ngModel)]="newScreen.scrn_on_Slab">
+                  <option value="1">Single Slab</option>
+                  <option value="2">Double Slab</option>
+                  <option value="3">Triple Slab</option>
+                </select>
+              </div>
+              
+              <div class="flex p-2 border-[2px] w-[20%] flex-col">
+                <div class="w-full mb-2">Please Choose</div>
+              
+                <div class="flex mb-2 justify-between items-center">
+                  <label class="w-[31%] flex justify-start gap-1 items-center text-[10px]">
+                    <input 
+                      type="radio" 
+                      name="slab1" 
+                      [checked]="slabs[0]"  
+                      (change)="updateScreenSlab(0)"
+                    > Slab 1
+                  </label>
+                  <label class="w-[31%] flex justify-start gap-1 items-center text-[10px]">
+                    <input 
+                      type="radio" 
+                      name="slab2" 
+                      [checked]="slabs[1]"  
+                      (change)="updateScreenSlab(1)"
+                    > Slab 2
+                  </label>
+                  <label class="w-[31%] flex justify-start gap-1 items-center text-[10px]">
+                    <input 
+                      type="radio" 
+                      name="slab3" 
+                      [checked]="slabs[2]" 
+                      (change)="updateScreenSlab(2)"
+                    > Slab 3
+                  </label>
+                </div>
+              
+                <div class="text-[10px] flex justify-between items-center ">
+                  <div class="w-[31%]">12:10 AM</div>
+                  <div class="w-[31%]">09:30 AM</div>
+                  <div class="w-[31%]">08:15 PM</div>
+                </div>
+              
+                <div class="text-[10px] flex justify-between items-center ">
+                  <div class="w-[31%]">TO</div>
+                  <div class="w-[31%]">TO</div>
+                  <div class="w-[31%]">TO</div>
+                </div>
+              
+                <div class="text-[10px] flex justify-between items-center">
+                  <div class="w-[31%]">09:10 PM</div>
+                  <div class="w-[31%]">08:00 PM</div>
+                  <div class="w-[31%]">11:55 PM</div>
+                </div>
+              </div>              
+              
+        </div>
+
+        <div class="w-[100%] flex h-full p-5 pr-0">
+            <div class="w-[50%]">
+                <div class="flex w-[100%]">
+                    <label class="text-lg font-semibold text-[#63040D]" for="size">Screen Size (inches):</label>
+                    <input type="number" name="size" [min]="0" class="ml-2 p-1" [(ngModel)]="newScreen.scrn_Physical_Size">
+                </div>
+            </div>
+
+            <div class="w-[50%]">
+                <div class="flex w-[100%]">
+                    <label class="text-lg font-semibold text-[#63040D]" for="buz">Business Model:</label>
+                    <select class="ml-2 p-1" name="buz" [(ngModel)]="newScreen.scrn_Biz_User_modeid">
+                        <option value="01">Promotional</option>
+                        <option value="02">Micro Channel</option>
+                    </select>
+                </div>
+            </div>
+    
+        </div>
+
+        <div class="w-[100%] flex h-full gap-10 p-5 pr-0">
+
+          <div class="flex gap-5 flex-col">
+
+            <span>Per 10sec display cost</span>
+            
+            <div class="flex mb-2 gap-3 justify-between items-center">
+  
+                <label class="w-[31%] flex justify-start gap-1 flex-col text-[10px]">
+                    <div class="flex gap-1 flex-row">
+                        <input 
+                        type="radio" 
+                        [checked]="slabs[0]" 
+                        disabled 
+                        name="slab11" >
+                        <div>Slab 1</div>
+                    </div>
+                    <div class=" w-48 h-14 flex justify-between border-[2px] p-1" >
+                        <input type="number" [disabled]="!slabs[0]" name="currency1" [(ngModel)]="newScreen.scrn_10S_IMP_DISPLAY_COST" [min]="0" class="w-[50%] p-1 h-full border-[2px]">
+                        <select class=" text-[15px] w-[48%]" name="pincode" >
+                            <option>USD</option>
+                            <option>INR</option>
+                        </select>
+                    </div>
+                </label>
+  
+                <label class="w-[31%] flex justify-start gap-1 flex-col text-[10px]">
+                    <div class="flex gap-1 flex-row">
+                        <input 
+                        type="radio" 
+                        [checked]="slabs[1]" 
+                        disabled 
+                        name="slab22" >
+                        <div>Slab 2</div>
+                    </div>
+                    <div class=" w-48 h-14 flex justify-between border-[2px] p-1" >
+                      <input type="number" [disabled]="!slabs[1]" name="currency2" [(ngModel)]="newScreen.scrn_10S_IMP_DISPLAY_COST2" [min]="0" class="w-[50%] p-1 h-full border-[2px]">
+                      <select class=" text-[15px] w-[48%]" name="pincode" >
+                          <option>USD</option>
+                          <option>INR</option>
+                      </select>
+                  </div>
+                </label>
+  
+                <label class="w-[31%] flex justify-start gap-1 flex-col text-[10px]">
+                    <div class="flex gap-1 flex-row">
+                        <input 
+                         type="radio"
+                         [checked]="slabs[2]" 
+                         disabled 
+                         name="slab33" >
+                        <div>Slab 3</div>
+                    </div>
+                    <div class=" w-48 h-14 flex justify-between border-[2px] p-1" >
+                      <input type="number" [disabled]="!slabs[2]" name="currency3" [(ngModel)]="newScreen.scrn_10S_IMP_DISPLAY_COST3" [min]="0" class="w-[50%] p-1 h-full border-[2px]">
+                      <select class=" text-[15px] w-[48%]" name="pincode" >
+                          <option>USD</option>
+                          <option>INR</option>
+                      </select>
+                  </div>
+                </label>
+  
+            </div>
+
+          </div>
+
+
+            <div class="w-[50%] flex p-5 pr-0 flex-col h-full">
+                <label class="text-lg font-semibold text-[#63040D]" for="imageUpload">Main Pic of Screen:</label>
+                <div class="w-[90%] mt-2 h-[8rem] border-[2px] flex justify-center items-center">
+                    <input [(ngModel)]="newScreen.scrm_Main_Pic" class="w-[80%] text-sm" required type="file" id="imageUpload" name="imageUpload" accept="image/*" (change)="onFileChange($event, 'pic1')" />
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class=" flex justify-center w-full items-end pb-6 ">
+
+            <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Save Screen Details</button>
+
+        </div>
+
+    </form>
+</div>
+
+<!-- Add more images -->
+ <div  *ngIf="isPopupVisibleAddMoreImages" class="fixed inset-0 z-20 flex justify-center items-center bg-black bg-opacity-50">
+
+  <div class="w-[75%] h-[50%] overflow-y-auto bg-white flex justify-start flex-col ">
+    <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+      <button (click)="toggleAddMoreImages()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+      </button>
+    </div>
+
+    <div class="w-full flex justify-between items-center h-full p-5">
+
+    <div class="w-[25%] flex p-5 pr-0 flex-col h-full">
+        <label class="text-lg font-semibold text-[#63040D]" for="imageUpload">Pic 2:</label>
+        <div class="w-[90%] mt-2 h-[8rem] border-[2px] flex justify-center items-center">
+          <input  class="w-[120%] scale-75 text-[15px]" required type="file" id="imageUpload" name="imageUpload" accept="image/*" (change)="onFileChange($event, 'pic2')" />
+        </div>
+      <button (click)="AddImage(2)" class="bg-red-600 w-[40%] mt-2 px-4 py-2 hover:bg-red-700 text-white font-semibold">Add Image</button>
+    </div>
+
+    <div class="w-[25%] flex p-5 pr-0 flex-col h-full">
+      <label class="text-lg font-semibold text-[#63040D]" for="imageUpload">Pic 3:</label>
+      <div class="w-[90%] mt-2 h-[8rem] border-[2px] flex justify-center items-center">
+        <input  class="w-[120%] scale-75 text-[15px]" required type="file" id="imageUpload" name="imageUpload" accept="image/*" (change)="onFileChange($event, 'pic3')" />
+      </div>
+      <button (click)="AddImage(3)" class="bg-red-600 w-[40%] mt-2 px-4 py-2 hover:bg-red-700 text-white font-semibold">Add Image</button>
+    </div>
+
+    <div class="w-[25%] flex p-5 pr-0 flex-col h-full">
+       <label class="text-lg font-semibold text-[#63040D]" for="imageUpload">Pic 4:</label>
+       <div class="w-[90%] mt-2 h-[8rem] border-[2px] flex justify-center items-center">
+         <input class="w-[120%] scale-75 text-[15px]" required type="file" id="imageUpload" name="imageUpload" accept="image/*" (change)="onFileChange($event, 'pic4')" />
+      </div>
+      <button (click)="AddImage(4)" class="bg-red-600 w-[40%] mt-2 px-4 py-2 hover:bg-red-700 text-white font-semibold">Add Image</button>
+    </div>
+
+    <div class="w-[25%] flex p-5 pr-0 flex-col h-full">
+      <label class="text-lg font-semibold text-[#63040D]" for="imageUpload">Pic 5:</label>
+      <div class="w-[90%] mt-2 h-[8rem] border-[2px] flex justify-center items-center">
+        <input class="w-[120%] scale-75 text-[15px]" required type="file" id="imageUpload" name="imageUpload" accept="image/*" (change)="onFileChange($event, 'pic5')" />
+      </div>
+      <button (click)="AddImage(5)" class="bg-red-600 w-[40%] mt-2 px-4 py-2 hover:bg-red-700 text-white font-semibold">Add Image</button>
+    </div>
+
+    </div>
+
+  </div>
+
+
+ </div>

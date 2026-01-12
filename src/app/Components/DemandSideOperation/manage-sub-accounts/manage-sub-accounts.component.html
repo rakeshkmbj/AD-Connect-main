@@ -1,0 +1,59 @@
+<div class="flex flex-col gap-3">
+    <!-- Manage Users & Sub-Accounts Section -->
+    <div class="flex flex-col gap-3">
+        <div>
+            <div class="text-orange-500 font-bold font-abcd text-2xl">Manage Users & Sub-Accounts</div>
+            <div class="text-orange-500 font-bold text-lg">Manage Sub-accounts</div>
+        </div>
+
+        <!-- Buttons Section -->
+        <div class="flex gap-4">
+            <button class="bg-[#a00e1a] hover:bg-[#a9101d] text-white px-2 py-1">Display Sub-accounts</button>
+            <button class="bg-[#a00e1a] hover:bg-[#a9101d] text-white px-2 py-1">Add New Sub-accounts</button>
+        </div>
+    </div>
+
+    <!-- Table Section -->
+    <div class="overflow-x-auto bg-white rounded-md p-3 shadow-md shadow-gray-200">
+        <table class=" w-full">
+            <thead>
+                <tr class="flex flex-row gap-8">
+                    <th>S#</th>
+                    <th>Subacct-id</th>
+                    <th>Subacct-name</th>
+                    <th>P. Mobile #</th>
+                    <th>Active</th>
+                    <th>PIN Details</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+    <!-- Add New Sub-account Section -->
+    <div class="bg-white flex flex-col gap-3 p-3 rounded-md shadow-md shadow-gray-200 sm:w-[80%] md:w-[60%] lg:w-[40%]">
+        <div class="font-semibold">Subacct id :</div>
+        <div>
+            <label for="">Sub-acct Name</label>
+            <input class="custom-input" type="text">
+        </div>
+        <div>
+            <label for="">Corp. Address</label>
+            <input class="custom-input" type="text">
+        </div>
+        <div>
+            <label for="">Primary Mobile #</label>
+            <input class="custom-input" type="text">
+        </div>
+        <div>
+            <label for="">Active Flag</label>
+            <select class="custom-input" name="" id="">
+                <option value="">Yes</option>
+                <option value="">No</option>
+            </select>
+        </div>
+        <div>
+            <button class="bg-sideBarColor text-white px-2 py-1">Save User</button>
+        </div>
+    </div>
+</div>

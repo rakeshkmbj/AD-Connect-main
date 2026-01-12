@@ -1,0 +1,45 @@
+<div class="relative w-full flex flex-col sm:flex-row items-center justify-center">
+    <!-- Left side content -->
+    <div class=" sm:w-[30%] sm:h-[100%] w-[100%] h-[25%] flex flex-col justify-end items-center px-2 py-2 sm:space-y-4">
+        <!-- Left side image -->
+         <div class="w-full flex justify-center items-center mt-6 h-[50%]">
+           <img src="assets/adConnectNewLogo.jpg" alt="AdConnect Icon" class="lg:h-full lg:w-auto h-20 w-20">
+         </div>
+        <!-- Text content -->
+        <div class="text-center w-[90%] font-bold text-xl">
+            Power to Connect People with One TV One World
+        </div>
+        <div *ngIf="isCloudImage()" class="m-4 transition-all ease-in-out bg-orange-500 text-white font-bold lg:text-xl text-lg px-4 w-[90%] py-2 text-center">
+            TV on Cloud
+        </div>
+        <div *ngIf="isDoohImage()" class="m-4 transition-all ease-in-out bg-orange-500 text-white font-bold lg:text-xl text-lg w-[90%] px-2 py-2 text-center">
+            Digital-Out-of-Home
+        </div>
+        
+    </div>
+
+    <!-- Image Slider -->
+    <div class="relative sm:w-[70%] sm:h-[100%] w-[100%] h-[45%] flex items-center justify-end overflow-hidden rounded-md">
+        <img [src]="images[currentIndex]" alt="Slider Image" class="w-full h-auto object-cover">
+    
+        <!-- Overlay Text -->
+        <div *ngIf="isCloudImage()"
+            class="absolute inset-0 flex items-center justify-center  text-yellow-200 p-6 rounded-md">
+            <div class="text-center lg:text-5xl text-2xl flex flex-col gap-2 sm:gap-16">
+                <p class=" font-bold">TV on cloud</p>
+                <p class=" sm:mt-2 mt-1 font-bold">Device any make any where any time</p>
+            </div>
+        </div>
+
+        <!-- Overlay Text for DOOH Images -->
+        <div *ngIf="isDoohImage()"
+            class="absolute inset-0 flex items-center justify-center  text-yellow-200 p-6 rounded-md">
+            <div class="text-center sm:text-5xl text-2xl flex flex-col gap-2 sm:gap-16">
+                <p class=" font-bold ">Digital out-of-home</p>
+                <p class=" sm:mt-2 mt-1 font-bold transition-all ease-in-out">Buy Validate Allocate</p>
+            </div>
+        </div>
+    </div>
+
+
+</div>

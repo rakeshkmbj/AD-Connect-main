@@ -1,0 +1,1157 @@
+<div class="flex flex-col gap-3">
+    <!-- three buttons -->
+    <div class=" rounded-md flex flex-col gap-3 justify-between">
+        <div class="text-orange-500 font-bold font-abcd text-2xl">My Content Repository</div>
+        <div class="flex flex-row gap-16">
+            <div class="text-orange-500 font-semibold">Rep Id : {{repository?.adConnectCloudRepoId}}</div>
+            <div class="text-orange-500 font-semibold">Private Repository : </div>
+            <div class="flex items-center">
+                <div class="text-orange-500 font-semibold">Paid :</div>
+                <div class="material-symbols-outlined"
+                    [ngStyle]="{'color': repository?.adConnectCloudRepoOnPaidFlg === true ? 'green' : 'red'}">
+                    {{ repository?.adConnectCloudRepoOnPaidFlg === true ? 'done' : 'close' }}
+                </div>
+            </div>
+            <div class="flex items-center">
+                <div class="text-orange-500 font-semibold">Non Paid :</div>
+                <div class="material-symbols-outlined"
+                    [ngStyle]="{'color': repository?.adConnectCloudRepoNonPaidFlg === true ? 'green' : 'red'}">
+                    {{ repository?.adConnectCloudRepoOnPaidFlg === true ? 'close' : 'done' }}
+                </div>
+            </div>
+            
+        </div>
+        <div class="flex flex-row gap-12  justify-between">
+            <div class="flex flex-row gap-12">
+                <button
+                    [ngClass]="{'bg-[#a00e1a] text-white': activeButton === 'manage', 'bg-white text-black': activeButton !== 'manage'}"
+                    (click)="setActiveButton('manage')" class="rounded-md px-3 py-2 border border-[#a00e1a]">
+                    Manage Content Repository
+                </button>
+                
+                <button [ngClass]="{'bg-[#a00e1a] text-white': activeButton === 'buy', 'bg-white text-black': activeButton !== 'buy'}"
+                    (click)="openModalForPrivateRepository()" class="rounded-md px-3 py-2 border border-[#a00e1a]">
+                    Buy Private Repository
+                </button>
+            </div>
+            
+
+            <button [ngClass]="{
+                  'bg-[#a00e1a] text-white': activeButton === 'add', 
+                  'bg-white text-black': activeButton !== 'add'
+                }" (click)="openPopupForNewContent()"
+                class="rounded-md px-3 py-2 border border-[#a00e1a] transform active:scale-95">
+                Add New Content
+            </button>
+
+
+
+        </div>
+
+    </div>
+
+    <!-- total avaialable slots currently used avaialable slots -->
+    <div class="flex flex-row gap-10">
+        <div>Total Available Repository Slots : {{repository?.adConnectCloudRepoMaxStorageCount}}</div>
+        <div>Currently used : {{repository?.adConnectCloudRepoCurrentStorageCount}}</div>
+        <div>Max Storage Size : {{repository?.adConnectCloudRepoMaxStorageSizeMb}} MB</div>
+        <div>Current Storage Size used: {{ repository?.adConnectCloudRepoCurrentStorageSizeMb | number: '1.2-2' }} MB</div>
+    </div>
+
+    <!-- table -->
+    <div *ngIf="this.isLoading" class="flex justify-center items-center h-screen">
+        <div class="flex flex-col justify-center items-center space-y-4">
+            <div class="w-16 h-16 border-t-4 border-b-4 border-green-500 rounded-full animate-spin"></div>
+            <p class="text-center text-gray-700">Loading, please wait...</p>
+        </div>
+    </div>
+
+    <div *ngIf="!this.isLoading" class="bg-white shadow-md shadow-gray-200 p-3 rounded-md w-full overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200 gap-1">
+
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-1 py-1 text-left text-[10px] font-medium text-gray-500 uppercase tracking-wider">Sr.</th>
+                    <th
+                        class="px-1 py-1 text-left text-[10px] font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                        Promo-id
+                    </th>
+                    <th
+                        class="px-1 py-1 text-left text-[10px] font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                        Promo-Name
+                    </th>
+                    <th
+                        class="px-1 py-1 text-left text-[10px] font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                        Media-File
+                    </th>
+                    <th class="px-1 py-1 text-left text-[10px] font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                    <th class="px-1 py-1 text-left text-[10px] font-medium text-gray-500 uppercase tracking-wider">Validated
+                    </th>
+                    <th class="px-1 py-1 text-left text-[10px] font-medium text-gray-500 uppercase tracking-wider">Added Dt</th>
+                    <th class="px-1 py-1 text-left text-[10px] font-medium text-gray-500 uppercase tracking-wider">Validated Dt
+                    </th>
+                    <th class="px-1 py-1 text-left text-[10px] font-medium text-gray-500 uppercase tracking-wider">Size</th>
+                    <th class="px-1 py-1 text-left text-[10px] font-medium text-gray-500 uppercase tracking-wider">Duration</th>
+                    <th class="px-1 py-1 text-left text-[10px] font-medium text-gray-500 uppercase tracking-wider">Active</th>
+                    <th class="px-1 py-1 text-left text-[10px] font-medium text-gray-500 uppercase tracking-wider">Published
+                    </th>
+                    <th class="px-1 text-center py-1 text-[10px] font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                </tr>
+            </thead>
+
+            <tbody class="bg-white divide-y text-[8px] divide-gray-200 gap-1">
+                
+                <tr *ngFor="let item of repoContent; let i = index">
+                    <td class="px-1 py-1 whitespace-nowrap">{{i + 1}}</td>
+                    <td class="px-1 py-1 whitespace-nowrap">{{item?.adConnectMediaId}}</td>
+                    <td class="px-1 py-1 whitespace-nowrap">
+                        <div class="max-w-[80px] overflow-hidden text-ellipsis whitespace-nowrap cursor-pointer"
+                            [title]="item?.adConnectMediaName">
+                            {{item?.adConnectMediaName}}
+                        </div>
+                    </td>
+                    <td class="px-1 py-1 whitespace-nowrap">
+                        <div class="max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap cursor-pointer"
+                            title="{{item?.adMediaFile}}" (click)="showImagePreview(item)">
+                            Media
+                        </div>
+                    </td>
+                    <td class="px-1 py-1 whitespace-nowrap">{{item?.adConnectMediaTyp}}</td>
+                    <td class="px-1 py-1 whitespace-nowrap">
+                        <span *ngIf="item?.adConnectMediaValidatedBySystem === '1'"
+                            class="text-green-400 material-symbols-outlined">done</span>
+                        <span *ngIf="item?.adConnectMediaValidatedBySystem !== '1'"
+                            class="text-red-400 material-symbols-outlined">close</span>
+                    </td>
+                    <td class="px-1 py-1 whitespace-nowrap">{{ formatDate(item?.adConnectMediaAddedDatetime) }}</td>
+                    <td class="px-1 py-1 whitespace-nowrap">{{formatDate(item?.adConnectMediaValidatedDatetime)}}</td>
+                    <td class="px-1 py-1 whitespace-nowrap">
+                        {{ item?.adConnectMediaStorageSize | number:'1.2-2' }}
+                    </td>
+
+                    <td class="px-1 py-1 whitespace-nowrap">{{item?.adConnectMediaRunSecCounts}}</td>
+                    <td class="px-1 py-1 whitespace-nowrap">
+                        <span *ngIf="item?.adConnectMediaActivFlg === true"
+                            class="text-green-400 material-symbols-outlined">done</span>
+                        <span *ngIf="item?.adConnectMediaActivFlg !== true"
+                            class="text-red-400 material-symbols-outlined">close</span>
+                    </td>
+                    <td class="px-1 py-1 whitespace-nowrap">
+                        <span *ngIf="item?.adConnectMediaPublishFlg === true"
+                            class="text-green-400 material-symbols-outlined">done</span>
+                        <span *ngIf="item?.adConnectMediaPublishFlg !== true"
+                            class="text-red-400 material-symbols-outlined">close</span>
+                    </td>
+                    <td class="px-1 py-1 flex gap-2 whitespace-nowrap">
+                        <button class="bg-green-500 text-white py-1 px-2 rounded">
+                            Payment
+                        </button>
+                        <button (click)="toggleDOOHAlloaction()" class="bg-green-500 text-white py-1 px-2 rounded" (click)="manageAllocation(item?.adConnectMediaId)">
+                            DOOH Allocate 
+                        </button>
+                        <button (click)="toggleIptvPaymentAllocation()" class="bg-green-500 text-white py-1 px-2 rounded">
+                            Iptv Allocate
+                        </button>
+                        <button (click)="toggleHTML()" class="bg-green-500 text-white py-1 px-2 rounded">
+                            Html 5 player
+                        </button>
+                        <div (click)="editDoohContent(item)" class="material-symbols-outlined hover:cursor-pointer text-red-500">
+                            edit_square
+                        </div>
+                    </td>
+                  
+                </tr>
+
+                <ng-template #addNewContents>
+                    <div class="flex justify-center items-center h-full">
+                        <img *ngIf="selectedImageUrl" [src]="selectedImageUrl" alt="Selected media file"
+                            class="max-h-full max-w-full object-contain">
+                    </div>
+                </ng-template>
+
+            </tbody>
+
+            
+
+        </table>
+    </div>
+
+    <!-- add new content div and edit content -->
+<ng-template #addNewContent>
+    <form class="bg-white rounded-md pb-3 w-full" [formGroup]="promoForm" (submit)="savePromo()">
+        <div class=" flex flex-col gap-3">
+            <div class="flex  border justify-between border-b p-3  flex-row gap-10">
+                <div class="flex gap-2">
+                    <div class="font-semibold">Repository Id :{{repository?.adConnectCloudRepoId}}</div>
+                </div>
+                <div>
+                    <span (click)="closePopup()"
+                        class="flex justify-center items-center material-symbols-outlined cursor-pointer hover:bg-gray-200 hover:rounded-full h-8 w-8 transition">
+                        close
+                    </span>
+                </div>
+                
+            </div>
+        
+            <div class="flex flex-col gap-3 p-3">
+                <div class="flex flex-row  gap-10">
+                    <div class="flex flex-col gap-2 w-[40%]">
+                        <label class="whitespace-nowrap font-semibold" for="mediaName">Promo Name</label>
+                        <input formControlName="promo_Name" id="promoName" class="custom-input" type="text" [readonly]="editForm">
+                        <div
+                            *ngIf="promoForm.get('promo_Name')!.invalid && (promoForm.get('promo_Name')!.dirty || promoForm.get('promo_Name')!.touched)">
+                            <small class="text-red-500" *ngIf="promoForm.get('promo_Name')?.errors?.['required']">
+                                Promo Name is required.
+                            </small>
+                        </div>
+                    </div>
+
+
+        
+                    <div class=" w-[40%] flex flex-row justify-start items-center">
+                        <label class="font-semibold" for="">Vaidated : </label>
+                        <span class="material-symbols-outlined text-red-500">
+                            close
+                        </span>
+                    </div>
+                </div>
+        
+                <div class="flex flex-row  gap-10 ">
+        
+                    <div class=" w-[40%] flex flex-row justify-center gap-3 items-center">
+                        <label class="font-semibold whitespace-nowrap" for="">Date Originated </label>
+                        <input disabled class="custom-input" type="date">
+                    </div>
+        
+                </div>
+        
+                <div class="flex gap-8  flex-row ">
+        
+                    <div class="w-[40%]  flex flex-col gap-3">
+        
+                    <div>
+                        <label class="font-semibold" for="med_Typ">Media Type</label>
+                        <select class="custom-input" formControlName="med_Typ" id="med_Typ" (change)="onMediaTypeChange($event)" required>
+                            <option value="" disabled>Select File Type</option>
+                            <option value="video">Video</option>
+                            <option value="image">Image</option>
+                            <option value="audio">Sound</option>
+                            <option value="gif">GIF</option>
+                        </select>
+                        <div *ngIf="promoForm.get('med_Typ')?.touched && promoForm.get('med_Typ')?.invalid" class="text-red-600">
+                            Media Type is required
+                        </div>
+                    </div>
+
+
+                        <div>
+                            <div class="border font-semibold justify-center items-center bg-gray-100 flex border-gray-300 w-full h-44 relative">
+                                <input type="file" [accept]="fileAccept" (change)="onFileSelected($event)"
+                                    [disabled]="!promoForm.get('med_Typ')?.value" class="absolute inset-0 opacity-0 cursor-pointer" required>
+                                <div *ngIf="showMedia && filePreview" class="w-full h-full flex">
+                                    <img *ngIf="isImage()" [src]="filePreview" class="object-contain h-full" alt="Uploaded Image" />
+                                    <video *ngIf="isVideo()" [src]="filePreview" class="object-contain h-full" controls></video>
+                                    <audio *ngIf="isAudio()" [src]="filePreview" class="object-contain h-full" controls></audio>
+                                </div>
+                                <div *ngIf="!filePreview || !showMedia">Click to Select File</div>
+                            </div>
+                            <div *ngIf="promoForm.get('med_File')?.touched && promoForm.get('med_File')?.invalid" class="text-red-600">
+                                File selection is required
+                            </div>
+                        </div>
+                        <div class="flex gap-2  w-full items-center">
+                            <label class="whitespace-nowrap font-semibold" for="med_storage_Size">Media Size:</label>
+                            <input class="custom-input" [readOnly]="true" type="text" id="med_storage_Size" formControlName="med_storage_Size">
+
+                        </div>
+                        
+                        <div class="flex gap-2   w-full items-center">
+                            <label class="whitespace-nowrap font-semibold" for="med_Run_Seconds_Counts">Media Run Count:</label>
+                            <input class="custom-input" [readOnly]="true" type="number" id="med_Run_Seconds_Counts" formControlName="med_Run_Seconds_Counts">
+                        </div>
+                              
+        
+                    </div>
+        
+        
+        
+                    <div class=" w-[40%] p-1 ">
+                        <div class="flex flex-row gap-2 justify-start items-center">
+                            <div class="font-semibold">
+                                Store 2 Screen :
+                            </div>
+                            <span class="material-symbols-outlined text-red-500">
+                                close
+                            </span>
+                        </div>
+        
+                        <div class="flex flex-col gap-2 border border-gray-300 rounded-md p-3">
+                            <div class="flex flex-col gap-2 w-[80%]">
+                                <div class="flex flex-row justify-between  items-center gap-2">
+                                    <label class="font-semibold whitespace-nowrap" for="">Bargain of an Hour </label>
+                                    <div>
+                                        <select disabled class="custom-input" name="" id="">
+                                            <option value="">Yes</option>
+                                            <option value="">No</option>
+                                        </select>
+                                    </div>
+        
+                                </div>
+                                <div class="flex flex-row justify-between items-center gap-2">
+                                    <label class="font-semibold whitespace-nowrap" for="">Bargain of a Day</label>
+                                    <div>
+                                        <select disabled class="custom-input" name="" id="">
+                                            <option value="">Yes</option>
+                                            <option value="">No</option>
+                                        </select>
+                                    </div>
+        
+                                </div>
+                                <div class="flex flex-row justify-between items-center gap-2">
+                                    <label class="font-semibold whitespace-nowrap" for="">Discount</label>
+                                    <div>
+                                        <select disabled class="custom-input" name="" id="">
+                                            <option value="">Yes</option>
+                                            <option value="">No</option>
+                                        </select>
+                                    </div>
+        
+                                </div>
+                                <div class="flex flex-row justify-between items-center gap-2">
+                                    <label class="font-semibold whitespace-nowrap" for="">New on Shelf</label>
+                                    <div>
+                                        <select disabled class="custom-input" name="" id="">
+                                            <option value="">Yes</option>
+                                            <option value="">No</option>
+                                        </select>
+                                    </div>
+        
+                                </div>
+                                <div class="flex flex-row justify-between items-center gap-2">
+                                    <label class="font-semibold whitespace-nowrap" for="">Product Line</label>
+                                    <div>
+                                        <select disabled class="custom-input" name="" id="">
+                                            <option value="">Yes</option>
+                                            <option value="">No</option>
+                                        </select>
+                                    </div>
+        
+                                </div>
+                            </div>
+        
+                        </div>
+        
+                    </div>
+                </div>
+        
+                <div class="flex justify-end items-center  gap-8 w-[72%] mx-auto">
+                    <div>
+                        <button type="submit" (click)="closePopup()"
+                            class="inline-block px-6 py-3 text-white bg-orange-500 rounded-md shadow-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2">Save
+                            and send for validation
+                        </button>
+        
+                    </div>
+                </div>
+            </div>
+        
+        </div>
+    </form>
+    
+</ng-template>
+
+    <!-- buy private repository div -->
+     <ng-template #buyPrivateRepository>
+        <div class="bg-white shadow-md shadow-gray-200 rounded-md  p-3 flex flex-col gap-3">
+            <div class="underline  font-semibold ">Buy Private Repository</div>
+            <div class="flex  items-center gap-2 ">
+                <label class="font-semibold" for="">Private Repository</label>
+                <input type="radio">
+            </div>
+            <div class="flex  flex-row  gap-16">
+                <div class="flex justify-center items-center gap-3">
+                    <label class="whitespace-nowrap font-semibold" for="">Annual Charges</label>
+                    <input class="custom-input" type="text">
+                </div>
+                <div class="flex justify-center items-center gap-3">
+                    <label class="whitespace-nowrap font-semibold" for="">No. of years</label>
+                    <input class="custom-input" min="1" max="999999999" type="number">
+                </div>
+            </div>
+            <div class="flex items-center gap-20">
+                <div class=" flex items-start gap-3 ">
+                    <button
+                        class="inline-block px-6 py-3 text-white bg-orange-500 rounded-md shadow-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2">ADD
+                        To cart</button>
+                    <button
+                        class="inline-block px-6 py-3 text-white bg-orange-500 rounded-md shadow-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2">Display
+                        Cart</button>
+                </div>
+                <div class="flex flex-col gap-2 border border-gray-300 rounded-md p-3 w-[40%]">
+                    <div class="font-semibold">Private Repository Year(No.) : </div>
+                    <div class="font-semibold">Price : </div>
+                    <div class="font-semibold">Total</div>
+                    <div>
+                        <button
+                            class="inline-block px-6 py-3 text-white bg-orange-500 rounded-md shadow-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2">Check
+                            out & Pay</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+     </ng-template>
+
+    
+     <ng-template #name>
+        <div class="flex  gap-10 ">
+        
+            <div class=" flex justify-center items-center rounded-md p-3">
+                <div class="flex flex-col bg-white rounded-md shadow-md shadow-gray-200 p-3 gap-1">
+                    <div class="font-semibold">Scan QR</div>
+                    <div class="border border-gray-300 rounded-md flex justify-center items-center h-[100px] w-[150px]">
+                        Scan QR bar code
+                    </div>
+                </div>
+        
+        
+            </div>
+        
+            <div class="bg-white shadow-md shadow-gray-200 flex flex-col gap-3  rounded-md p-3">
+        
+                <div class="flex justify-center items-center gap-6 ">
+                    <div class="whitespace-nowrap font-semibold">Amt : --------</div>
+                    <select class="custom-input" name="" id="">
+                        <option value="">Display QR</option>
+                    </select>
+                </div>
+                <div class="flex justify-center items-center gap-3">
+                    <div class="font-semibold">
+                        Amt Paid : -----
+                    </div>
+                    <div class="flex justify-center items-center">
+                        <label class="whitespace-nowrap font-semibold" for="">Transaction No.</label>
+                        <input class="custom-input" type="text">
+                    </div>
+                </div>
+                <div class="flex justify-center items-center gap-6">
+                    <label class="whitespace-nowrap font-semibold" for="">UPI ID/Mobile No</label>
+                    <input class="custom-input" type="text">
+                </div>
+                <div>
+                    <button
+                        class="inline-block px-6 py-3 text-white bg-orange-500 rounded-md shadow-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2">Acknowlege
+                        Payment</button>
+                </div>
+            </div>
+        </div>
+     </ng-template>
+     
+    
+
+</div>
+
+<div *ngIf="isPopupIptvPaymentAllocation" class="fixed inset-0 z-20 flex justify-center items-center bg-black bg-opacity-50">
+    <form  class="w-[90%] bg-white flex justify-start flex-col ">
+
+        <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+            <button (click)="toggleIptvPaymentAllocation()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="w-full flex justify-between items-center mt-6 px-5 pb-2 gap-8">
+            <div class=" flex flex-col mb-4 justify-start">
+                <span class="text-lg font-semibold text-[#63040D]">User Id:<span class="ml-2 text-lg text-gray-500">34556</span></span>                         
+            </div>
+            <button (click)="toggleAddIptv()" class="bg-[#63040D] text-white px-4 py-2 font-semibold">
+                Add Iptv Allocation
+            </button>
+        </div>
+
+        <div class="h-2 text-[12px] my-5 w-[95%] flex justify-start font-semibold text-[#63040D] mx-auto mb-10">
+            <span class="w-[6%] h-10">Promoid</span>
+            <span class="w-[6%] h-10">Country</span>
+            <span class="w-[8%] h-10">Pan-Country</span>
+            <span class="w-[8%] h-10">State</span>
+            <span class="w-[6%] h-10">Prod Id</span>
+            <span class="w-[10%] h-10">Prod Name</span>
+            <span class="w-[6%] h-10">Reward</span>
+            <span class="w-[8%] h-10">Duration From</span>
+            <span class="w-[8%] h-10">Duration To</span>
+            <span class="w-[7%] h-10">Interval Id</span>
+            <span class="w-[9%] h-10">Int-Name</span>
+            <span class="w-[5%] h-10">Status</span>
+            <span class="w-[10%] h-10">Eye ball details</span>
+        </div>
+
+        
+        <div class="w-[95%] mx-auto mb-5 h-[250px] overflow-y-scroll text-[11px] flex font-semibold flex-col gap-1">
+            <div class="w-full py-2 flex justify-start">
+                <div class="w-[6%] h-8">6324</div>
+                <div class="w-[6%] h-8">India</div>
+                <div class="w-[5%] mr-[3%] h-8 flex justify-start items-center">
+                    <img [src]="valid" alt="Validity" class="h-4 w-4" />
+                    <div class="w-full h-full"></div>
+                </div>
+                <div class="w-[8%] h-8">Uttar Pradesh</div>
+                <div class="w-[6%] h-8">141</div>
+                <div class="w-[10%] h-8">Adc-Entertainment</div>
+                <div class="w-[6%] h-8">(10)</div>
+                <div class="w-[8%] h-8">25/01/2025</div>
+                <div class="w-[8%] h-8">25/01/2025</div>
+                <div class="w-[7%] h-8">3868</div>
+                <div class="w-[9%] h-8">Ad-intname</div>
+                <div class="w-[5%] h-8 flex justify-start items-center">
+                    <img [src]="valid" alt="Validity" class="h-4 w-4" />
+                    <div class="w-full h-full"></div>
+                </div>
+                <div class="w-[10%]  flex justify-between items-center">
+
+                    <button (click)="toggleDetailLog()" class="py-1 px-2 bg-green-500 text-white h-8">
+                        Detail log
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<div *ngIf="isPopupAddIptv" class="fixed z-30 inset-0 flex justify-center items-center bg-black bg-opacity-50">
+    <form  class="w-[55%] max-h-[35rem] overflow-y-scroll bg-white flex justify-start flex-col ">
+
+        <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+            <button (click)="toggleAddIptv()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                  </svg>
+            </button>
+        </div>
+
+        <div class="w-full flex justify-start p-5 gap-8">
+            <span class="text-lg font-semibold text-[#63040D]">Promo id:<span class="ml-2 text-lg text-gray-500">4878</span></span>            
+            <span class="text-lg font-semibold text-[#63040D]">Validated:<span class="ml-2 text-lg text-gray-500"></span></span> 
+        </div>
+
+        <div class="w-full flex flex-col justify-start items-center mb-5 rounded-lg">
+
+            <div class="w-full flex flex-col gap-6 h-full p-5 pr-0">
+
+                <div class=" w-full flex justify-start items-center">
+                    <div class=" w-[50%]">
+                        <label class="text-lg font-semibold text-[#63040D]" for="country">Country:</label>
+                        <select class="ml-2 p-1" id="country" name="country">
+                            <option value="audio">India</option>
+                            <option value="video">China</option>
+                        </select>
+                    </div>
+    
+                    <div class=" w-[50%]">
+                        <label>
+                            <input
+                            (change)="onPanIndiaCheckedChange($event)" 
+                            class="text-lg font-semibold text-[#63040D]" type="checkbox" id="panIndiaCheckbox">
+                            Pan India
+                        </label>
+                    </div>
+
+                </div>
+
+                <div class=" w-full flex justify-start items-center">
+                    <div *ngIf="isPanIndiaChecked" class=" w-[50%]">
+                        <label class="text-lg font-semibold text-[#63040D]" for="state">State:</label>
+                        <select class="ml-2 p-1" id="state" name="state">
+                            <option value="audio">Uttar Pradesh</option>
+                            <option value="video">Gujrat</option>
+                        </select>
+                    </div>
+    
+                    <div class=" w-[50%]">
+                        <label class="text-lg font-semibold text-[#63040D]" for="state">TimeZone Slot:</label>
+                        <select class="ml-2 p-1" id="state" name="state">
+                            <option value="audio">ISt</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class=" w-full flex justify-start items-center">
+                    <div class="w-[50%]">
+                        <label class="text-lg font-semibold text-[#63040D]" for="state">Product:</label>
+                        <select class="ml-2 p-1" id="state" name="state">
+                            <option value="audio">Product 1</option>
+                        </select>
+                    </div>
+
+                    <div class="w-[50%]">
+                        <label>
+                            <input
+                            (change)="onRewardCheckedChange($event)" 
+                            class="text-lg font-semibold text-[#63040D]" type="checkbox" id="rewardCheckbox">
+                            Rewarded-AD
+                        </label>
+                    </div>
+
+                </div>
+
+                <div *ngIf="isRewardChecked" class=" w-full flex gap-1 justify-start items-center">
+                    <label class="text-lg font-semibold text-[#63040D]" for="reward">Per user full ad view reward</label>
+                    <input name="reward" class="mx-1 p-1" min="1" type="text" id="reward" [placeholder]="" required />
+                    <label class="text-lg font-semibold text-[#63040D]" for="reward"> Points/Passes</label>
+                </div>
+
+                <div *ngIf="isRewardChecked" class=" w-full flex gap-1 justify-start items-center">
+                    <label class="text-lg font-semibold text-[#63040D]" for="passes">Max user per day view of ADs</label>
+                    <input name="passes" class="mx-1 p-1" min="1" type="text" id="passes" [placeholder]="" required />
+                    <label class="text-lg font-semibold text-[#63040D]" for="reward">for credit of Points/Passes</label>
+                </div>
+
+                <div *ngIf="isRewardChecked" class=" w-full flex gap-1 justify-start items-center">
+                    <label class="text-lg font-semibold text-[#63040D]" for="gift">Points/Passes converted to Gifts/Cards</label>
+                    <input name="gift" class="mx-1 p-1" min="1" type="text" id="gift" [placeholder]="" required />
+                </div>
+
+                <div class=" w-full flex justify-start items-center">
+                    <div class="w-[50%]">
+                        <label class="text-lg font-semibold text-[#63040D]" for="state">AD-INTERVAL:</label>
+                        <select class="ml-2 p-1" id="state" name="state">
+                            <option value="audio">Interval 1</option>
+                        </select>
+                    </div>
+
+                    <button class="bg-green-500 px-4 py-2 hover:bg-green-600 text-white font-semibold">View Availability</button>
+                </div>
+
+                <div class="w-full flex justify-start gap-8">
+                    <span class="text-lg font-semibold text-[#63040D]">Seq No:<span class="ml-2 text-lg text-gray-500"></span></span>            
+                </div>
+
+                <div class="w-full flex justify-start gap-8">
+                    <span class="text-lg font-semibold text-[#63040D]">After Mins of play:<span class="ml-2 text-lg text-gray-500"></span></span>            
+                </div>
+
+                <div class="w-full flex justify-start items-center gap-32">
+                    <span class="text-lg font-semibold text-[#63040D]">Max Slot:<span class="ml-2 text-lg text-gray-500"></span></span>  
+                    <span class="text-lg font-semibold text-[#63040D]">Slot Time:<span class="ml-2 text-lg text-gray-500"></span></span>            
+                </div>
+
+                <div class="w-full flex justify-start gap-8">
+                    <span class="text-lg font-semibold text-[#63040D]">Filled:<span class="ml-2 text-lg text-gray-500"></span></span>            
+                </div>
+
+                <div class="mt-2 flex w-full items-center justify-start">
+                    <div class="w-[50%]">
+                        <label class="text-lg font-semibold text-[#63040D]" for="from">Valid from: </label>
+                        <input
+                            name="from"
+                            class="ml-2 p-1"
+                            type="date"
+                            id="from"
+                            required
+                        />
+                    </div>
+                    <div class="w-[50%]">
+                        <label class="text-lg font-semibold text-[#63040D]" for="to">Valid to: </label>
+                        <input
+                            name="from"
+                            class="ml-2 p-1"
+                            type="date"
+                            id="from"
+                            required
+                        />
+                    </div>
+                </div>
+
+                <div class="w-full flex justify-start gap-32">
+                    <span class="text-lg font-semibold text-[#63040D]">Cost:<span class="ml-2 text-lg text-gray-500"></span></span>   
+                    <span class="text-lg font-semibold text-[#63040D]">Gst:<span class="ml-2 text-lg text-gray-500"></span></span>            
+                </div>
+
+                <div class="w-full flex justify-start gap-8">
+                    <span class="text-lg font-semibold text-[#63040D]">Total Payment:<span class="ml-2 text-lg text-gray-500"></span></span>   
+                </div>
+
+                <div class="w-full flex justify-start gap-32">
+                    <span class="text-lg font-semibold text-[#63040D]">Payment status for promo:<span class="ml-2 text-lg text-gray-500"></span></span>   
+                    <span class="text-lg font-semibold text-[#63040D]">Allocated:<span class="ml-2 text-lg text-gray-500"></span></span>            
+                </div>
+
+                <div class=" flex justify-center w-full items-end mt-3">
+
+                    <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Make Payment and Allocated Promo on C.TV</button>
+        
+                </div>
+
+            </div>
+
+        </div>
+    </form>
+</div>
+
+<div *ngIf="isPopupDetailLog" class="fixed inset-0 z-30 flex justify-center items-center bg-black bg-opacity-50">
+    <form  class="w-[80%] max-h-[35rem] bg-white flex justify-start flex-col ">
+
+        <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+            <button (click)="toggleDetailLog()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div class=" flex justify-between items-center mt-6 px-5 pb-2 gap-8">
+            <label class="text-lg font-semibold text-[#63040D]" for="country">Promo Eye Balls Report: </label>
+            <select class="ml-2 p-1" id="country" name="country">
+                <option value="audio">Daily AD Performance</option>
+                <option value="video">Geography based Performance</option>
+            </select>
+        </div>
+
+        <div class="w-full flex justify-between items-center p-5">
+            <span class="text-lg font-semibold text-[#63040D]">Summry:<span class="ml-2 text-lg text-gray-500">Total eye Balls 25809</span></span>            
+            <span class="text-lg font-semibold text-[#63040D]">Total Points/Passes Allocated:<span class="ml-2 text-lg text-gray-500">2087678</span></span> 
+            <div class="">
+                <label class="text-lg font-semibold text-[#63040D]" for="country">Show Weeks: </label>
+                <select class="ml-2 p-1" id="country" name="country">
+                    <option value="audio">Week 1</option>
+                    <option value="video">Week 1</option>
+                </select>
+            </div>
+            <button class="py-1 px-2 bg-green-500 text-white h-8">
+                View
+            </button>
+
+        </div>
+
+        <div class="h-2 text-[15px] my-5 w-[95%] flex justify-start font-semibold text-[#63040D] mx-auto mb-10">
+            <span class="w-[10%] h-10">S.No</span>
+            <span class="w-[18%] h-10">Date</span>
+            <span class="w-[18%] h-10">Eye Balls</span>
+            <span class="w-[18%] h-10">Rewarded Ad</span>
+            <span class="w-[25%] h-10">Points/Passes Allocated</span>
+        </div>
+
+        
+        <div class="w-[95%] mx-auto mb-5 h-[250px] overflow-y-scroll text-[12px] flex font-semibold flex-col gap-1">
+            <div class="w-full py-2 flex justify-start">
+                <div class="w-[10%] h-8">01</div>
+                <div class="w-[18%] h-8">15/01/2025</div>
+                <div class="w-[18%] h-8">47890</div>
+                <div class="w-[18%] h-8">yes</div>
+                <div class="w-[25%] h-8">42890</div>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<div *ngIf="isPopupHTML" class="fixed inset-0 z-20 flex justify-center items-center bg-black bg-opacity-50">
+    <form  class="w-[90%] bg-white flex justify-start flex-col ">
+
+        <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+            <button (click)="toggleHTML()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="w-full flex justify-between items-center mt-6 px-5 pb-2 gap-8">
+            <div class=" flex flex-col mb-4 justify-start">
+                <span class="text-lg font-semibold text-[#63040D]">User Id:<span class="ml-2 text-lg text-gray-500">34556</span></span>                         
+            </div>
+            <button (click)="toggleAddHTML()" class="bg-[#63040D] text-white px-4 py-2 font-semibold">
+                Add HTML5 Player
+            </button>
+        </div>
+
+        <div class="h-2 text-[12px] my-5 w-[95%] flex justify-start font-semibold text-[#63040D] mx-auto mb-10">
+            <span class="w-[6%] h-10">Promoid</span>
+            <span class="w-[6%] h-10">Country</span>
+            <span class="w-[8%] h-10">Pan-Country</span>
+            <span class="w-[8%] h-10">State</span>
+            <span class="w-[6%] h-10">Prod Id</span>
+            <span class="w-[10%] h-10">Prod Name</span>
+            <span class="w-[6%] h-10">Reward</span>
+            <span class="w-[8%] h-10">Duration From</span>
+            <span class="w-[8%] h-10">Duration To</span>
+            <span class="w-[7%] h-10">Interval Id</span>
+            <span class="w-[9%] h-10">Int-Name</span>
+            <span class="w-[5%] h-10">Status</span>
+            <span class="w-[10%] h-10">Eye ball details</span>
+        </div>
+
+        
+        <div class="w-[95%] mx-auto mb-5 h-[250px] overflow-y-scroll text-[11px] flex font-semibold flex-col gap-1">
+            <div class="w-full py-2 flex justify-start">
+                <div class="w-[6%] h-8">6324</div>
+                <div class="w-[6%] h-8">India</div>
+                <div class="w-[5%] mr-[3%] h-8 flex justify-start items-center">
+                    <img [src]="valid" alt="Validity" class="h-4 w-4" />
+                    <div class="w-full h-full"></div>
+                </div>
+                <div class="w-[8%] h-8">Uttar Pradesh</div>
+                <div class="w-[6%] h-8">141</div>
+                <div class="w-[10%] h-8">Adc-Entertainment</div>
+                <div class="w-[6%] h-8">(10)</div>
+                <div class="w-[8%] h-8">25/01/2025</div>
+                <div class="w-[8%] h-8">25/01/2025</div>
+                <div class="w-[7%] h-8">3868</div>
+                <div class="w-[9%] h-8">Ad-intname</div>
+                <div class="w-[5%] h-8 flex justify-start items-center">
+                    <img [src]="valid" alt="Validity" class="h-4 w-4" />
+                    <div class="w-full h-full"></div>
+                </div>
+                <div class="w-[10%]  flex justify-between items-center">
+
+                    <button (click)="toggleDetailLogHTML()" class="py-1 px-2 bg-green-500 text-white h-8">
+                        Detail log
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<div *ngIf="isPopupAddHTML" class="fixed z-30 inset-0 flex justify-center items-center bg-black bg-opacity-50">
+    <form  class="w-[55%] max-h-[35rem] overflow-y-scroll bg-white flex justify-start flex-col ">
+
+        <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+            <button (click)="toggleAddHTML()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                  </svg>
+            </button>
+        </div>
+
+        <div class="w-full flex justify-start p-5 gap-8">
+            <span class="text-lg font-semibold text-[#63040D]">Promo id:<span class="ml-2 text-lg text-gray-500">4878</span></span>            
+            <span class="text-lg font-semibold text-[#63040D]">Validated:<span class="ml-2 text-lg text-gray-500"></span></span> 
+        </div>
+
+        <div class="w-full flex flex-col justify-start items-center mb-5 rounded-lg">
+
+            <div class="w-full flex flex-col gap-6 h-full p-5 pr-0">
+
+                <div class=" w-full flex justify-start items-center">
+                    <div class=" w-[50%]">
+                        <label class="text-lg font-semibold text-[#63040D]" for="country">Country:</label>
+                        <select class="ml-2 p-1" id="country" name="country">
+                            <option value="audio">India</option>
+                            <option value="video">China</option>
+                        </select>
+                    </div>
+    
+                    <div class=" w-[50%]">
+                        <label>
+                            <input
+                            (change)="onPanIndiaCheckedChange($event)" 
+                            class="text-lg font-semibold text-[#63040D]" type="checkbox" id="panIndiaCheckbox">
+                            Pan India
+                        </label>
+                    </div>
+
+                </div>
+
+                <div class=" w-full flex justify-start items-center">
+                    <div *ngIf="isPanIndiaChecked" class=" w-[50%]">
+                        <label class="text-lg font-semibold text-[#63040D]" for="state">State:</label>
+                        <select class="ml-2 p-1" id="state" name="state">
+                            <option value="audio">Uttar Pradesh</option>
+                            <option value="video">Gujrat</option>
+                        </select>
+                    </div>
+    
+                    <div class=" w-[50%]">
+                        <label class="text-lg font-semibold text-[#63040D]" for="state">TimeZone Slot:</label>
+                        <select class="ml-2 p-1" id="state" name="state">
+                            <option value="audio">ISt</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class=" w-full flex justify-start items-center">
+                    <div class="w-[50%]">
+                        <label class="text-lg font-semibold text-[#63040D]" for="state">Product:</label>
+                        <select class="ml-2 p-1" id="state" name="state">
+                            <option value="audio">Product 1</option>
+                        </select>
+                    </div>
+
+                    <div class="w-[50%]">
+                        <label>
+                            <input
+                            (change)="onRewardCheckedChange($event)" 
+                            class="text-lg font-semibold text-[#63040D]" type="checkbox" id="rewardCheckbox">
+                            Rewarded-AD
+                        </label>
+                    </div>
+
+                </div>
+
+                <div *ngIf="isRewardChecked" class=" w-full flex gap-1 justify-start items-center">
+                    <label class="text-lg font-semibold text-[#63040D]" for="reward">Per user full ad view reward</label>
+                    <input name="reward" class="mx-1 p-1" min="1" type="text" id="reward" [placeholder]="" required />
+                    <label class="text-lg font-semibold text-[#63040D]" for="reward"> Points/Passes</label>
+                </div>
+
+                <div *ngIf="isRewardChecked" class=" w-full flex gap-1 justify-start items-center">
+                    <label class="text-lg font-semibold text-[#63040D]" for="passes">Max user per day view of ADs</label>
+                    <input name="passes" class="mx-1 p-1" min="1" type="text" id="passes" [placeholder]="" required />
+                    <label class="text-lg font-semibold text-[#63040D]" for="reward">for credit of Points/Passes</label>
+                </div>
+
+                <div *ngIf="isRewardChecked" class=" w-full flex gap-1 justify-start items-center">
+                    <label class="text-lg font-semibold text-[#63040D]" for="gift">Points/Passes converted to Gifts/Cards</label>
+                    <input name="gift" class="mx-1 p-1" min="1" type="text" id="gift" [placeholder]="" required />
+                </div>
+
+                <div class=" w-full flex justify-start items-center">
+                    <div class="w-[50%]">
+                        <label class="text-lg font-semibold text-[#63040D]" for="state">AD-INTERVAL:</label>
+                        <select class="ml-2 p-1" id="state" name="state">
+                            <option value="audio">Interval 1</option>
+                        </select>
+                    </div>
+
+                    <button class="bg-green-500 px-4 py-2 hover:bg-green-600 text-white font-semibold">View Availability</button>
+                </div>
+
+                <div class="w-full flex justify-start gap-8">
+                    <span class="text-lg font-semibold text-[#63040D]">Seq No:<span class="ml-2 text-lg text-gray-500"></span></span>            
+                </div>
+
+                <div class="w-full flex justify-start gap-8">
+                    <span class="text-lg font-semibold text-[#63040D]">After Mins of play:<span class="ml-2 text-lg text-gray-500"></span></span>            
+                </div>
+
+                <div class="w-full flex justify-start items-center gap-32">
+                    <span class="text-lg font-semibold text-[#63040D]">Max Slot:<span class="ml-2 text-lg text-gray-500"></span></span>  
+                    <span class="text-lg font-semibold text-[#63040D]">Slot Time:<span class="ml-2 text-lg text-gray-500"></span></span>            
+                </div>
+
+                <div class="w-full flex justify-start gap-8">
+                    <span class="text-lg font-semibold text-[#63040D]">Filled:<span class="ml-2 text-lg text-gray-500"></span></span>            
+                </div>
+
+                <div class="mt-2 flex w-full items-center justify-start">
+                    <div class="w-[50%]">
+                        <label class="text-lg font-semibold text-[#63040D]" for="from">Valid from: </label>
+                        <input
+                            name="from"
+                            class="ml-2 p-1"
+                            type="date"
+                            id="from"
+                            required
+                        />
+                    </div>
+                    <div class="w-[50%]">
+                        <label class="text-lg font-semibold text-[#63040D]" for="to">Valid to: </label>
+                        <input
+                            name="from"
+                            class="ml-2 p-1"
+                            type="date"
+                            id="from"
+                            required
+                        />
+                    </div>
+                </div>
+
+                <div class="w-full flex justify-start gap-32">
+                    <span class="text-lg font-semibold text-[#63040D]">Cost:<span class="ml-2 text-lg text-gray-500"></span></span>   
+                    <span class="text-lg font-semibold text-[#63040D]">Gst:<span class="ml-2 text-lg text-gray-500"></span></span>            
+                </div>
+
+                <div class="w-full flex justify-start gap-8">
+                    <span class="text-lg font-semibold text-[#63040D]">Total Payment:<span class="ml-2 text-lg text-gray-500"></span></span>   
+                </div>
+
+                <div class="w-full flex justify-start gap-32">
+                    <span class="text-lg font-semibold text-[#63040D]">Payment status for promo:<span class="ml-2 text-lg text-gray-500"></span></span>   
+                    <span class="text-lg font-semibold text-[#63040D]">Allocated:<span class="ml-2 text-lg text-gray-500"></span></span>            
+                </div>
+
+                <div class=" flex justify-center w-full items-end mt-3">
+
+                    <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Make Payment and Allocated Promo on C.TV</button>
+        
+                </div>
+
+            </div>
+
+        </div>
+    </form>
+</div>
+
+<div *ngIf="isPopupHTMLDetailLog" class="fixed inset-0 z-30 flex justify-center items-center bg-black bg-opacity-50">
+    <form  class="w-[80%] max-h-[35rem] bg-white flex justify-start flex-col ">
+
+        <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+            <button (click)="toggleDetailLogHTML()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div class=" flex justify-between items-center mt-6 px-5 pb-2 gap-8">
+            <label class="text-lg font-semibold text-[#63040D]" for="country">Promo Eye Balls Report: </label>
+            <select class="ml-2 p-1" id="country" name="country">
+                <option value="audio">Daily AD Performance</option>
+                <option value="video">Geography based Performance</option>
+            </select>
+        </div>
+
+        <div class="w-full flex justify-between items-center p-5">
+            <span class="text-lg font-semibold text-[#63040D]">Summry:<span class="ml-2 text-lg text-gray-500">Total eye Balls 25809</span></span>            
+            <span class="text-lg font-semibold text-[#63040D]">Total Points/Passes Allocated:<span class="ml-2 text-lg text-gray-500">2087678</span></span> 
+            <div class="">
+                <label class="text-lg font-semibold text-[#63040D]" for="country">Show Weeks: </label>
+                <select class="ml-2 p-1" id="country" name="country">
+                    <option value="audio">Week 1</option>
+                    <option value="video">Week 1</option>
+                </select>
+            </div>
+            <button class="py-1 px-2 bg-green-500 text-white h-8">
+                View
+            </button>
+
+        </div>
+
+        <div class="h-2 text-[15px] my-5 w-[95%] flex justify-start font-semibold text-[#63040D] mx-auto mb-10">
+            <span class="w-[10%] h-10">S.No</span>
+            <span class="w-[18%] h-10">Date</span>
+            <span class="w-[18%] h-10">Eye Balls</span>
+            <span class="w-[18%] h-10">Rewarded Ad</span>
+            <span class="w-[25%] h-10">Points/Passes Allocated</span>
+        </div>
+
+        
+        <div class="w-[95%] mx-auto mb-5 h-[250px] overflow-y-scroll text-[12px] flex font-semibold flex-col gap-1">
+            <div class="w-full py-2 flex justify-start">
+                <div class="w-[10%] h-8">01</div>
+                <div class="w-[18%] h-8">15/01/2025</div>
+                <div class="w-[18%] h-8">47890</div>
+                <div class="w-[18%] h-8">yes</div>
+                <div class="w-[25%] h-8">42890</div>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<div *ngIf="isShowMediaVisible" class="fixed z-20 inset-0 flex justify-center items-center bg-black bg-opacity-50">
+
+    <div class="w-[40%] bg-white flex justify-start flex-col ">
+
+
+        <div class="w-full px-4 pt-8 mb-5  items-center flex flex-row-reverse">
+            <button (click)="showImagePreview()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                  </svg>
+            </button>
+        </div>
+
+        <div *ngIf="mediaToShowType === 'image' " class="w-full flex justify-center items-center mb-10 mt-5">
+            <img [src]="selectedImageUrl" class="h-20 border-[1px]">
+        </div>
+
+        <div *ngIf="mediaToShowType === 'digitaltext' " class="w-full flex justify-center items-center mb-10 gap-1 mt-5">
+            <span>Link to file: </span>
+            <a [href]="selectedImageUrl" target="_blank" class="h-20 border-[1px]">link</a>
+        </div>
+
+        <div *ngIf="mediaToShowType === 'video' " class="w-full py-8 px-20 flex justify-center items-center mb-10 mt-5">
+            <video [src]="selectedImageUrl" class=" border-[1px]" controls></video>
+        </div>
+
+        <div *ngIf="mediaToShowType === 'audio' " class="w-full flex px-12 py-8 justify-center items-center mb-10 mt-5">
+            <audio [src]="selectedImageUrl" class="" controls></audio>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+<div *ngIf="isPopupDOOHAlloactionVisible" class="fixed inset-0 z-20 flex justify-center items-center bg-black bg-opacity-50">
+    <form  class="w-[85%] max-h-[35rem] bg-white flex justify-start flex-col ">
+
+        <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+            <button (click)="toggleDOOHAlloaction()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+       <span class="ml-5 text-lg ">Screen slots active for your account</span>
+
+        <div class="h-2 text-[15px] my-5 w-[95%] flex justify-start font-semibold text-[#63040D] mx-auto mb-10">
+            <span class="w-[7%] h-10">#Serial</span>
+            <span class="w-[10%] h-10">Screen-Id</span>
+            <span class="w-[11%] h-10">Screen-Name</span>
+            <span class="w-[11%] h-10">Screen-Detail</span>
+            <span class="w-[9%] h-10">Active</span>
+            <span class="w-[10%] h-10">From</span>
+            <span class="w-[10%] h-10">To</span>
+            <span class="w-[10%] h-10">Duration</span>
+            <span class="w-[10%] h-10">Select</span>
+            <div class=" flex flex-col w-[10%] h-10">
+                <div class=" w-full flex flex-col justify-center items-center h-5">
+                    <div class="w-full h-6 flex flex-col justify-end">
+                        <div class="w-full h-1 bg-red-500"></div>
+                    </div>
+                    <span class="px-2 absolute bg-white z-10">Actions</span>
+                    <div class=" w-full flex justify-between h-4">
+                        <div class="w-1 h-full bg-red-500"></div>
+                        <div class="w-1 h-full bg-red-500"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="w-[95%] mx-auto mb-5 h-[250px] overflow-y-scroll text-[12px] flex font-semibold flex-col gap-1">
+            <div class="w-full py-2 flex justify-start">
+                <div class="w-[7%] h-10">01</div>
+                <div class="w-[10%] h-10">23456</div>
+                <div class="w-[11%] h-10">MacD VV</div>
+                <div class="w-[11%] h-10">
+                    <button class="bg-green-500 text-xs text-white px-2 py-1">
+                        Detail
+                   </button>
+                </div>
+                <div class="w-[9%] h-8 flex">
+                    <div class="h-6 w-6">
+                        <img [src]="valid" alt="Validity" class="h-6 w-auto" />
+                    </div>
+                </div>
+                <div class="w-[10%] h-10">25/01/2025</div>
+                <div class="w-[10%] h-10">25/01/2025</div>
+                <div class="w-[10%] h-10">10 sec</div>
+                <div class="w-[10%] h-10">
+                    <input type="radio">
+                </div>
+                <div class=" flex flex-col w-[10%] h-10">
+                   <button class="bg-green-500 text-xs text-white px-2 py-1">
+                        Allocate
+                   </button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+
+<!-- Add validation before adding -->
+<!-- Add pin validations -->
+ <!-- Show the prof image -->

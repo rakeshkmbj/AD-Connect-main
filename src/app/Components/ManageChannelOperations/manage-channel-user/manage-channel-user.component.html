@@ -1,0 +1,1808 @@
+<div class="flex flex-col w-full">
+    <div class="w-full flex flex-col gap-10 justify-center items-center">
+        <div class="text-orange-500 w-full font-bold font-abcd text-2xl">
+            Manage Channels Users
+        </div>
+
+        <div class="flex w-[95%] gap-1 items-center flex-col">
+
+            <div class="w-[100%] mb-3 text-[12px] flex justify-between flex-row">
+                <button (click)="toggleManadeD2CUsers()" [class.bg-[#d11225]]="isManageD2CUserVisible"
+                    [class.bg-[#63040D]]="!isManageD2CUserVisible" class=" text-white px-4 py-2 font-semibold">
+                    Manage D2C Users
+                </button>
+                <button (click)="toggleManageTvBacofficeUsers()" [class.bg-[#d11225]]="isManageTvBackofficeUsers"
+                    [class.bg-[#63040D]]="!isManageTvBackofficeUsers" class=" text-white px-4 py-2 font-semibold">
+                    Manage TV Backoffice Users
+                </button>
+                <button (click)="toggleManageB2BUserPopup()" [class.bg-[#d11225]]="isManageB2BUserScreenVisible"
+                    [class.bg-[#63040D]]="!isManageB2BUserScreenVisible" class=" text-white px-4 py-2 font-semibold">
+                    B2B User Management
+                </button>
+                <button (click)="toggleManageB2BUserDistributionWindowPopup()"
+                    [class.bg-[#d11225]]="isManageB2BUserDistributionVisible"
+                    [class.bg-[#63040D]]="!isManageB2BUserDistributionVisible"
+                    class=" text-white px-4 py-2 font-semibold">
+                    Manage B2B Usres Distribution Subscriptions
+                </button>
+                <button (click)="togglePaymentAndUsageDashboardWindowPopup()"
+                    [class.bg-[#d11225]]="isPaymentAndUsageDashboardVisible"
+                    [class.bg-[#63040D]]="!isPaymentAndUsageDashboardVisible"
+                    class=" text-white px-4 py-2 font-semibold">
+                    Invoice & Usage Dashboard
+                </button>
+            </div>
+
+            <div class="w-full">
+                <span class="text-lg font-semibold text-[#63040D]">Channel:<span
+                        class="ml-2 text-lg text-gray-500">{{userData.accT_NAME}}</span></span>
+            </div>
+
+            <div class="w-full">
+                <span class="text-lg font-semibold text-[#63040D]">Channel Id:<span
+                        class="ml-2 text-lg text-gray-500">{{userData.accT_ID}}</span></span>
+            </div>
+
+            <div *ngIf="isManageB2BUserScreenVisible"
+                class="w-full p-5 bg-white border-[1px] mt-4 flex flex-col justify-start border-black">
+                <div class="  w-full flex justify-between items-center">
+                    <div class="gap-5 flex justify-start items-center">
+                        <button (click)="toggleCorpUserPopup()" [class.bg-orange-700]="isCorpUserVisible"
+                            [class.bg-orange-500]="!isCorpUserVisible"
+                            class="text-[12px] text-white px-2 py-1 font-semibold">
+                            Corporate Users
+                        </button>
+                        <button (click)="toggleNonCorpUserPopup()" [class.bg-orange-700]="isNonCorpUserVisible"
+                            [class.bg-orange-500]="!isNonCorpUserVisible"
+                            class="text-[12px] text-white px-2 py-1 font-semibold">
+                            Non Corporate Users
+                        </button>
+                    </div>
+
+                    <div class=" gap-5 flex justify-start items-center">
+                        <button (click)="toggleAddUserCorpPopup()"
+                            class="bg-[#63040D] text-[12px] text-white px-2 py-1 font-semibold">
+                            Add B2B User
+                        </button>
+                        <button (click)="toggleAllocateUserPopup()"
+                            class="bg-[#63040D] text-[12px] text-white px-2 py-1 font-semibold">
+                            Allocate B2B User
+                        </button>
+                        <button (click)="toggleManageCorporatePopup()"
+                            class="bg-[#63040D] text-[12px] text-white px-2 py-1 font-semibold">
+                            Manage Corporate
+                        </button>
+                    </div>
+
+                </div>
+
+                <div *ngIf="isCorpUserVisible" class=" w-full mt-4 gap-5 flex flex-col">
+                    <div class="w-full flex gap-5 justify-start items-center">
+                        <div>
+                            <label class="text-[15px] font-semibold text-[#63040D]" for="choice">Corporate: </label>
+                            <select class="ml-2 text-[15px] p-1" id="choice" name="choice"
+                                (change)="onSelectCorporate($event)">
+                                <option *ngFor="let item of corporateArr; let i = index" [value]="i">{{
+                                    item.cldtvCorpName }}</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class=" text-[15px] font-semibold text-[#63040D]" for="choice">Division: </label>
+                            <select class="ml-2 text-[15px] p-1" id="choice2" name="choice2"
+                                (change)="onSelectDivision($event)">
+                                <option *ngFor="let item of divisionsArr" [value]="item.cldtvDivId">{{
+                                    item.cldtvDivConName }}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w-full mt-4">
+                    <button (click)="manageB2Buser()"
+                        class="bg-[#63040D] text-[12px] text-white px-2 py-1 font-semibold">
+                        Manage Channel B2B User
+                    </button>
+                </div>
+
+                <div *ngIf="B2BSubscriberArr.length > 0"
+                    class="h-2 text-[10px] mt-5 flex justify-start font-semibold text-[#63040D] mx-auto w-[95%] mb-10">
+                    <span class="w-[6%] h-10">#Serial</span>
+                    <span class="w-[6%] h-10">User Id</span>
+                    <span class="w-[7%] h-10">User name</span>
+                    <span class="w-[6%] h-10">Corp Id</span>
+                    <span class="w-[7%] h-10">Division</span>
+                    <span class="w-[8%] h-10">Mobile No.</span>
+                    <span class="w-[5%] h-10">User</span>
+                    <span class="w-[5%] h-10">OTT</span>
+                    <span class="w-[9%] h-10">Face-Connect</span>
+                    <span class="w-[8%] h-10">Valid from</span>
+                    <span class="w-[8%] h-10">Valid to</span>
+                    <div class=" flex flex-col w-[35%] h-10">
+                        <div class=" w-full flex flex-col justify-center items-center h-5">
+                            <div class="w-full h-6 flex flex-col justify-end">
+                                <div class="w-full h-1 bg-red-500"></div>
+                            </div>
+                            <span class="px-2 absolute bg-white z-10">Actions for User</span>
+                            <div class=" w-full flex justify-between h-4">
+                                <div class="w-1 h-full bg-red-500"></div>
+                                <div class="w-1 h-full bg-red-500"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w-[95%] mx-auto mb-5  text-[8px] flex font-semibold flex-col gap-1">
+                    <div *ngFor="let item of B2BSubscriberArr, let i = index" class="w-full py-2 flex justify-start">
+                        <div class="w-[6%] h-8">{{i}}</div>
+                        <div class="w-[6%] h-8">{{item.b2bCldtvSubscribrId}}</div>
+                        <div class="w-[7%] h-8">{{item.b2bCldtvSubscribrFirstName}}</div>
+                        <div class="w-[6%] h-8">{{selectedCorp}}</div>
+                        <div class="w-[7%] h-8">{{selectedDiv}}</div>
+                        <div class="w-[8%] h-8">{{item.b2bCldtvMasterMoblNumbr}}</div>
+                        <div class="w-[5%] h-8">
+                            <img [src]="item.b2bCldtvSubscribrCorpFlg === true ? valid : unvalid" alt="Validity"
+                                class="h-5 w-auto" />
+                        </div>
+                        <div class="w-[5%] h-8">
+                            <img [src]="item.b2bCldtvSubscribrCorpFlg === true ? valid : unvalid" alt="Validity"
+                                class="h-5 w-auto" />
+                        </div>
+                        <div class="w-[9%] h-8">
+                            <img [src]="item.b2bCldtvSubscribrCorpFlg === true ? valid : unvalid" alt="Validity"
+                                class="h-5 w-auto" />
+                        </div>
+                        <div class="w-[8%] h-8">{{ formatDate(item.b2bCldtvSubscribrValdFrmDate) }}</div>
+                        <div class="w-[8%] h-8">{{ formatDate(item.b2bCldtvSubscribrValdToDate) }}</div>
+                        <div class="w-[35%] flex justify-between items-start">
+
+                            <button class="scale-90 h-6">
+                                <img [src]="edit" alt="Edit" class="h-6 w-auto" />
+                            </button>
+
+                            <button (click)="toggleManageUserAccessCorpPopup(item)"
+                                class="scale-90  border-[2px] border-green-500 h-6 px-1">
+                                <img [src]="action" alt="Edit" class="h-4 text-sm rotate-180  w-auto" />
+                            </button>
+
+                            <button (click)="toggleActivateUserPopup(item.b2bCldtvSubscribrId)"
+                                class="scale-90 bg-green-500 text-[9px] text-white px-2 py-1 font-semibold">
+                                Activate
+                            </button>
+
+                            <button class="scale-90 bg-green-500 text-[9px] text-white px-2 py-1 font-semibold">
+                                Re-charge
+                            </button>
+
+                            <button (click)="toggleDeActivateUserPopup(item.b2bCldtvSubscribrId)"
+                                class="scale-90 bg-red-500 text-[9px] text-white px-2 py-1 font-semibold">
+                                De-Activate
+                            </button>
+
+                            <button (click)="toggleBlacklistPopup(item.b2bCldtvSubscribrId)"
+                                class="scale-90 bg-red-500 text-[9px] text-white px-2 py-1 font-semibold">
+                                Blacklist
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div *ngIf="isManageB2BUserDistributionVisible"
+                class="w-full p-5 bg-white border-[1px] flex flex-col justify-start border-black">
+                <div class="  w-full flex justify-between items-center">
+
+                    <!-- <div class="w-[50%] flex">
+                        <label class="text-lg font-semibold text-[#63040D]" for="plan">Purchase Type :</label>
+                        <select class="ml-2 p-1" id="plan" name="plan" (change)="onPlanSelect($event)">
+                            <option value="" disabled selected>Select purchase type</option>
+                            <option value="iptv">IPTV Users Licence</option>
+                            <option value="face">Face-Connect Users Licence</option>                        
+                        </select>
+                    </div>  -->
+
+                    <div class="flex justify-between items-center gap-8">
+                        <button class="bg-[#63040D] text-white px-4 py-2 font-semibold">
+                            Panaromic View of licence
+                        </button>
+                    </div>
+
+                    <div class="flex justify-between items-center gap-8">
+                        <button (click)="toggleShowCartPopup()" class="bg-orange-500 text-white px-4 py-2 font-semibold">
+                            View Pending Cart
+                        </button>
+
+                        <button (click)="toggleMakeUserPaymentPopup()"
+                            class="bg-orange-500 text-white px-4 py-2 font-semibold">
+                            Buy New Licence
+                        </button>
+                    </div>
+
+                </div>
+
+                <!-- <div class="h-2 text-[15px] mt-5 flex justify-start font-semibold text-[#63040D] w-full mb-10">
+                    <span class="w-[8%] h-10">#Serial</span>
+                    <span class="w-[12%] h-10">date</span>
+                    <span class="w-[12%] h-10">Cart</span>
+                    <span class="w-[15%] h-10">No. of Licence</span>
+                    <span class="w-[16%] h-10">Licence Details</span>
+                    <span class="w-[11%] h-10">Allocated</span>
+                    <span class="w-[11%] h-10">Avaliable</span>
+                    <span class="w-[12%] h-10">Invoice Details</span>
+                </div> -->
+
+                <!-- <div class="w-full mx-auto mb-5  text-[12px] flex font-semibold flex-col gap-1">
+                    <div class="w-full py-2 flex justify-start">
+                        <div class="w-[8%] h-8">01</div>
+                        <div class="w-[12%] h-8">15/01/2025</div>
+                        <div class="w-[12%] h-8">176578</div>
+                        <div class="w-[15%] h-8">200</div>
+                        <div class="w-[16%]">
+                            <button class=" bg-green-500 px-2 py-1 text-white ">Details</button>
+                        </div>
+                        <div class="w-[11%] h-8">198</div>
+                        <div class="w-[11%] h-8">02</div>
+                        <div class="w-[12%]">
+                            <button class=" bg-green-500 px-2 py-1 text-white ">View</button>
+                        </div>
+                    </div>
+                </div> -->
+
+            </div>
+
+            <div *ngIf="isPaymentAndUsageDashboardVisible"
+                class="w-full p-5 bg-white border-[1px] mt-4 flex flex-col justify-start border-black">
+                <div class="  w-full flex justify-between items-center">
+                    <div class="gap-5 flex justify-start items-center">
+                        <button (click)="toggleGetChannelInvoicePopup()"
+                            [class.bg-orange-700]="isGetChannelInvoiceVisible"
+                            [class.bg-orange-500]="!isGetChannelInvoiceVisible"
+                            class="text-[12px] text-white px-2 py-1 font-semibold">
+                            Get Channel Invoice
+                        </button>
+                        <button (click)="toggleChannelScreenSubscriptionPopup()"
+                            [class.bg-orange-700]="isChannelScreenSubscriptionVisible"
+                            [class.bg-orange-500]="!isChannelScreenSubscriptionVisible"
+                            class="text-[12px] text-white px-2 py-1 font-semibold">
+                            Channel Screen Subscriptions
+                        </button>
+                        <button (click)="togglePlatformUsageDetailsPopup()"
+                            [class.bg-orange-700]="isPlatformUsageDetailsVisible"
+                            [class.bg-orange-500]="!isPlatformUsageDetailsVisible"
+                            class="text-[12px] text-white px-2 py-1 font-semibold">
+                            Platform Usage Details
+                        </button>
+                    </div>
+
+                </div>
+
+                <!-- For get channel invoice -->
+                <div *ngIf="isGetChannelInvoiceVisible"
+                    class="h-2  mt-5 flex justify-start font-semibold text-[#63040D] mx-auto w-[95%] mb-10">
+                    <span class="w-[8%] h-10">#Serial</span>
+                    <span class="w-[15%] h-10">Date</span>
+                    <span class="w-[15%] h-10">Cart Id</span>
+                    <span class="w-[15%] h-10">Cart Details</span>
+                    <span class="w-[18%] h-10">Invoice Number</span>
+                    <span class="w-[20%] h-10">Invoice Detais</span>
+                </div>
+
+                <div *ngIf="isGetChannelInvoiceVisible"
+                    class="w-[95%] mx-auto mb-5  text-[12px] flex font-semibold flex-col gap-1">
+                    <div *ngFor="let invoice of B2BChannelInvoices; let i = index" class="w-full py-2 flex justify-start">
+                        <div class="w-[8%] h-8">{{ i + 1 }}</div>
+                        <div class="w-[15%] h-8">{{ formatDateToSixDigits(invoice.cartClosedFlagDateTime) }}</div>
+                        <div class="w-[15%] h-8">{{ invoice.cartId }}</div>
+                        <div class="w-[15%] h-8">
+                            <button (click)="togglePopupViewCartVisible(invoice.cartId)" class="px-2 bg-green-500 text-white h-8">View Cart</button>
+                        </div>
+                        <div class="w-[18%] h-8">{{ invoice.customerInvoiceNumber }}</div>
+                        <div class="w-[20%] h-8">
+                            <button (click)="togglePopupViewInvoiceVisible(invoice.customerInvoiceNumber)" class="px-2 bg-green-500 text-white h-8">View Invoice</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- For Channel Screen Subscription -->
+                <div *ngIf="isChannelScreenSubscriptionVisible"
+                    class="h-2  mt-5 flex justify-start font-semibold text-[#63040D] mx-auto w-[95%] mb-10">
+                    <span class="w-[8%] h-10">#Serial</span>
+                    <span class="w-[15%] h-10">Date</span>
+                    <span class="w-[15%] h-10">Invoice</span>
+                    <span class="w-[18%] h-10">Screen Subscription</span>
+                    <span class="w-[15%] h-10">Valid From</span>
+                    <span class="w-[15%] h-10">Valid To</span>
+                </div>
+
+                <div *ngIf="isChannelScreenSubscriptionVisible"
+                    class="w-[95%] mx-auto mb-5  text-[12px] flex font-semibold flex-col gap-1">
+                    <div class="w-full py-2 flex justify-start">
+                        <div class="w-[8%] h-8">01</div>
+                        <div class="w-[15%] h-8">15/12/2024</div>
+                        <div class="w-[15%] h-8">7800095</div>
+                        <div class="w-[18%] h-8">600</div>
+                        <div class="w-[15%] h-8">15/12/2024</div>
+                        <div class="w-[15%] h-8">9/08/2025</div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div *ngIf="isPopupManageCorporateVisible"
+    class="fixed inset-0 z-20 flex justify-center items-center bg-black bg-opacity-50">
+    <form class="w-[65%] bg-white flex justify-start flex-col ">
+
+        <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+            <button (click)="toggleManageCorporatePopup()"
+                class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="w-full flex justify-end mt-4 p-5 pb-2 gap-8">
+            <button (click)="toggleAddNewCorpPopup()" class="bg-[#63040D] text-white px-4 py-2 font-semibold">
+                Add new Corporate
+            </button>
+        </div>
+
+        <div class="h-2 text-[15px] my-5 w-[95%] flex justify-start font-semibold text-[#63040D] mx-auto mb-10">
+            <span class="w-[10%] h-10">#Serial</span>
+            <span class="w-[12%] h-10">Corporate Id</span>
+            <span class="w-[15%] h-10">Corporate name</span>
+            <span class="w-[10%] h-10">Active</span>
+            <span class="w-[12%] h-10">Other Detail</span>
+            <span class="w-[12%] h-10">Division</span>
+            <div class=" flex flex-col w-[23%] h-10">
+                <div class=" w-full flex flex-col justify-center items-center h-5">
+                    <div class="w-full h-6 flex flex-col justify-end">
+                        <div class="w-full h-1 bg-red-500"></div>
+                    </div>
+                    <span class="px-2 absolute bg-white z-10">Actions</span>
+                    <div class=" w-full flex justify-between h-4">
+                        <div class="w-1 h-full bg-red-500"></div>
+                        <div class="w-1 h-full bg-red-500"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="w-[95%] mx-auto mb-5 h-[250px] overflow-y-scroll text-[12px] flex font-semibold flex-col gap-1">
+            <div *ngFor="let item of corporateArr, let i = index" class="w-full py-2 flex justify-start">
+                <div class="w-[10%] h-8">{{i}}</div>
+                <div class="w-[12%] h-8">{{item.cldtvCorpId}}</div>
+                <div class="w-[15%] h-8">{{item.cldtvCorpName}}</div>
+                <div class="w-[10%] h-8">
+                    <img [src]="item.cldtvCorpEnrolmentActivFlg === true ? valid : unvalid" alt="Validity"
+                        class="h-6 w-auto" />
+                </div>
+                <div class="w-[12%]">
+                    <button (click)="toggleDetailsPopup()" class="bg-green-500 text-xs text-white px-2 py-1">
+                        Details
+                    </button>
+                </div>
+                <div class=" w-[12%]">
+                    <button (click)="toggleDivDetailsPopup()" class="bg-green-500 text-xs text-white px-2 py-1">
+                        Div. Details
+                    </button>
+                </div>
+                <div class="w-[23%]  flex justify-between items-center">
+
+                    <button (click)="toggleEditCorpPopup()" class=" h-8">
+                        <img [src]="edit" alt="Edit" class="h-6 w-auto" />
+                    </button>
+
+                    <button (click)="toggleAddCorpDivPopup(item)" class="bg-green-500 text-xs text-white px-2 py-1">
+                        Add Corp. Division
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<div *ngIf="isPopupManageUserAccessVisible"
+    class="fixed inset-0 z-20 flex justify-center items-center bg-black bg-opacity-50">
+    <form class="w-[85%] bg-white flex justify-start flex-col ">
+
+        <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+            <button (click)="toggleManageUserAccessCorpPopup()"
+                class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="w-full flex justify-between items-center mt-6 px-5 pb-2 gap-8">
+            <div class=" flex flex-col mb-4 justify-start">
+                <span class="text-lg font-semibold text-[#63040D]">User Id:<span
+                        class="ml-2 text-lg text-gray-500">34556</span></span>
+            </div>
+            <button (click)="toggleAddUserAccessPopup()" class="bg-[#63040D] text-white px-4 py-2 font-semibold">
+                Add User Access
+            </button>
+        </div>
+
+        <div class="h-2 text-[12px] my-5 w-[95%] flex justify-start font-semibold text-[#63040D] mx-auto mb-10">
+            <span class="w-[7%] h-10">#Serial</span>
+            <span class="w-[7%] h-10">Vert Id</span>
+            <span class="w-[8%] h-10">Vert name</span>
+            <span class="w-[7%] h-10">Prod Id</span>
+            <span class="w-[8%] h-10">Prod Name</span>
+            <span class="w-[7%] h-10">Item Id</span>
+            <span class="w-[8%] h-10">Item Name</span>
+            <span class="w-[8%] h-10">Subitem Id</span>
+            <span class="w-[10%] h-10">Subitem Name</span>
+            <span class="w-[9%] h-10">Valid from</span>
+            <span class="w-[9%] h-10">Valid to</span>
+            <span class="w-[6%] h-10">Status</span>
+            <span class="w-[6%] h-10">Action</span>
+        </div>
+
+
+        <div class="w-[95%] mx-auto mb-5 h-[250px] overflow-y-scroll text-[11px] flex font-semibold flex-col gap-1">
+            <div class="w-full py-2 flex justify-start">
+                <div class="w-[7%] h-8">01</div>
+                <div class="w-[7%] h-8">245</div>
+                <div class="w-[8%] h-8">Video</div>
+                <div class="w-[7%] h-8">78</div>
+                <div class="w-[8%] h-8">sales</div>
+                <div class="w-[7%] h-8">08</div>
+                <div class="w-[8%] h-8">sales lead</div>
+                <div class="w-[8%] h-8">766</div>
+                <div class="w-[10%] h-8">Lead Generation</div>
+                <div class="w-[9%] h-8">12/24/2024</div>
+                <div class="w-[9%] h-8">23/24/2024</div>
+                <div class="w-[6%] h-8">
+                    <img [src]="valid" alt="Validity" class="h-6 w-auto" />
+                </div>
+                <div class="w-[6%]  flex justify-between items-center">
+
+                    <button (click)="toggleEditCorpPopup()" class=" h-8">
+                        <img [src]="edit" alt="Edit" class="h-5 w-auto" />
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<div *ngIf="isPopupDetailsVisible" class="fixed inset-0 z-30 flex justify-center items-center bg-black bg-opacity-50">
+    <form class="w-[35%] bg-white flex justify-start flex-col ">
+        <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+            <button (click)="toggleDetailsPopup()"
+                class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="w-full flex flex-col mb-4 justify-start p-5 pb-2 gap-8">
+            <span class="text-lg font-semibold text-[#63040D]">Address:<span class="ml-2 text-lg text-gray-500">Greater
+                    Noida</span></span>
+            <span class="text-lg font-semibold text-[#63040D]">Contact Person:<span
+                    class="ml-2 text-lg text-gray-500">Abhishek Sharma</span></span>
+            <span class="text-lg font-semibold text-[#63040D]">Mob. No.:<span
+                    class="ml-2 text-lg text-gray-500">9834619093</span></span>
+            <span class="text-lg font-semibold text-[#63040D]">Email:<span
+                    class="ml-2 text-lg text-gray-500">abhi82&#64;st.com</span></span>
+        </div>
+
+    </form>
+</div>
+
+<div *ngIf="isPopupDivDetailsVisible"
+    class="fixed inset-0 z-30 flex justify-center items-center bg-black bg-opacity-50">
+    <form class="w-[45%] bg-white flex justify-start mb-5 flex-col ">
+        <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+            <button (click)="toggleDivDetailsPopup()"
+                class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="w-full flex flex-col mb-4 justify-start p-5 pb-2 gap-8">
+            <span class="text-lg font-semibold text-[#63040D]">Corp Id:<span
+                    class="ml-2 text-lg text-gray-500">227</span></span>
+        </div>
+
+        <div class="h-2 text-[15px] m-5 flex justify-start font-semibold text-[#63040D] w-full mb-10">
+            <span class="w-[18%] h-10">#Serial</span>
+            <span class="w-[18%] h-10">Div Id</span>
+            <span class="w-[18%] h-10">Div name</span>
+            <span class="w-[18%] h-10">Active</span>
+            <span class="w-[18%]">Actions</span>
+
+        </div>
+
+        <div class=" h-[200px] overflow-y-scroll text-[12px] flex mx-auto mb-5 w-[95%] font-semibold flex-col gap-1">
+            <div class="w-full py-2 flex justify-start">
+                <div class="w-[18%] h-8">01</div>
+                <div class="w-[18%] h-8">227</div>
+                <div class="w-[18%] h-8">ST-Micro</div>
+                <div class="w-[18%] h-8">
+                    <img [src]="valid" alt="Validity" class="h-6 w-auto" />
+                </div>
+                <div class="w-[18%]  flex justify-between items-center">
+
+                    <button class=" h-8">
+                        <img [src]="edit" alt="Edit" class="h-6 w-auto" />
+                    </button>
+
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<div *ngIf="isPopupAddCorpDivVisible"
+    class="fixed inset-0 z-20 flex justify-center items-center bg-black bg-opacity-50">
+    <form #formRef="ngForm" novalidate (ngSubmit)="addCorporateDivision(formRef)"
+        class="w-[35%] bg-white flex justify-start flex-col ">
+
+        <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+            <button (click)="toggleAddCorpDivPopup()"
+                class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="w-full flex justify-start p-5 pb-2 gap-8">
+            <span class="text-lg font-semibold text-[#63040D]">Corp-Id:<span
+                    class="ml-2 text-lg text-gray-500">{{newDivision.corpId}}</span></span>
+        </div>
+
+        <div class="w-full flex flex-col justify-start gap-4 items-start pt-8 mb-6 px-5 roundded-lg">
+            <div>
+                <label class="text-lg font-semibold text-[#63040D]" for="divname">Division Name <span
+                        class="text-red-600">*</span>:</label>
+                <input [(ngModel)]="newDivision.divName" name="divname" class="ml-2 p-1" type="text" id="divname"
+                    [placeholder]="" required #divRef="ngModel" />
+            </div>
+            <div>
+                <label class="text-lg font-semibold text-[#63040D]" for="contactname">Contact Name <span
+                        class="text-red-600">*</span>:</label>
+                <input [(ngModel)]="newDivision.contName" name="contactname" class="ml-2 p-1" type="text"
+                    id="contactname" [placeholder]="" required #corpnameRef="ngModel" />
+            </div>
+            <div>
+                <label class="text-lg font-semibold text-[#63040D]" for="mobile">Mobile No. <span
+                        class="text-red-600">*</span>:</label>
+                <input [(ngModel)]="newDivision.mobileNo" name="mobile" class="ml-2 p-1" type="text" id="mobile"
+                    [placeholder]="" required #mobileRef="ngModel" />
+            </div>
+            <div>
+                <label class="text-lg font-semibold text-[#63040D]" for="email">Email iD <span
+                        class="text-red-600">*</span>:</label>
+                <input [(ngModel)]="newDivision.emailId" name="email" class="ml-2 p-1" type="text" id="email"
+                    [placeholder]="" required #emailRef="ngModel" />
+            </div>
+
+        </div>
+
+        <div class=" flex-col justify-center items-center w-full mt-8 pb-6 ">
+
+            <div class="w-full flex justify-center items-center">
+                <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Add New Division Under
+                    Corporate</button>
+
+            </div>
+
+            <!-- Error Message -->
+            <div *ngIf="formRef.submitted && formRef.invalid" class="text-red-600 text-center  mt-1 mb-1">
+                ***Fill all the required fields.***
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<div *ngIf="isPopupAddUserAccessVisible"
+    class="fixed inset-0 z-20 flex justify-center items-center bg-black bg-opacity-50">
+    <form class="w-[65%] bg-white flex justify-start flex-col ">
+
+        <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+            <button (click)="toggleAddUserAccessPopup()"
+                class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="w-full flex justify-start p-5 pb-2 gap-8">
+            <span class="text-lg font-semibold text-[#63040D]">Channel-Id:<span
+                    class="ml-2 text-lg text-gray-500">123</span></span>
+            <span class="text-lg font-semibold text-[#63040D]">User-Id:<span
+                    class="ml-2 text-lg text-gray-500">34556</span></span>
+        </div>
+
+        <div class="w-full flex justify-Between mt-4 items-start mb-6 px-5 roundded-lg">
+            <div class="w-[33%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="corpname">Select Vertical:</label>
+                <select class="ml-2 text-[15px] p-1" id="corpname" name="corpname">
+                    <option>Vertical 1</option>
+                    <option>Vertical 2</option>
+                </select>
+            </div>
+            <div class="w-[33%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="division">Select Product</label>
+                <select class="ml-2 text-[15px] p-1" id="division" name="division">
+                    <option>Product 1</option>
+                    <option>Product 2</option>
+                </select>
+            </div>
+
+            <div class="w-[33%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="division">Select Item</label>
+                <select class="ml-2 text-[15px] p-1" id="division" name="division">
+                    <option>Item 1</option>
+                    <option>Item 2</option>
+                </select>
+            </div>
+        </div>
+
+        <button class="bg-[#63040D] px-4 py-2 w-[7rem] mx-5 mb-4 text-white font-semibold">Get Content</button>
+
+        <div class="h-2 text-[15px] my-5 w-[95%] flex justify-start font-semibold text-[#63040D] mx-auto mb-10">
+            <span class="w-[10%] h-10">#Serial</span>
+            <span class="w-[12%] h-10">Subitem Id</span>
+            <span class="w-[13%] h-10">Language</span>
+            <span class="w-[18%] h-10">Media Name</span>
+            <span class="w-[10%] h-10">Select</span>
+            <span class="w-[15%] h-10">Grant Access</span>
+        </div>
+
+
+        <div class="w-[95%] mx-auto mb-5 h-[150px] overflow-y-scroll text-[12px] flex font-semibold flex-col gap-1">
+            <div class="w-full py-2 flex justify-start">
+                <div class="w-[10%] h-8">01</div>
+                <div class="w-[12%] h-8">766</div>
+                <div class="w-[13%] h-8">English</div>
+                <div class="w-[18%] h-8">Lead Generation</div>
+                <div class="w-[10%] h-10">
+                    <input type="radio">
+                </div>
+                <div class="w-[15%]  flex justify-between items-center">
+                    <button (click)="toggleGrantUserAccessPopup()"
+                        class="bg-green-500 px-2 py-1 text-sm w-full text-white font-semibold">Grant Access</button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<div *ngIf="isPopupGrantUserAccessVisible"
+    class="fixed inset-0 z-30 flex justify-center items-center bg-black bg-opacity-50">
+    <form class="w-[35%] bg-white flex justify-start flex-col ">
+
+        <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+            <button (click)="toggleGrantUserAccessPopup()"
+                class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="w-full flex flex-col justify-start gap-4 items-start pt-8 mb-6 px-5 roundded-lg">
+            <div>
+                <label class="text-lg font-semibold text-[#63040D]" for="from">Valid from:</label>
+                <input name="from" class="ml-2 p-1" type="date" id="from" placeholder="" required />
+            </div>
+            <div>
+                <label class="text-lg font-semibold text-[#63040D]" for="to">Valid To:</label>
+                <input name="to" class="ml-2 p-1" type="date" id="to" placeholder="" required />
+            </div>
+            <div>
+                <label class="text-lg font-semibold text-[#63040D]" for="choice">Status:</label>
+                <select class="ml-2 p-1" id="choice" name="choice">
+                    <option [value]="true">Yes</option>
+                    <option [value]="false">No</option>
+                </select>
+            </div>
+        </div>
+
+        <div class=" flex justify-center w-full items-end pb-6 ">
+
+            <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Add User Access</button>
+
+        </div>
+
+    </form>
+</div>
+
+<div *ngIf="isPopupAddNewCorpVisible"
+    class="fixed inset-0 z-30 flex justify-center items-center bg-black bg-opacity-50">
+    <form #formRef="ngForm" novalidate (ngSubmit)="addCorporate(formRef)"
+        class="w-[35%] bg-white flex justify-start flex-col ">
+
+        <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+            <button (click)="toggleAddNewCorpPopup()"
+                class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="w-full flex flex-col justify-start gap-4 items-start pt-8 mb-6 px-5 roundded-lg">
+            <div>
+                <label class="text-lg font-semibold text-[#63040D]" for="corpname">Corporate Name <span
+                        class="text-red-600">*</span>:</label>
+                <input [(ngModel)]="newCorporate.corpName" name="corpname" class="ml-2 p-1" type="text" id="corpname"
+                    [placeholder]="" required #corpnameRef="ngModel" />
+            </div>
+            <div>
+                <label class="text-lg font-semibold text-[#63040D]" for="address">Address <span
+                        class="text-red-600">*</span>:</label>
+                <input [(ngModel)]="newCorporate.address" name="address" class="ml-2 p-1" type="text" id="address"
+                    [placeholder]="" required #addressRef="ngModel" />
+            </div>
+            <div>
+                <label class="text-lg font-semibold text-[#63040D]" for="person">Contact Person <span
+                        class="text-red-600">*</span>:</label>
+                <input [(ngModel)]="newCorporate.contName" name="person" class="ml-2 p-1" type="text" id="person"
+                    [placeholder]="" required #contactRef="ngModel" />
+            </div>
+            <div>
+                <label class="text-lg font-semibold text-[#63040D]" for="mobile">Mobile No <span
+                        class="text-red-600">*</span>:</label>
+                <input [(ngModel)]="newCorporate.mobileNo" name="mobile" class="ml-2 p-1" type="text" id="mobile"
+                    [placeholder]="" required #mobileRef="ngModel" />
+            </div>
+            <div>
+                <label class="text-lg font-semibold text-[#63040D]" for="email">Email <span
+                        class="text-red-600">*</span>:</label>
+                <input [(ngModel)]="newCorporate.emailId" name="email" class="ml-2 p-1" type="text" id="email"
+                    [placeholder]="" required #emailRef="ngModel" />
+            </div>
+
+            <!-- <div>
+                <label class="text-lg font-semibold text-[#63040D]" for="choice">Status:</label>
+                <select [(ngModel)]="newCorporate." class="ml-2 p-1" id="choice" name="choice">
+                    <option [value]="true">Yes</option>
+                    <option [value]="false">No</option>
+                </select>
+            </div> -->
+
+        </div>
+
+        <div class=" flex-col justify-center items-center w-full mt-8 pb-6 ">
+
+            <div class="w-full flex justify-center items-center">
+                <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Add New
+                    Corporate</button>
+            </div>
+
+            <!-- Error Message -->
+            <div *ngIf="formRef.submitted && formRef.invalid" class="text-red-600 text-center  mt-1 mb-1">
+                ***Fill all the required fields.***
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<div *ngIf="isPopupEditCorpVisible" class="fixed inset-0 z-30 flex justify-center items-center bg-black bg-opacity-50">
+    <form class="w-[35%] bg-white flex justify-start flex-col ">
+
+        <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+            <button (click)="toggleEditCorpPopup()"
+                class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="w-full flex flex-col justify-start gap-4 items-start pt-8 mb-6 px-5 roundded-lg">
+            <div>
+                <label class="text-lg font-semibold text-[#63040D]" for="corpname">Corporate Name:</label>
+                <input name="corpname" class="ml-2 p-1" type="text" id="corpname" [placeholder]="" required />
+            </div>
+            <div>
+                <label class="text-lg font-semibold text-[#63040D]" for="address">Address</label>
+                <input name="address" class="ml-2 p-1" type="text" id="address" [placeholder]="" required />
+            </div>
+            <div>
+                <label class="text-lg font-semibold text-[#63040D]" for="person">Contact Person:</label>
+                <input name="person" class="ml-2 p-1" type="text" id="person" [placeholder]="" required />
+            </div>
+            <div>
+                <label class="text-lg font-semibold text-[#63040D]" for="mobile">Mobile No:</label>
+                <input name="mobile" class="ml-2 p-1" type="text" id="mobile" [placeholder]="" required />
+            </div>
+            <div>
+                <label class="text-lg font-semibold text-[#63040D]" for="email">Email:</label>
+                <input name="email" class="ml-2 p-1" type="text" id="email" [placeholder]="" required />
+            </div>
+
+            <div>
+                <label class="text-lg font-semibold text-[#63040D]" for="choice">Status:</label>
+                <select class="ml-2 p-1" id="choice" name="choice">
+                    <option [value]="true">Yes</option>
+                    <option [value]="false">No</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div class=" flex justify-center w-full items-end pb-6 ">
+
+            <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Edit Corporate</button>
+
+        </div>
+
+    </form>
+</div>
+
+<div *ngIf="isPopupAddUserVisible" class="fixed inset-0 z-30 flex justify-center items-center bg-black bg-opacity-50">
+    <form #formRef="ngForm" novalidate (ngSubmit)="addB2BUser(formRef)"
+        class="w-[60%] max-h-[32rem] overflow-y-scroll bg-white flex justify-start mb-4 flex-col ">
+
+        <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+            <button (click)="toggleAddUserCorpPopup()"
+                class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="flex mt-5 px-5 gap-5 mb-4 justify-start items-center">
+            <label class=" flex justify-start gap-1 items-center text-lg">
+                <input type="radio" [checked]="true" (click)="CorporateUnSelected()" name="user"> Individual
+            </label>
+            <span class=" flex justify-center items-center text-lg text-red-500">OR</span>
+            <label class=" flex justify-start gap-1 items-center text-lg">
+                <input type="radio" (click)="CorporateSelected()" name="user"> Corporate
+            </label>
+        </div>
+
+        <div *ngIf="isCorporateSelected" class="w-full flex justify-start items-start mb-6 px-5 roundded-lg">
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="corpname">Corporate Name:</label>
+                <select class="ml-2 text-[15px] p-1" id="choice" name="choice" (change)="onSelectAddCorporate($event)">
+                    <option *ngFor="let item of corporateArrAddB2B; let i = index" [value]="i">{{ item.cldtvCorpName }}
+                    </option>
+                </select>
+            </div>
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="division">Division</label>
+                <select class="ml-2 text-[15px] p-1" id="choice2" name="choice2" (change)="onSelectAddDivision($event)">
+                    <option *ngFor="let item of divisionsArrAddB2B" [value]="item.cldtvDivId">{{ item.cldtvDivConName }}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+
+        <div class="w-full flex justify-start items-start mb-6 px-5 roundded-lg">
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="firstname">First Name <span
+                        class="text-red-600">*</span>:</label>
+                <input [(ngModel)]="newB2BUser.first_Name" name="firstname" class="ml-2 p-1" type="text" id="firstname"
+                    [placeholder]="" required #firstnameRef="ngModel" />
+            </div>
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="lastname">Last Name <span
+                        class="text-red-600">*</span>:</label>
+                <input [(ngModel)]="newB2BUser.last_Name" name="lastname" class="ml-2 p-1" type="text" id="lastname"
+                    [placeholder]="" required #lastnameRef="ngModel" />
+            </div>
+        </div>
+
+        <div class="w-full flex justify-start items-start mb-6 px-5 roundded-lg">
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="gender">Gender <span
+                        class="text-red-600">*</span>:</label>
+                <select [(ngModel)]="newB2BUser.genderid" class="ml-2 text-[15px] p-1" id="gender" name="gender"
+                    required #genderRef="ngModel">
+                    <option>Male</option>
+                    <option>Female</option>
+                    <option>Transgender</option>
+                </select>
+            </div>
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="lastname">Email <span
+                        class="text-red-600">*</span>:</label>
+                <input [(ngModel)]="newB2BUser.emailid" name="email" class="ml-2 p-1" type="text" id="email"
+                    [placeholder]="" required #emailRef="ngModel" />
+            </div>
+        </div>
+
+        <div class="w-full flex justify-start items-start mb-6 px-5 roundded-lg">
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="phone">Mobile No. <span
+                        class="text-red-600">*</span>:</label>
+                <input [(ngModel)]="newB2BUser.mob_Numbr" name="phone" class="ml-2 p-1" type="text" id="phone"
+                    [placeholder]="" required #mobilenumberRef="ngModel" />
+            </div>
+            <div class="w-[50%] px-5 pr-0 flex flex-col h-full">
+                <label class="text-lg font-semibold text-[#63040D]" for="imageUpload">Prof. image <span
+                        class="text-red-600">*</span>:</label>
+                <div class="w-[70%] mt-2 h-[8rem] border-[2px] flex justify-center items-center">
+                    <input required class=" w-[80%] text-sm" type="file" id="imageUpload" name="imageUpload"
+                        accept="image/*" (change)="onFileChange($event)">
+                </div>
+            </div>
+        </div>
+
+        <!-- Have to do pin validations  -->
+        <div class="w-full flex justify-start items-start mb-6 px-5 roundded-lg">
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="pin">Pin Number <span
+                        class="text-red-600">*</span>:</label>
+                <input #pinRef="ngModel" [(ngModel)]="newB2BUser.pinNumber" name="pin" class="ml-2 p-1" type="text"
+                    id="pin" [placeholder]="" required pattern="^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{13}$" />
+                <div *ngIf="pinRef.invalid && (pinRef.dirty || pinRef.touched)" class="text-red-600 text-sm mt-1">
+                    Pin must be 13 characters long and include at least one number and one special character.
+                </div>
+            </div>
+        </div>
+
+        <div class="w-full flex flex-col justify-start items-start gap-4 mb-6 px-5 roundded-lg">
+            <span class=" font-semibold text-lg">User Validity:</span>
+            <div class="mt-2 flex w-full items-center gap-8">
+                <div class="">
+                    <label class="text-lg font-semibold text-[#63040D]" for="from">Valid from <span
+                            class="text-red-600">*</span>: </label>
+                    <input [(ngModel)]="validFromDate" name="from" class="ml-2 p-1" type="date" id="from"
+                        [min]="todayDate" (change)="formatValidFromDate($event)" required #validfromRef="ngModel" />
+                </div>
+                <div class="">
+                    <label class="text-lg font-semibold text-[#63040D]" for="to">Valid to <span
+                            class="text-red-600">*</span>: </label>
+                    <input [(ngModel)]="validToDate" name="from" class="ml-2 p-1" type="date" id="from"
+                        [min]="validFromDate" (change)="formatValidToDate($event)" required #validtoRef="ngModel" />
+                </div>
+
+            </div>
+        </div>
+
+        <div class=" flex-col justify-center items-center w-full mt-8 pb-6 ">
+
+            <div class="w-full flex justify-center items-center">
+                <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Add User</button>
+            </div>
+
+            <!-- Error Message -->
+            <div *ngIf="formRef.submitted && formRef.invalid" class="text-red-600 text-center  mt-1 mb-1">
+                ***Fill all the required fields.***
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<div *ngIf="isPopupAllocateUserVisible"
+    class="fixed inset-0 z-20 flex justify-center items-center bg-black bg-opacity-50">
+    <form #formRef="ngForm" novalidate (click)="toggleAllocateUserProfilePopup()"
+        class="w-[35%] bg-white flex justify-start flex-col ">
+
+        <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+            <button (click)="toggleAllocateUserPopup()"
+                class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="w-full flex flex-col justify-start gap-4 items-start pt-8 mb-6 px-5 roundded-lg">
+            <div>
+                <label class="text-lg font-semibold text-[#63040D]" for="phone">Enter Mobile No. <span
+                        class="text-red-600">*</span>:</label>
+                <input [(ngModel)]="mobNumberForCredentials" name="phone" class="ml-2 p-1" type="text" id="phone"
+                    [placeholder]="" required #mobileNumberRef="ngModel" />
+            </div>
+        </div>
+
+        <div class=" flex justify-center w-full items-end pb-6 ">
+
+            <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Get Credentials</button>
+
+        </div>
+
+    </form>
+</div>
+
+<div *ngIf="isAllocateUSerProfileVisible"
+    class="fixed inset-0 z-30 flex justify-center items-center bg-black bg-opacity-50">
+    <form #formRef="ngForm" novalidate (submit)="AllocateUser()"
+        class="w-[55%] max-h-[32rem] overflow-y-scroll bg-white flex justify-start mb-4 flex-col ">
+
+        <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+            <button (click)="toggleCloseAllocateUserProfilePopup()"
+                class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="w-full flex justify-start mt-6 items-start mb-6 px-5 roundded-lg">
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="firstname">First Name:</label>
+                <span class="ml-2 text-lg">{{userForAllocation.b2bCldtvSubscribrFirstName}}</span>
+            </div>
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="lastname">Last Name:</label>
+                <span class="ml-2 text-lg">{{userForAllocation.b2bCddtvSubcribrLastName}}</span>
+            </div>
+        </div>
+
+        <div class="w-full flex justify-start items-start mb-6 px-5 roundded-lg">
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="gender">Gender:</label>
+                <span class="ml-2 text-lg ">{{userForAllocation.b2bCldtvSubscribrGenderId}}</span>
+            </div>
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="lastname">Email:</label>
+                <span class="ml-2 text-lg">{{userForAllocation.b2bCldtvSubscribrEmailId}}</span>
+            </div>
+        </div>
+
+        <div class="w-full flex justify-start items-start mb-6 px-5 roundded-lg">
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="phone">Mobile No.:</label>
+                <span class="ml-2 text-lg">{{mobNumberForCredentials}}</span>
+            </div>
+            <div class="w-[50%] px-5 pr-0 flex flex-col h-full">
+                <label class="text-lg font-semibold text-[#63040D]" for="imageUpload">Prof. image:</label>
+                <div class="w-[70%] mt-2 h-[8rem] border-[2px] p-3 flex justify-center items-center">
+                    <img class=" h-12" alt="" [src]="userForAllocation.b2bCldtvSubscribrProfImage">
+                </div>
+            </div>
+        </div>
+
+        <div class="flex mt-5 px-5 gap-5 mb-4 justify-start items-center">
+            <label class=" flex justify-start gap-1 items-center text-lg">
+                <input type="radio" [checked]="true" (click)="CorporateUnSelected3()" name="user"> Individual
+            </label>
+            <span class=" flex justify-center items-center text-lg text-red-500">OR</span>
+            <label class=" flex justify-start gap-1 items-center text-lg">
+                <input type="radio" (click)="CorporateSelected3()" name="user"> Corporate
+            </label>
+        </div>
+
+        <div *ngIf="isCorporateSelected3" class="w-full flex justify-start items-start mb-6 px-5 roundded-lg">
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="corpname">Corporate Name:</label>
+                <select class="ml-2 text-[15px] p-1" id="choice" name="choice" (change)="onSelectCorporate2($event)">
+                    <option *ngFor="let item of corporateArr2; let i = index" [value]="i">{{ item.cldtvCorpName }}
+                    </option>
+                </select>
+            </div>
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="division">Division</label>
+                <select class="ml-2 text-[15px] p-1" id="choice2" name="choice2" (change)="onSelectDivision2($event)">
+                    <option *ngFor="let item of divisionsArr2" [value]="item.cldtvDivId">{{ item.cldtvDivConName }}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class="w-full flex flex-col justify-start items-start mt-4 gap-4 mb-6 px-5 roundded-lg">
+            <span class=" font-semibold text-lg">User Validity:</span>
+            <div class="mt-2 flex w-full items-center gap-8">
+                <div class="">
+                    <label class="text-lg font-semibold text-[#63040D]" for="from">Valid from <span
+                            class="text-red-600">*</span>: </label>
+                    <input [(ngModel)]="userForAllocation.valid_Frm_Date" name="from" class="ml-2 p-1" type="date"
+                        id="from" [placeholder]="" required #validfromRef="ngModel" />
+                </div>
+                <div class="">
+                    <label class="text-lg font-semibold text-[#63040D]" for="to">Valid to <span
+                            class="text-red-600">*</span>: </label>
+                    <input [(ngModel)]="userForAllocation.valid_to_Date" name="to" class="ml-2 p-1" type="date" id="to"
+                        [placeholder]="" required #validtoRef="ngModel" />
+                </div>
+            </div>
+        </div>
+
+        <div class=" flex-col justify-center items-center w-full mt-8 pb-6 ">
+
+            <div class="w-full flex justify-center items-center">
+                <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Allocate B2B User To
+                    Channel</button>
+            </div>
+
+            <!-- Error Message -->
+            <div *ngIf="formRef.submitted && formRef.invalid" class="text-red-600 text-center  mt-1 mb-1">
+                ***Fill all the required fields.***
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<div *ngIf="isPopupMakeUserPaymentVisible"
+    class="fixed inset-0 z-20 flex justify-center items-center bg-black bg-opacity-50">
+    <form #formRef="ngForm" novalidate (ngSubmit)="togglePaymentWindowPopup()"
+        class="w-[62%] bg-white flex justify-start flex-col ">
+
+        <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+            <button (click)="toggleMakeUserPaymentPopup(-1)"
+                class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+        </div>
+
+        <div class=" w-full flex justify-start p-5 pb-2 gap-8">
+
+            <div class="w-[50%] flex">
+                <label class="text-lg font-semibold text-[#63040D]" for="plan">Purchase Type <span
+                        class="text-red-600">*</span>:</label>
+                <select class="ml-2 p-1" id="plan" name="plan" (change)="onPlanSelect($event)" required>
+                    <option value="" disabled selected>Select purchase type</option>
+                    <option value="iptv">IPTV Users Licence</option>
+                    <option value="face">Face-Connect Users Licence</option>
+                </select>
+            </div>
+
+            <div class="w-[50%] flex justify-start items-center gap-1">
+                <label class="text-lg font-semibold text-[#63040D]" for="quantity">User Licence Quantity <span
+                        class="text-red-600">*</span> :</label>
+                <div class="flex justify-start items-center gap-1">
+                    <div class="w-[7rem] h-[2.4rem] flex justify-start items-center border-black border-[1px]">
+                        <span class="text-lg p-1">{{licenceQuantity}}</span>
+                    </div>
+                    <div class="flex flex-col gap-[0.2rem] justify-between h-full items-between">
+                        <button type="button" (click)="increaseQuantity()"
+                            class="h-[1.1rem] w-[1.6rem] bg-gray-500 hover:bg-gray-400 text-white flex justify-center items-center border-[1px] border-black text-lg">+</button>
+                        <button type="button" (click)="decreaseQuantity()"
+                            class="h-[1.1rem] w-[1.6rem] bg-gray-500 hover:bg-gray-400 text-white flex justify-center items-center border-[1px] border-black text-lg">-</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class=" flex w-full justify-start p-5 pb-2 gap-8">
+            <div class="w-[50%] flex">
+                <label class="text-lg font-semibold text-[#63040D]" for="package">Package <span
+                        class="text-red-600">*</span> :</label>
+                <select (click)="slectedPackageDetails()" class="ml-2 p-1" id="package" name="package"
+                    [(ngModel)]="selectedPackage" required #packageRef="ngModel">
+                    <option value="" disabled>Select a package</option>
+                    <option *ngFor="let package of arrSubscriptionPackage" [value]="package.cldtvB2bSubsPackId">
+                        {{ package.cldtvB2bSubsPackName }}
+                    </option>
+                </select>
+            </div>
+        </div>
+
+        <div class=" flex w-full justify-start p-5 pb-2 gap-8">
+            <div class="w-full flex flex-col justify-start py-2 gap-1">
+
+                <div class=" w-[30%] flex justify-between items-center">
+                    <span class="text-lg font-sans font-semibold text-[#63040D]">Package Cost(INR):</span>
+                    <span class="ml-2 text-lg text-gray-500">{{selectedPackageDetailsObj.cldtvB2bSubsPackCost}}</span>
+                </div>
+
+                <div class=" w-[30%] flex justify-between items-center">
+                    <span class="text-lg font-sans font-semibold text-[#63040D]">Discount Offered(%):</span>
+                    <span
+                        class="ml-2 text-lg text-gray-500">{{selectedPackageDetailsObj.cldtvB2bSubsDiscountPercntg}}</span>
+                </div>
+
+                <div class=" w-[30%] flex justify-between items-center">
+                    <span class="text-lg font-sans font-semibold text-[#63040D]">Valid Duration(Days):</span>
+                    <span
+                        class="ml-2 text-lg text-gray-500">{{selectedPackageDetailsObj.cldtvB2bSubsPackValdDuratnDays}}</span>
+                </div>
+
+                <div class=" w-[30%] flex justify-between items-center">
+                    <span class="text-lg font-sans font-semibold text-[#63040D]">GST on Package(%):</span>
+                    <span
+                        class="ml-2 text-lg text-gray-500">{{selectedPackageDetailsObj.cldtvB2bSubsGstinPercentage}}</span>
+                </div>
+
+            </div>
+        </div>
+
+        <div class=" flex-col justify-center items-center w-full mt-8 pb-6 ">
+
+            <div class="w-full flex justify-center items-center">
+                <button type="submit" class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Check
+                    out</button>
+            </div>
+
+            <!-- Error Message -->
+            <div *ngIf="formRef.submitted && formRef.invalid" class="text-red-600 text-center  mt-1 mb-1">
+                ***Fill all the required fields.***
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<div *ngIf="isPopupPaymentWindowVisible"
+    class="fixed inset-0 z-30 flex justify-center items-center bg-black bg-opacity-50">
+
+    <form class="w-[50%] bg-white flex justify-start flex-col ">
+
+        <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+            <button (click)="togglePaymentWindowPopup(-1)"
+                class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="w-full flex mt-5 justify-between px-5 py-2 gap-10">
+            <span class="text-lg font-semibold text-[#63040D]">Cart-Id:<span
+                    class="ml-2 text-lg text-gray-500">98</span></span>
+            <button (click)="deleteCart(-1)" class="bg-red-500 text-white px-4 py-2 font-semibold">
+                Delete Cart
+            </button>
+        </div>
+
+        <div class="w-full flex flex-col justify-start px-5 py-2 gap-1">
+            <div class=" w-[60%] text-red-700 flex justify-start gap-1 items-center">
+                <span class="text-lg font-sans font-semibold ">Package:</span>
+                <span class="ml-2 text-lg">{{ licenceQuantity }} user Licence{{ licenceQuantity > 1 ? 's' : '' }}</span>
+            </div>
+        </div>
+
+        <div class="w-full flex flex-col justify-start px-5 py-2 gap-1">
+            <div class=" w-[60%] flex justify-between items-center">
+                <span class="text-lg font-sans font-semibold text-[#63040D]">Quantity:</span>
+                <span class="ml-2 text-lg text-gray-500">{{licenceQuantity}}</span>
+            </div>
+
+            <div class=" w-[60%] flex justify-between items-center">
+                <span class="text-lg font-sans font-semibold text-[#63040D]">GST
+                    "&#64;"<span>{{selectedPackageDetailsObj.cldtvB2bSubsGstinPercentage}}</span>:</span>
+                <span class="ml-2 text-lg text-gray-500">{{newCart.gstiN_Cost}}</span>
+            </div>
+
+            <div class=" w-[60%] flex justify-between items-center">
+                <span class="text-lg font-sans font-semibold text-[#63040D]">Discount:</span>
+                <span class="ml-2 text-lg text-gray-500">{{newCart.discount_Cost}}</span>
+            </div>
+
+            <div class=" w-[60%] flex flex-col justify-between items-center gap-[1]">
+                <div class="w-full h-[2px] bg-red-500"></div>
+                <div class=" w-[100%] flex justify-between items-center">
+                    <span class="text-lg font-bold text-[#63040D]">Total To be Paid:</span>
+                    <span class="ml-2 text-lg text-gray-500">{{newCart.amount_Due_Calculated}}</span>
+                </div>
+                <div class="w-full h-[2px] bg-red-500"></div>
+            </div>
+
+        </div>
+
+        <div class=" flex w-full flex-col mt-5 pb-6 gap-2 justify-center items-center ">
+
+            <button (click)="initiatePayment(newCart.id, newCart.amount_Due_Calculated, newCart.b2B_CLDTV_CART_ID)"
+                class="bg-green-500 px-4 py-2 hover:bg-green-600 text-white font-semibold">Make Payment</button>
+
+        </div>
+
+    </form>
+</div>
+
+<div *ngIf="isPopupViewInvoiceVisible"
+    class="fixed inset-0 z-30 flex justify-center items-center bg-black bg-opacity-50">
+    <div class="w-[65%] max-h-[32rem] overflow-y-scroll bg-white flex justify-start flex-col ">
+
+        <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+            <button (click)="togglePopupViewInvoiceVisible()"
+                class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+        </div>
+
+        <form class="w-full h-full flex flex-col" id="invoiceForm">
+            <div class="w-[90%] mx-auto flex justify-start pt-8 ">
+                <img alt="" [src]="logo" class="h-10">
+            </div>
+    
+            <div class="w-[90%] mx-auto my-4 flex justify-end">
+                <div class=" flex gap-2 justify-start items-start">
+                    <span class="text-gray-800 font-semibold">Date: </span>
+                    <p>{{formatDate(invoiceDetails.batchGeneratedDateTime)}}</p>
+                </div>
+            </div>
+    
+            <!-- top -->
+            <div class="w-[90%] mx-auto my-5 text-[11px] flex justify-between">
+                <div class="w-[30%] flex flex-col gap-1">
+                    <div class=" flex gap-2 justify-start items-start">
+                        <span class="text-gray-500 font-semibold">Platform: </span>
+                        <p>AD-Connect One TV One World</p>
+                    </div>
+                    <div class=" flex gap-2 justify-start items-start">
+                        <span class="text-gray-500 font-semibold min-w-fit">Seller Org.: </span>
+                        <p>{{invoiceDetails.orgName}}</p>
+                    </div>
+                    <div class=" flex gap-2 justify-start items-start">
+                        <span class="text-gray-500 font-semibold min-w-fit">GSTIN: </span>
+                        <p>{{invoiceDetails.orgGstin}}</p>
+                    </div>
+                    <div class=" flex gap-2 justify-start items-start">
+                        <span class="text-gray-500 font-semibold min-w-fit">Reg Address: </span>
+                        <p>{{invoiceDetails.orgAddress}}</p>
+                    </div>
+                </div>
+    
+                <div class="w-[30%] flex flex-col gap-2">
+                    <div class=" flex gap-2 justify-start items-start">
+                        <span class="text-gray-500 font-semibold">Invoice Number: </span>
+                        <p>{{invoiceDetails.performaInvoiceNumber}}</p>
+                    </div>
+    
+                    <div class="flex gap-2 justify-start items-center">
+                        <span class="text-gray-500 font-semibold">IPTV Licence: {{invoiceDetails.iptvLicenseFlg ? '\u2714' : '\u2716' }}</span>
+                    </div>
+    
+                    <div class="flex gap-2 justify-start items-center">
+                        <span class="text-gray-500 font-semibold">FACE-CONNECT Licence: {{invoiceDetails.fconctLicenceFlg ? '\u2714' : '\u2716' }}</span>
+                    </div>
+                </div>
+    
+                <div class="w-[30%] flex flex-col gap-2">
+                    <div class=" flex gap-2 justify-start items-start">
+                        <span class="text-gray-500 font-semibold min-w-fit">Buyer: </span>
+                        <p>{{invoiceDetails.channelOrgName}}</p>
+                    </div>
+                    <div class=" flex gap-2 justify-start items-start">
+                        <span class="text-gray-500 font-semibold min-w-fit">GSTIN: </span>
+                        <p>{{invoiceDetails.channelServerDetails}}</p>
+                    </div>
+                    <div class=" flex gap-2 justify-start items-start">
+                        <span class="text-gray-500 font-semibold min-w-fit">Buyer Adress: </span>
+                        <p>{{invoiceDetails.channelOrgAddress}}</p>
+                    </div>
+                </div>
+    
+            </div>
+    
+            <table class="w-[90%] text-[12px] mx-auto mb-5 mt-5 border-collapse border border-black text-left">
+                <thead>
+                    <tr>
+                        <th style="border: 1px solid black; padding: 0.5rem; text-align: left; width: 10%;">#Serial</th>
+                        <th style="border: 1px solid black; padding: 0.5rem; text-align: left; width: 30%;">Package Name</th>
+                        <th style="border: 1px solid black; padding: 0.5rem; text-align: left; width: 15%;">Licence Issued</th>
+                        <th style="border: 1px solid black; padding: 0.5rem; text-align: left; width: 20%;">Batch #</th>
+                        <th style="border: 1px solid black; padding: 0.5rem; text-align: left; width: 20%;">Transaction Id</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="border: 1px solid black; padding: 0.5rem; text-align: left;">01</td>
+                        <td style="border: 1px solid black; padding: 0.5rem; text-align: left;">{{invoiceDetails.packName}}</td>
+                        <td style="border: 1px solid black; padding: 0.5rem; text-align: left;">{{invoiceDetails.licenseBoughtQuantity}}</td>
+                        <td style="border: 1px solid black; padding: 0.5rem; text-align: left;">{{invoiceDetails.licBatchNumber}}</td>
+                        <td style="border: 1px solid black; padding: 0.5rem; text-align: left;">{{invoiceDetails.paymentTransactionId}}</td>
+                    </tr>
+                </tbody>
+            </table>
+    
+            <div class="w-[90%] mx-auto flex flex-col justify-start py-2 gap-1 my-5">
+            <table class="w-[60%] text-[12px] border-collapse border border-black text-left">
+                <thead style="color: #4a4a4a;">
+                    <tr>
+                        <th style="border: 1px solid black; padding: 0.5rem; text-align: center;" colspan="2">** Transaction Details **</th>
+                    </tr>
+                    <tr>
+                        <th style="border: 1px solid black; padding: 0.5rem; text-align: left;">Details</th>
+                        <th style="border: 1px solid black; padding: 0.5rem; text-align: left;">Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="border: 1px solid black; padding: 0.5rem; text-align: left;">Single Licence cost</td>
+                        <td style="border: 1px solid black; padding: 0.5rem; text-align: left;">{{invoiceDetails.packCost}}</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid black; padding: 0.5rem; text-align: left;">GSTIN &#64;{{invoiceDetails.gstPercent}}%(INR)</td>
+                        <td style="border: 1px solid black; padding: 0.5rem; text-align: left;">{{invoiceDetails.gstAmount}}</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid black; padding: 0.5rem; text-align: left;">Discount(%)</td>
+                        <td style="border: 1px solid black; padding: 0.5rem; text-align: left;">{{invoiceDetails.discountPercent}}</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid black; padding: 0.5rem; text-align: left;">Discount Amount(INR)</td>
+                        <td style="border: 1px solid black; padding: 0.5rem; text-align: left;">{{invoiceDetails.discountAmount}}</td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid black; padding: 0.5rem; text-align: left; font-weight: bold;">Total Amount(INR)</td>
+                        <td style="border: 1px solid black; padding: 0.5rem; text-align: left; font-weight: bold;">{{invoiceDetails.totalPayableCost}}</td>
+                    </tr>
+                </tbody>
+            </table>
+    
+            </div>
+    
+            <div class="w-[90%] mx-auto my-5 flex justify-start">
+                <div class="w-[100%] flex flex-col">
+                    <div class=" flex gap-2 justify-start items-start">
+                        <span class="text-gray-800 font-semibold">Support email: </span>
+                        <p>{{invoiceDetails.orgSupportEmail}}</p>
+                    </div>
+                    <div class=" flex gap-2 justify-start items-start">
+                        <span class="text-gray-800 font-semibold">Support phone: </span>
+                        <p>{{invoiceDetails.orgSupportPhone}}</p>
+                    </div>
+                    <span class="text-[15px] text-red-500 font-serif">This is a system generated invoice so no need of signature</span>
+                    
+                </div>
+            </div>
+        </form>
+
+
+        <div class=" flex w-full flex-col mt-5 pb-6 gap-2 justify-center items-center ">
+
+            <button (click)="generatePDF()" class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Generate PDF</button>
+
+        </div>
+
+    </div>
+</div>
+
+<div *ngIf="isPopupViewCartVisible" class="fixed inset-0 z-30 flex justify-center items-center bg-black bg-opacity-50">
+    <div class="w-[50%] bg-white flex justify-start flex-col">
+        <div class="w-full px-4 pt-8 flex flex-row-reverse">
+            <button (click)="togglePopupViewCartVisible()"
+                class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="w-full flex flex-col justify-start px-5 py-2 gap-2 mb-3">
+
+            <div class=" flex justify-start items-center gap-2">
+                <span class="text-lg font-sans font-semibold text-[#63040D]">CartId:</span>
+                <span class="ml-2 text-lg text-gray-500">{{currentCart}}</span>
+            </div>
+
+            <div class=" flex justify-start items-center gap-2">
+                <span class="text-lg font-sans font-semibold text-[#63040D]">IPTV Licence:</span>
+                <img [src]="cartDetail.b2bIptvLicenseFlg? valid : unvalid" alt="valid" class="w-5 h-5" />
+            </div>
+
+            <div class=" flex justify-start items-center gap-2">
+                <span class="text-lg font-sans font-semibold text-[#63040D]">FACE-CONNECT Licence:</span>
+                <img [src]="cartDetail.b2bFconctLicenceFlg? valid : unvalid" alt="unvalid" class="w-5 h-5" />
+            </div>
+
+        </div>
+
+        <div class="w-full flex flex-col justify-start px-5 py-2 gap-1 mb-5">
+
+            <div class=" w-[70%] flex justify-between items-center">
+                <span class="text-lg font-sans font-semibold text-[#63040D]">Package name:</span>
+                <span class="ml-2 text-lg text-gray-500">{{cartDetail.b2bCldtvPackname}}</span>
+            </div>
+
+            <div class=" w-[70%] flex justify-between items-center">
+                <span class="text-lg font-sans font-semibold text-[#63040D]">Package cost:</span>
+                <span class="ml-2 text-lg text-gray-500">{{cartDetail.b2bCldtvPackCost}}</span>
+            </div>
+
+            <div class=" w-[70%] flex justify-between items-center">
+                <span class="text-lg font-sans font-semibold text-[#63040D]">User licence duration(days):</span>
+                <span class="ml-2 text-lg text-gray-500">{{cartDetail.b2bCldtvUsrLicnDuratnInDays}}</span>
+            </div>
+
+            <div class=" w-[70%] flex justify-between items-center">
+                <span class="text-lg font-sans font-semibold text-[#63040D]">Quantity:</span>
+                <span class="ml-2 text-lg text-gray-500">{{cartDetail.b2bCldtvUserLicnBoughtQuantity}}</span>
+            </div>
+
+            <div class=" w-[70%] flex justify-between items-center">
+                <span class="text-lg font-sans font-semibold text-[#63040D]">Discount(%):</span>
+                <span class="ml-2 text-lg text-gray-500">{{cartDetail.b2bCldtvDiscntPercntg}}</span>
+            </div>
+
+            <div class=" w-[70%] flex justify-between items-center">
+                <span class="text-lg font-sans font-semibold text-[#63040D]">GSTIN charge(%):</span>
+                <span class="ml-2 text-lg text-gray-500">{{cartDetail.b2bCldtvGstinPercntg}}</span>
+            </div>
+
+            <div class=" w-[70%] flex justify-between items-center">
+                <span class="text-lg font-sans font-semibold text-[#63040D]">Transaction currency</span>
+                <span class="ml-2 text-lg text-gray-500">{{cartDetail.b2bCldtvTxnCurrency}}</span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div *ngIf="isPopupActivateUserVisible"
+    class="fixed inset-0 z-20 flex justify-center items-center bg-black bg-opacity-50">
+    <form #formRef="ngForm" novalidate (ngSubmit)="ActivateLicence(formRef)"
+        class="w-[45%] pb-5 bg-white flex justify-start mb-4 flex-col" novalidate>
+
+        <div class="w-full px-4 pt-8 items-center flex flex-row-reverse">
+            <button (click)="toggleActivateUserPopup()"
+                class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Activate Licence Type -->
+        <div class="w-[100%] m-5 flex">
+            <label class="text-lg font-semibold text-[#63040D]" for="type">
+                Activate Licence Type <span class="text-red-600">*</span> :
+            </label>
+            <select class="ml-2 p-1" id="type" name="type" (change)="onLicenceTypeSelect($event)" required
+                #typeRef="ngModel" ngModel>
+                <option value="" disabled selected>Licence type</option>
+                <option value="iptv">IPTV Users Licence</option>
+                <option value="face">Face-Connect Users Licence</option>
+            </select>
+        </div>
+
+        <!-- Subscription Plan -->
+        <div class="w-[100%] m-5 flex">
+            <label class="text-lg font-semibold text-[#63040D]" for="package">
+                Subscription Plan <span class="text-red-600">*</span> :
+            </label>
+            <select class="ml-2 p-1" id="package" name="package" [(ngModel)]="activeteLicence.subs_Planid" required
+                #packageRef="ngModel">
+                <option value="" disabled selected>Select a package</option>
+                <option *ngFor="let package of subscriptionPlanList" [value]="package.cldtvChanlelSubsPlanid">
+                    {{ package.cldtvChanelSubsPlanName }}
+                </option>
+            </select>
+        </div>
+
+        <!-- Licence Invoice No. -->
+        <div class="w-[100%] m-5 flex">
+            <label class="text-lg font-semibold text-[#63040D]" for="licence">
+                Licence Invoice No. <span class="text-red-600">*</span> :
+            </label>
+            <input name="licence" class="ml-2 p-1" type="text" id="licence" required
+                [(ngModel)]="activeteLicence.invoiceid" #licenceRef="ngModel" />
+        </div>
+
+        <!-- Submit Button -->
+        <div class="flex justify-center mt-5 w-full items-end pb-2">
+            <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">
+                Activate Licence for User
+            </button>
+        </div>
+
+        <!-- Error Message -->
+        <div *ngIf="formRef.submitted && formRef.invalid" class="text-red-600 text-center  mt-1">
+            ***Fill all the required fields.***
+        </div>
+
+    </form>
+</div>
+
+<div *ngIf="isPopupDeActivateUserVisible"
+    class="fixed inset-0 z-20 flex justify-center items-center bg-black bg-opacity-50">
+    <form #formRef="ngForm" novalidate (ngSubmit)="DeactivateUser(formRef)"
+        class="w-[35%] bg-white flex justify-start flex-col ">
+
+        <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+            <button (click)="toggleDeActivateUserPopup()"
+                class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="w-full flex flex-col justify-start gap-4 items-start pt-8 mb-6 px-5 roundded-lg">
+            <div>
+                <label class="text-lg font-semibold text-[#63040D]" for="for">Reason:</label>
+                <select class="ml-2 p-1" id="for" name="for" [(ngModel)]="deactivateUser.reasonId"
+                    (change)="onSelectReason($event)" required #reasonRef="ngModel">
+                    <option value="" disabled selected>Select a Reason</option>
+                    <option value="1">Reason 1</option>
+                    <option value="2">Reason 2</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="flex flex-col mb-3 justify-center items-center">
+            <!-- Submit Button -->
+            <div class="flex justify-center mt-5 w-full items-end pb-2">
+                <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">
+                    De-Activate User
+                </button>
+            </div>
+
+            <!-- Error Message -->
+            <div *ngIf="formRef.submitted && formRef.invalid" class="text-red-600 text-center  mt-1">
+                ***Fill all the required fields.***
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<div *ngIf="isShowCartVisible" class="fixed inset-0 z-30 flex justify-center items-center bg-black bg-opacity-50">
+    <form class="w-[50%] bg-white flex justify-start flex-col">
+        <div class="w-full px-4 pt-8 flex flex-row-reverse">
+            <button (click)="toggleShowCartPopup()"
+                class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="w-full flex mt-8 justify-between px-5 py-2 gap-10">
+            <span class="text-lg font-semibold text-[#63040D]">Cart-Id:<span
+                    class="ml-2 text-lg text-gray-500">{{showCart.b2bCldtvCartId}}</span></span>
+            <button (click)="deleteCart()" class="bg-red-500 text-white px-4 py-2 font-semibold">
+                Delete Cart
+            </button>
+        </div>
+
+        <div class="w-full flex flex-col justify-start px-5 py-2 gap-1">
+
+            <div class=" w-[60%] flex justify-between items-center">
+                <span class="text-lg font-sans font-semibold text-[#63040D]">GST "&#64;"18%:</span>
+                <span class="ml-2 text-lg text-gray-500">{{showCart.b2bCldtvGstinAmt}}</span>
+            </div>
+
+            <div class=" w-[60%] flex justify-between items-center">
+                <span class="text-lg font-sans font-semibold text-[#63040D]">Discount:</span>
+                <span class="ml-2 text-lg text-gray-500">{{showCart.b2bCldtvDiscntAmt}}</span>
+            </div>
+
+            <div class=" w-[60%] flex flex-col justify-between items-center gap-[1]">
+                <div class="w-full h-[2px] bg-red-500"></div>
+                <div class=" w-[100%] flex justify-between items-center">
+                    <span class="text-lg font-bold text-[#63040D]">Total To be Paid:</span>
+                    <span class="ml-2 text-lg text-gray-500">{{showCart.amountDueCalculated}}</span>
+                </div>
+                <div class="w-full h-[2px] bg-red-500"></div>
+            </div>
+
+        </div>
+
+        <div class="flex w-full flex-col mt-5 pb-6 gap-2 justify-center items-center">
+            <button (click)="initiatePayment(showCart.id, showCart.amountDueCalculated, newCart.b2B_CLDTV_CART_ID)"
+                class="bg-green-500 px-4 py-2 hover:bg-green-600 text-white font-semibold">Make Payment</button>
+        </div>
+    </form>
+</div>
+
+<div *ngIf="isBlacklistVisible" class="fixed inset-0 z-30 flex justify-center items-center bg-black bg-opacity-50">
+    <form #formRef="ngForm" novalidate (ngSubmit)="BlacklistUser(formRef)"
+        class="w-[35%] bg-white flex justify-start flex-col">
+
+        <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+            <button (click)="toggleBlacklistPopup()"
+                class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="w-full flex flex-col justify-start gap-4 items-start pt-8 mb-6 px-5 roundded-lg">
+            <div>
+                <label class="text-lg font-semibold text-[#63040D]" for="for">Reason:</label>
+                <select class="ml-2 p-1" id="for" name="for" [(ngModel)]="blackistUser.reasonId"
+                    (change)="onSelectReason($event)" required #reasonRef="ngModel">
+                    <option value="" disabled selected>Select a Reason</option>
+                    <option value="1">Reason 1</option>
+                    <option value="2">Reason 2</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="flex flex-col mb-3 justify-center items-center">
+            <!-- Submit Button -->
+            <div class="flex justify-center mt-5 w-full items-end pb-2">
+                <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">
+                    Blacklist User
+                </button>
+            </div>
+
+            <!-- Error Message -->
+            <div *ngIf="formRef.submitted && formRef.invalid" class="text-red-600 text-center  mt-1">
+                ***Fill all the required fields.***
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<div *ngIf="showPaymentStatusPopup && showPaymentStatusTypePopup"
+    class="fixed inset-0 z-30 flex justify-center items-center bg-black bg-opacity-50">
+    <div class="w-[40%] bg-white flex-col px-5 py-10 justify-center items-center">
+        <div class="w-full flex flex-col justify-center items-center">
+
+            <div class="rounded-full flex justify-center items-center w-[12rem] h-[12rem] bg-green-200">
+                <div class="rounded-full flex justify-center items-center w-[9rem] h-[9rem] bg-green-300">
+                    <div class="rounded-full flex justify-center items-center w-[6rem] h-[6rem] bg-green-400">
+                        <img alt="" [src]="success" class="w-[4rem] h-[4rem]" />
+                    </div>
+                </div>
+            </div>
+
+            <div class=" w-full flex justify-center mt-10 mb-8 items-center">
+                <span class=" text-2xl font-semibold">Your Payment was Successfull!</span>
+            </div>
+
+            <div class=" w-full flex justify-center items-center">
+                <button (click)="cloyePaymentSuccessScreen()"
+                    class="bg-green-500 px-4 rounded-md py-2 hover:bg-green-600 text-white font-semibold">
+                    Close
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>

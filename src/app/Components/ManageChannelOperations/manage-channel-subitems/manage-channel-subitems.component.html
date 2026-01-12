@@ -1,0 +1,1035 @@
+<div class="flex flex-col w-full">
+    <div class="w-full flex flex-col gap-10 justify-center items-center">
+        <div class="text-orange-500 w-full font-bold font-abcd text-2xl">
+            Manage Channel Subitem
+        </div>
+
+        <div class="flex w-[95%] gap-6 flex-col">
+            <div class="w-full flex items-center justify-between flex-row-reverse">
+                <div class=" flex flex-col w-full">
+                    
+                        <div class=" w-full flex justify-between">
+                            <label class="text-lg font-semibold text-[#63040D]" for="verticalName">Channel Name: <span class=" text-gray-500">{{userData.accT_NAME}}</span></label>
+                            <button class="bg-[#63040D] text-white px-4 py-2 font-semibold" (click)="toggleAddSubitem()">
+                                Add Channel Subitem
+                            </button>
+                        </div>
+
+                        <label class="text-lg font-semibold text-[#63040D]" for="verticalName">Channel Id: <span class=" text-gray-500">{{userData.accT_ID}}</span></label>
+
+                        <div>
+                            <label class="text-lg font-semibold text-[#63040D]" for="choice">Select Item: </label>
+                            <select (change)="fetchChannelSubitems($event)" class="ml-2 p-1" id="choice" name="choice">
+                                <option *ngFor="let item of ChannelItemsIdArr" [ngValue]="item">{{ item.adcChannelItemName }}</option>
+                            </select>
+                        </div>
+
+                </div>
+            </div>
+
+            <div class="w-full p-5 bg-white border-[1px] flex flex-col justify-start border-black">
+                <div class="h-2 flex text-[13px] justify-start font-semibold text-[#63040D] w-full mb-10">
+                    <span class=" w-[6%] h-10">Serial#</span>
+                    <span class=" w-[9%] h-10">Item Name</span>
+                    <span class="w-[6%] h-10">Item Id</span>
+                    <span class="w-[9%] h-10">Subitem Id</span>
+                    <span class="w-[11%] h-10">Subitem name</span>
+                    <span class="w-[6%] h-10">Media</span>
+                    <span class="w-[9%] h-10">Avl. Promo</span>
+                    <span class="w-[6%] h-10">Promo</span>
+                    <span class="w-[6%] h-10">Details</span>
+                    <span class="w-[5%] h-10">Valid</span>
+                    <div class=" flex flex-col w-[28%] h-10">
+                        <div class=" w-full flex flex-col justify-center items-center h-5">
+                            <div class="w-full h-6 flex flex-col justify-end">
+                                <div class="w-full h-1 bg-red-500"></div>
+                            </div>
+                            <span class="px-2 absolute bg-white z-10">Actions</span>
+                            <div class=" w-full flex justify-between h-4">
+                                <div class="w-1 h-full bg-red-500"></div>
+                                <div class="w-1 h-full bg-red-500"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w-full max-h-[17rem] flex font-semibold flex-col gap-1">
+                    <div *ngFor="let item of ChannelSubitemsArr, let i = index" class="w-full text-[10px] py-2 flex justify-start">
+                        <div class=" w-[6%] h-10">{{i}}</div>
+                        <div class=" w-[9%] h-10">{{item.itemName}}</div>
+                        <div class="w-[6%] h-10">{{item.itemId}}</div>
+                        <div class="w-[9%] h-10">{{item.adcSubitemId}}</div>
+                        <div class="w-[11%] h-10">{{item.adcSubitemName}}</div>
+                        <button (click)="showMedia(item.adcSubitemImage, item.adcSubitemType)" class="-mt-2 w-[6%] h-10">
+                            <img [src]="media" alt="" class=" h-6">
+                        </button>
+                        <div class="w-[9%] h-10">
+                            <img [src]="item.adcSubitemActivFlg === true ? valid : unvalid" alt="Validity" class="h-6 w-auto" />
+                        </div>
+                        <button (click)="showPromo(item.adcSubitemId)" class="w-[6%] h-5"> 
+                            <img [src]="promo" class=" h-5">
+                        </button>
+                        <div class="w-[6%] h-10">
+                            <button class="text-[7px] w-[55%] border-[1px]">Details</button>
+                        </div>
+                        <div class="w-[5%] h-10">
+                            <img [src]="valid" class=" h-6">
+                        </div>
+                        <div class=" w-[28%] flex justify-between items-start h-10">
+                            <button (click)="togglePopup2(item)"><img [src]="edit" class="h-6"></button>
+                            <button (click)="togglePopup3()" class="px-1 bg-yellow-500 text-white">VOD</button>
+                            <button (click)="togglePopup4()"><img [src]="monetization" class="h-6"></button>
+                            <button (click)="togglePopup5(item)" class="px-1 bg-yellow-500 text-white">PROMO</button>
+                            <button><img [src]="people" class="h-6 border-[1px] border-black rounded-full"></button>
+                            <button (click)="togglePopup6(item)"><img [src]="cineam" class="h-6"></button>
+                            <button (click)="togglePopup7()"><img [src]="subtitle" class="h-6"></button>
+                            <button (click)="togglePopup8()" class="px-1 bg-yellow-500 text-white">Top List</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- popup add --> 
+    <div *ngIf="isPopupVisible1" class="fixed z-20 inset-0 flex justify-center items-center bg-black bg-opacity-50">
+        <form #formRef="ngForm" novalidate (ngSubmit)="addChannelItem(formRef)" class="w-[55%] bg-white flex justify-start flex-col ">
+
+            <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+                <button (click)="toggleAddSubitem()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                      </svg>
+                </button>
+            </div>
+
+            <div class="w-full flex justify-start p-5 gap-8">
+                <span class="text-lg font-semibold text-[#63040D]">Channel id:<span class="ml-2 text-lg text-gray-500">{{userData.accT_ID}}</span></span>            
+                <span class="text-lg font-semibold text-[#63040D]">Channel name:<span class="ml-2 text-lg text-gray-500">{{userData.accT_NAME}}</span></span> 
+            </div>
+
+            <div class="w-full flex mb-5 rounded-lg">
+
+                <div class="w-[50%] flex flex-col gap-6 h-full p-5 pr-0">
+                    <div>
+                        <label class="text-lg font-semibold text-[#63040D]" for="subitemname">Subitem name <span class="text-red-600">*</span>:</label>
+                        <input [(ngModel)]="AddChannelSubItem.adcSubitemName" name="subitemname" class="ml-2 p-1" type="text" id="subitemname" placeholder="" required  #subnameRef="ngModel"/>
+                    </div>
+
+                    <div class="flex justify-start items-center">
+                            <label class="w-[33%] flex justify-start gap-1 items-center text-lg">
+                              <input  type="radio" checked (change)="onAddLanguageChange('single')" name="language" value="d2c">
+                              Single lang.
+                            </label>
+
+                            <span class="w-[12%] flex justify-center items-center text-lg text-red-500">OR</span>
+                            
+                            <label class="w-[45%] flex justify-start gap-1 items-center text-lg">
+                              <input  type="radio"  (change)="onAddLanguageChange('multi')" name="language" value="b2b">
+                              Multiple lang.
+                            </label>
+                    </div> 
+                    
+                    <div>
+                        <label class="text-lg font-semibold text-[#63040D]" for="duration">Duration (in min) <span class="text-red-600">*</span>:</label>
+                        <input [(ngModel)]="AddChannelSubItem.adcSubitemDurationInSecnds"  name="duration" class="ml-2 p-1" type="number" id="duration" placeholder="0" min="0" required  #durationRef="ngModel"/>
+                    </div>
+            
+                    <div>
+                        <label class="text-lg font-semibold text-[#63040D]" for="subitem">Subitem type <span class="text-red-600">*</span>:</label>
+                        <select [(ngModel)]="AddChannelSubItem.adcSubitemType" (change)="onSubitemTypeChange($event)" class="ml-2 p-1" id="choice" name="subitem" required #subitemRef="ngModel">
+                            <option value="" disabled selected>Subitem Type</option>
+                            <option value="audio">Audio</option>
+                            <option value="video">Video</option>
+                            <option value="digitaltext">Digital text</option>
+                            <option value="imagerepository">Images Repository</option>
+                        </select>
+                    </div>
+                </div>
+            
+                <div class="w-[50%] p-5 pr-0 gap-6 flex flex-col h-full">
+
+                    <div class="w-[100%] flex p-5 pr-0 flex-col h-full">
+                        <label class="text-lg font-semibold text-[#63040D]" for="imageUpload">Add media:</label>
+                        <div class="flex flex-col gap-3">
+                            <div class="w-[70%] mt-2 h-[8rem] p-2 border-[2px] flex justify-center items-center">
+                                <!-- Render Image -->
+                                <img *ngIf="selectedFileType === 'image'" class="max-w-max h-full" alt="Image preview" [src]="SelectedVerticalImageToBeAdded" />
+                            
+                                <!-- Render Video -->
+                                <video *ngIf="selectedFileType === 'video'" class="max-w-max h-full" controls>
+                                    <source [src]="SelectedVerticalImageToBeAdded" type="video/mp4" />
+                                    Your browser does not support the video tag.
+                                </video>
+                            
+                                <!-- Render Audio -->
+                                <audio *ngIf="selectedFileType === 'audio'" class="w-full" controls>
+                                    <source [src]="SelectedVerticalImageToBeAdded" type="audio/mp3" />
+                                    Your browser does not support the audio element.
+                                </audio>
+                            
+                                <!-- Render PDF/Text (Embed) -->
+                                <!-- <iframe *ngIf="selectedFileType === 'digitaltext'" class="w-full h-full" [src]="SelectedVerticalImageToBeAdded"></iframe> -->
+                                <span *ngIf="selectedFileType === 'digitaltext'">Doc</span>
+                            
+                                <!-- Fallback Message -->
+                                <p *ngIf="!SelectedVerticalImageToBeAdded">No file selected</p>
+                            </div>
+                            
+                            <input [(ngModel)]="AddChannelSubItem.adcSubitemImage" class="w-[80%] text-sm" type="file" id="imageUpload" name="imageUpload"
+                                [disabled]="disableMediaInput" [accept]="fileAcceptType" (change)="onFileChange($event, 1)" required #fileRef="ngModel" />
+                            <div *ngIf="formRef.submitted && fileRef.invalid" class="text-red-600 text-sm">
+                                * File is required *
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="text-lg font-semibold text-[#63040D]" for="mediatype">Media type <span class="text-red-600">*</span>:</label>
+                        <select [(ngModel)]="AddChannelSubItem.adcSubitemMediaType" class="ml-2 p-1" id="mediatype" name="mediatype" required  #mediaRef="ngModel">
+                            <option value="" disabled selected>Select Media Type</option>
+                            <option value="hd">HD</option>
+                            <option value="hd5.1">HD 5.1</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class=" flex-col justify-center items-center w-full mt-8 pb-6 ">
+            
+                <div class="w-full flex justify-center items-center">
+                    <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Add Channel Subitem</button>  
+                </div>
+            
+                 <!-- Error Message -->
+                <div *ngIf="formRef.submitted && formRef.invalid" class="text-red-600 text-center  mt-1 mb-1">
+                    ***Fill all the required fields.***
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- popup edit validation done-->
+    <div *ngIf="isPopupVisible2" class="fixed z-20 inset-0 flex justify-center items-center bg-black bg-opacity-50">
+        <form (ngSubmit)="editChannelItem()" class="w-[55%] bg-white flex justify-start flex-col ">
+
+            <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+                <button (click)="togglePopup2()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                      </svg>
+                </button>
+            </div>
+
+            <div class="w-full flex justify-start p-5 gap-8">
+                <span class="text-lg font-semibold text-[#63040D]">Channel id:<span class="ml-2 text-lg text-gray-500">48</span></span>            
+                <span class="text-lg font-semibold text-[#63040D]">Channel name:<span class="ml-2 text-lg text-gray-500">Cartoon Network</span></span> 
+            </div>
+
+            <div class="w-full flex mb-5 rounded-lg  ">
+
+                <div class="w-[50%] flex flex-col gap-6 h-full p-5 pr-0">
+                    <div>
+                        <label class="text-lg font-semibold text-[#63040D]" for="itemname">Item name:</label>
+                        <input [(ngModel)]="SelectedSubItem.itemName" name="itemname" class="ml-2 p-1" type="text" id="itemname" [placeholder]="SelectedSubItem.itemName" required />
+                    </div>
+
+                    <div>
+                        <label class="text-lg font-semibold text-[#63040D]" for="subitemname">Subitem name:</label>
+                        <input [(ngModel)]="SelectedSubItem.adcSubitemName" name="subitemname" class="ml-2 p-1" type="text" id="subitemname" [placeholder]="SelectedSubItem.adcSubitemName" required />
+                    </div>
+
+                    <div class="flex justify-start items-center">
+                            <label class="w-[33%] flex justify-start gap-1 items-center text-lg">
+                              <input [checked]="SelectedSubItem.adcSubitemSingleLangFlg" (change)="onEditLanguageChange('single')" type="radio" name="language" value="d2c">
+                              Single lang.
+                            </label>
+
+                            <span class="w-[12%] flex justify-center items-center text-lg text-red-500">OR</span>
+                            
+                            <label class="w-[45%] flex justify-start gap-1 items-center text-lg">
+                              <input [checked]="SelectedSubItem.adcSubitemMultiLangFlg" (change)="onEditLanguageChange('multi')" type="radio" name="language" value="b2b">
+                              Multiple lang.
+                            </label>
+                    </div> 
+                    
+                    <div>
+                        <label class="text-lg font-semibold text-[#63040D]" for="duration">Duration (in min):</label>
+                        <input [(ngModel)]="SelectedSubItem.adcSubitemDurationInSecnds" name="duration" class="ml-2 p-1" type="number" id="duration" [placeholder]="SelectedSubItem.adcSubitemDurationInSecnds" required />
+                    </div>
+            
+                    <div>
+                        <label class="text-lg font-semibold text-[#63040D]" for="subitem">Subitem type:</label>
+                        <select [(ngModel)]="SelectedSubItem.adcSubitemType" class="ml-2 p-1" id="choice" name="subitem" (change)="onSubitemTypeChange($event)">
+                            <option value="audio">Audio</option>
+                            <option value="video">Video</option>
+                            <option value="digitaltext">Digital text</option>
+                            <option value="imagerepository">Images Repository</option>
+                        </select>
+                    </div>
+                </div>
+            
+                <div class="w-[50%] p-5 pr-0 gap-6 flex flex-col h-full">
+
+                    <div class="w-[100%] flex p-5 pr-0 flex-col h-full">
+                        <label class="text-lg font-semibold text-[#63040D]" for="imageUpload">Change media:</label>
+                        <div class="flex flex-col gap-3">
+                            <div class="w-[70%] mt-2 h-[8rem] p-2 border-[2px] flex justify-center items-center">
+                                <!-- Render Image -->
+                                <img *ngIf="selectedFileType === 'image'" class="max-w-max h-full" alt="Image preview" [src]="SelectedVerticalImageToBeAdded" />
+                            
+                                <!-- Render Video -->
+                                <video *ngIf="selectedFileType === 'video'" class="max-w-max h-full" controls>
+                                    <source [src]="SelectedVerticalImageToBeAdded" type="video/mp4" />
+                                    Your browser does not support the video tag.
+                                </video>
+                            
+                                <!-- Render Audio -->
+                                <audio *ngIf="selectedFileType === 'audio'" class="w-full" controls>
+                                    <source [src]="SelectedVerticalImageToBeAdded" type="audio/mp3" />
+                                    Your browser does not support the audio element.
+                                </audio>
+                            
+                                <!-- Render PDF/Text (Embed) -->
+                                <!-- <iframe *ngIf="selectedFileType === 'digitaltext'" class="w-full h-full" [src]="SelectedVerticalImageToBeAdded"></iframe> -->
+                                <span *ngIf="selectedFileType === 'digitaltext'">Doc</span>
+                            
+                                <!-- Fallback Message -->
+                                <p *ngIf="!SelectedVerticalImageToBeAdded">No file selected</p>
+                            </div>
+                            
+                            <input [(ngModel)]="SelectedSubItem.adcSubitemImage" class="w-[80%] text-sm" type="file" id="imageUpload" name="imageUpload"
+                             [accept]="fileAcceptType" (change)="onFileChange($event, 1)" />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="text-lg font-semibold text-[#63040D]" for="mediatype">Media type:</label>
+                        <select [(ngModel)]="SelectedSubItem.adcSubitemMediaType" class="ml-2 p-1" id="mediatype" name="mediatype">
+                            <option value="hd">HD</option>
+                            <option value="hd5.1">HD 5.1</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="text-lg font-semibold text-[#63040D]" for="choice">Valid:</label>
+                        <select [(ngModel)]="SelectedSubItem.adcSubitemActivFlg" class="ml-2 p-1" id="choice" name="choice">
+                            <option [value]="true">Yes</option>
+                            <option [value]="false">No</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class=" flex justify-center w-full items-end pb-6 ">
+
+                <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Save Channel Subitem</button>
+
+            </div>
+
+        </form>
+    </div>
+    
+    <!-- vod popup -->
+    <div *ngIf="isPopupVisible3" class="fixed z-20 inset-0 flex justify-center items-center bg-black bg-opacity-50">
+        <form class="w-[55%] bg-white flex justify-start flex-col ">
+
+            <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+                <button (click)="togglePopup3()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                      </svg>
+                </button>
+            </div>
+
+            <div class="w-full flex justify-start p-5 gap-8">
+                <span class="text-lg font-semibold text-[#63040D]">Subitem id:<span class="ml-2 text-lg text-gray-500"></span></span>            
+            </div>
+
+            <div class="w-full flex mb-5 rounded-lg  ">
+
+                <div class="w-[50%] flex flex-col gap-6 h-full p-5 pr-0">
+            
+                    <div>
+                        <label class="text-lg font-semibold text-[#63040D]" for="demand">Video on demand:</label>
+                        <select  class="ml-2 p-1" id="choice" name="demand">
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="text-lg font-semibold text-[#63040D]" for="listing">Date for listing in VDO:</label>
+                        <input  name="listing" class="ml-2 p-1" type="date" id="listing" />
+                    </div>
+
+                    <div>
+                        <label class="text-lg font-semibold text-[#63040D]" for="listing">Date till date listing in VDO:</label>
+                        <input  name="listing" class="ml-2 p-1" type="date" id="listing" />
+                    </div>
+
+                    <div>
+                        <label class="text-lg font-semibold text-[#63040D]" for="listing">Cost of demand:</label>
+                        <input  name="listing" class="ml-2 p-1" type="number" id="listing" placeholder="" />
+                    </div>
+                </div>
+            
+                <div class="w-[50%] p-5 gap-6 flex flex-col h-full">
+                    
+
+                    <div>
+                        <label class="text-lg font-semibold text-[#63040D]" for="mediatype">Currency type:</label>
+                        <select  class="ml-2 p-1" id="mediatype" name="mediatype">
+                            <option value="INR">INR</option>
+                            <option value="USD">USD</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="text-lg font-semibold text-[#63040D]" for="days">Max days displayed</label>
+                        <input  name="days" class="ml-2 p-1 mx-1 w-[5rem]" type="number" id="days" placeholder="" />
+                        <label class="text-lg font-semibold text-[#63040D]" for="days">days after the payment</label>
+                    </div>
+
+                    <div>
+                        <label class="text-lg font-semibold text-[#63040D]" for="validity">Under item after VOD validity over:</label>
+                        <select  class="ml-2 p-1" id="validity" name="validity">
+                            <option value="">Select</option>
+                            <option value="">..................................</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class=" flex justify-center w-full items-end pb-6 ">
+
+                <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Save Video On Demand</button>
+
+            </div>
+
+        </form>
+    </div>
+
+    <!-- AD popup -->
+    <div *ngIf="isPopupVisible4" class="fixed z-20 inset-0 flex justify-center items-center bg-black bg-opacity-50">
+
+        <div class="w-[55%] bg-white flex justify-start flex-col max-h-[75vh] overflow-y-scroll ">
+
+
+            <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+                <button (click)="togglePopup4()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                      </svg>
+                </button>
+            </div>
+
+            <div class="w-full flex justify-between p-5 pb-0 mt-3 gap-8">
+                <div class="flex justify-between gap-8 ">
+                    <span class="text-lg font-semibold text-[#63040D]">Subitem id:<span class="ml-2 text-lg text-gray-500"></span></span> 
+                    <span class="text-lg font-semibold text-[#63040D]">Duration:<span class="ml-2 text-lg text-gray-500"></span></span>            
+                </div>
+
+                <button (click)="toggleAddad()" class="bg-[#63040D] text-white px-4 h-10 font-semibold">New AD Interupt</button>
+            </div>
+
+            <div class="w-full p-5 bg-white flex items-center flex-col gap-6 justify-start ">
+                <div class="h-2 flex justify-start font-semibold text-[#63040D] w-full mb-5">
+                    <span class=" w-[16%] h-10">Serial#</span>
+                    <span class="w-[16%] h-10">Item Id</span>
+                    <span class="w-[16%] h-10">&#64;time</span>
+                    <span class="w-[16%] h-10">Valid</span>
+                    <span class="w-[16%] h-10">Details</span>
+                    <span class="w-[16%] h-10">Action</span>
+                </div>
+    
+                <div class="w-full flex max-h-[7rem] overflow-y-scroll font-semibold flex-col ">
+                    <div class="w-full py-2 flex justify-start">
+                        <span class=" w-[16%] h-10">01</span>
+                        <span class="w-[16%] h-10">2004</span>
+                        <span class="w-[16%] h-10">1 min</span>
+                        <div class=" w-[16%] h-10">
+                            <img [src]="valid" alt="" class=" h-6">
+                        </div>
+                        <div class="w-[16%] h-10">
+                            <button class="text-[10px] w-[55%] border-[1px]">Details</button>
+                        </div>
+                        <button (click)="toggleEditad()"><img [src]="edit" class="h-6"></button>
+                    </div>
+
+                    <div class="w-full py-2 flex justify-start">
+                        <span class=" w-[16%] h-10">01</span>
+                        <span class="w-[16%] h-10">2004</span>
+                        <span class="w-[16%] h-10">1 min</span>
+                        <div class=" w-[16%] h-10">
+                            <img [src]="valid" alt="" class=" h-6">
+                        </div>
+                        <div class="w-[16%] h-10">
+                            <button class="text-[10px] w-[55%] border-[1px]">Details</button>
+                        </div>
+                        <button (click)="toggleEditad()"><img [src]="edit" class="h-6"></button>
+                    </div>
+
+                    <div class="w-full py-2 flex justify-start">
+                        <span class=" w-[16%] h-10">01</span>
+                        <span class="w-[16%] h-10">2004</span>
+                        <span class="w-[16%] h-10">1 min</span>
+                        <div class=" w-[16%] h-10">
+                            <img [src]="valid" alt="" class=" h-6">
+                        </div>
+                        <div class="w-[16%] h-10">
+                            <button class="text-[10px] w-[55%] border-[1px]">Details</button>
+                        </div>
+                        <button (click)="toggleEditad()"><img [src]="edit" class="h-6"></button>
+                    </div>
+
+                    <div class="w-full py-2 flex justify-start">
+                        <span class=" w-[16%] h-10">01</span>
+                        <span class="w-[16%] h-10">2004</span>
+                        <span class="w-[16%] h-10">1 min</span>
+                        <div class=" w-[16%] h-10">
+                            <img [src]="valid" alt="" class=" h-6">
+                        </div>
+                        <div class="w-[16%] h-10">
+                            <button class="text-[10px] w-[55%] border-[1px]">Details</button>
+                        </div>
+                        <button (click)="toggleEditad()"><img [src]="edit" class="h-6"></button>
+                    </div>
+
+                    <div class="w-full py-2 flex justify-start">
+                        <span class=" w-[16%] h-10">01</span>
+                        <span class="w-[16%] h-10">2004</span>
+                        <span class="w-[16%] h-10">1 min</span>
+                        <div class=" w-[16%] h-10">
+                            <img [src]="valid" alt="" class=" h-6">
+                        </div>
+                        <div class="w-[16%] h-10">
+                            <button class="text-[10px] w-[55%] border-[1px]">Details</button>
+                        </div>
+                        <button (click)="toggleEditad()"><img [src]="edit" class="h-6"></button>
+                    </div>
+
+                    <div class="w-full py-2 flex justify-start">
+                        <span class=" w-[16%] h-10">01</span>
+                        <span class="w-[16%] h-10">2004</span>
+                        <span class="w-[16%] h-10">1 min</span>
+                        <div class=" w-[16%] h-10">
+                            <img [src]="valid" alt="" class=" h-6">
+                        </div>
+                        <div class="w-[16%] h-10">
+                            <button class="text-[10px] w-[55%] border-[1px]">Details</button>
+                        </div>
+                        <button (click)="toggleEditad()"><img [src]="edit" class="h-6"></button>
+                    </div>
+                </div>
+
+                <div *ngIf="iseditopenad" class="w-[95%] p-5 mt-2 border-[1px] flex flex-col gap-6 justify-between items-center">
+                    <div class="flex justify-between w-full items-center">
+                        <span class=" font-semibold text-[#63040D]">Slot of AD:<span class="ml-2 text-lg text-gray-500"></span></span> 
+                        <span class=" font-semibold text-[#63040D]">Total Slot:<span class="ml-2 text-lg text-gray-500"></span></span> 
+                        <span class=" font-semibold text-[#63040D]">Each AD:<span class="ml-2 text-lg text-gray-500"></span></span> 
+                    </div>
+
+                    <div class="flex justify-between w-full items-center">
+                        <span class=" font-semibold text-[#63040D]">Slot of AD:<span class="ml-2 text-lg text-gray-500"></span></span> 
+                        <div>
+                            <label class=" font-semibold text-[#63040D]" for="listing">&#64;time:</label>
+                            <input  name="listing" class="ml-2 text-[12px] p-[3px]" type="number" id="listing" placeholder="" />
+                        </div>
+                        <div>
+                            <label class=" font-semibold text-[#63040D]" for="demand">Valid:</label>
+                            <select  class="ml-2 text-[12px] p-[3px]" id="choice" name="demand">
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class=" flex justify-center w-full items-end pb-1 pt-1 ">
+                        <button class="bg-red-600 px-2 text-sm py-1 hover:bg-red-700 text-white font-semibold">Edit AD Interupt</button>
+                    </div>
+                </div>
+
+                <div *ngIf="isaddopenad" class="w-[95%] p-5 mt-2 border-[1px] flex flex-col gap-6 justify-between items-center">
+                    <div class="flex justify-between w-full items-center">
+                        <span class=" font-semibold text-[#63040D]">Slot of AD:<span class="ml-2 text-lg text-gray-500"></span></span> 
+                        <span class=" font-semibold text-[#63040D]">Total Slot:<span class="ml-2 text-lg text-gray-500"></span></span> 
+                        <span class=" font-semibold text-[#63040D]">Each AD:<span class="ml-2 text-lg text-gray-500"></span></span> 
+                    </div>
+
+                    <div class="flex justify-between w-full items-center">
+                        <span class=" font-semibold text-[#63040D]">Slot of AD:<span class="ml-2 text-lg text-gray-500"></span></span> 
+                        <div>
+                            <label class=" font-semibold text-[#63040D]" for="listing">&#64;time:</label>
+                            <input  name="listing" class="ml-2 text-[12px] p-[3px]" type="number" id="listing" placeholder="" />
+                        </div>
+                        <div>
+                            <label class=" font-semibold text-[#63040D]" for="demand">Valid:</label>
+                            <select  class="ml-2 text-[12px] p-[3px]" id="choice" name="demand">
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class=" flex justify-center w-full items-end pb-1 pt-1 ">
+                        <button class="bg-red-600 px-2 text-sm py-1 hover:bg-red-700 text-white font-semibold">Add AD Interupt</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Promo popup -->
+    <div *ngIf="isPopupVisible5" class="fixed z-50 inset-0 flex justify-center items-center bg-black bg-opacity-50">
+
+        <div class="w-[55%] bg-white flex justify-start flex-col max-h-[75vh] overflow-y-scroll ">
+
+
+            <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+                <button (click)="togglePopup5()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                      </svg>
+                </button>
+            </div>
+
+            <div class="w-full flex justify-end p-5 pb-0 mt-3 gap-8">
+                <button (click)="toggleAddpromo()" class="bg-[#63040D] text-white px-4 h-10 font-semibold">New Promo</button>
+            </div>
+
+            <div class="w-full p-5 bg-white flex items-center flex-col gap-6 justify-start ">
+                <div class="h-2 flex justify-start font-semibold text-[#63040D] w-full mb-5">
+                    <span class=" w-[16%] h-10">Subitem Id</span>
+                    <span class="w-[16%] h-10">Promo Id</span>
+                    <span class="w-[16%] h-10">Status</span>
+                    <span class="w-[16%] h-10">Media Link</span>
+                    <span class="w-[16%] h-10">Action</span>
+                </div>
+    
+                <div class="w-full flex max-h-[7rem] overflow-y-scroll font-semibold flex-col ">
+                    <div *ngFor="let item of PromoArr, let i = index" class="w-full py-2 flex justify-start">
+                        <span class=" w-[16%] h-10">{{SelectedSubItem.adcSubitemId}}</span>
+                        <span class="w-[16%] h-10">{{item.adcTrailerPromoId}}</span>
+                        <div class=" w-[16%] h-10">
+                            <img [src]="item.adcTrailerPromoActivFlg === true ? valid : unvalid" alt="" class=" h-6">
+                        </div>
+                        <a class="w-[16%]" target="_blank" [href]="item.adcTrailerPromoMediaFile">Link</a>
+                        <button (click)="toggleEditpromo(item)"><img [src]="edit" class="h-6"></button>
+                    </div>
+                </div>
+
+                <div *ngIf="iseditopenpromo" class="w-[95%] mt-2 border-[1px] flex flex-col justify-between items-center">
+                    <div class=" w-full flex justify-between">
+                        <div class="w-[50%] flex flex-col p-5 justify-start gap-2">
+                            <span class=" font-semibold text-[#63040D]">Subitem:<span class="ml-2 text-lg text-gray-500">{{SelectedSubItem.adcSubitemId}}</span></span> 
+                            <span class=" font-semibold text-[#63040D]">Media Promo Id:<span class="ml-2 text-lg text-gray-500">{{SelectedPromo.promoId}}</span></span> 
+                        </div>
+                        <div class="w-[50%] flex p-5 pr-5 flex-col h-full">
+                            <label class=" font-semibold text-[#63040D]" for="Upload">Attach Promo (less than 2 min):</label>
+                            <div class="w-[85%] mt-2 h-[6rem] border-[2px] flex justify-center items-center">
+                                <input 
+                                class="w-[75%] text-sm" 
+                                type="file" 
+                                id="videoUpload" 
+                                name="Upload" 
+                                accept="video/*" 
+                                (change)="onFileChange($event, 3)"
+                            />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class=" flex justify-center w-full items-star pb-3 ">
+                        <button (click)="EditPromo()" class="bg-red-600 px-2 text-sm py-1 hover:bg-red-700 text-white font-semibold">Edit Promo</button>
+                    </div>
+                   
+                </div>
+
+                <div *ngIf="isaddopenpromo" class="w-[95%] mt-2 border-[1px] flex flex-col justify-between items-center">
+                    <div class=" w-full flex justify-between">
+                        <div class="w-[50%] flex flex-col p-5 justify-start gap-2">
+                            <span class=" font-semibold text-[#63040D]">Subitem:<span [(ngModel)]="NewPromo.subItemId" class="ml-2 text-lg text-gray-500">{{SelectedSubItem.adcSubitemId}}</span></span> 
+                        </div>
+                        <div class="w-[50%] flex p-5 pr-5 flex-col h-full">
+                            <label class="font-semibold text-[#63040D]" for="videoUpload">Attach Promo (less than 2 min):</label>
+                            <div class="w-[85%] mt-2 h-[6rem] border-[2px] flex justify-center items-center">
+                                <input 
+                                    class="w-[75%] text-sm" 
+                                    type="file" 
+                                    id="videoUpload" 
+                                    name="Upload" 
+                                    accept="video/*" 
+                                    (change)="onFileChange($event, 2)"
+                                />
+                            </div>
+                        </div>                        
+                    </div>
+
+                    <div class=" flex justify-center w-full items-star pb-3 ">
+                        <button (click)="addPromo()" class="bg-red-600 px-2 text-sm py-1 hover:bg-red-700 text-white font-semibold">Add Promo</button>
+                    </div>
+                   
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Playmedia popup -->
+    <div *ngIf="isPopupVisible6" class="fixed z-20 inset-0 flex justify-center items-center bg-black bg-opacity-50">
+
+        <div class="w-[55%] bg-white flex justify-start flex-col max-h-[75vh] overflow-y-scroll ">
+
+
+            <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+                <button (click)="togglePopup6()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                      </svg>
+                </button>
+            </div>
+
+            <div class="w-full flex justify-between p-5 pb-0 mt-3 gap-8">
+                <div class="flex justify-between gap-8 ">
+                    <span class="text-lg font-semibold text-[#63040D]">Subitem id:<span class="ml-2 text-lg text-gray-500"></span></span> 
+                </div>
+
+                <button (click)="toggleAddplayer()" class="bg-[#63040D] text-white px-4 h-10 font-semibold">New PlayerMedia</button>
+            </div>
+
+            <div class="w-full p-5 bg-white flex items-center flex-col gap-6 justify-start ">
+                <div class="h-2 flex justify-start font-semibold text-[#63040D] w-full mb-5">
+                    <span class="w-[14%] h-10">Serial#</span>
+                    <span class="w-[14%] h-10">Media Id</span>
+                    <span class="w-[14%] h-10">Media File</span>
+                    <span class="w-[14%] h-10">Language</span>
+                    <span class="w-[14%] h-10">Active</span>
+                    <span class="w-[14%] h-10">Action</span>
+                </div>
+    
+                <div class="w-full flex max-h-[7rem] overflow-y-scroll font-semibold flex-col ">
+                    <div *ngFor="let item of PlayMediaArr, let i = index" class="w-full py-2 flex justify-start">
+                        <span class=" w-[14%] h-10">{{i}}</span>
+                        <span class="w-[14%] h-10">{{item.adcPlaymediaId}}</span>
+                        <a [href]="item.adcPlaymediaLink" target="_blank" class="w-[14%] h-10">Play</a>
+                        <span class="w-[14%] h-10">{{item.adcLanguageId}}</span>
+                        <div class="w-[14%] h-10">
+                            <img [src]="item.adcPlaymediaActivFlg === true ? valid : unvalid" alt="Validity" class="h-6 w-auto" />
+                        </div>
+                        <div class="flex gap-4 justify-center items-center">
+                            <button (click)="toggleEditplayer(item)"><img [src]="edit" class="h-6"></button>
+                            <button >Publish</button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div *ngIf="iseditopenplayer" class="w-[95%] p-5 mt-2 border-[1px] flex flex-col gap-6 justify-between items-center">
+
+                    <form class="w-full flex justify-center items-center">
+                        <div class="flex w-[50%] justify-start gap-2 flex-col">
+                            <span class=" font-semibold text-[#63040D]">Subitem Id: <span class="ml-2 text-lg text-gray-500">{{SelectedPlayMedia.subItemId}}</span></span> 
+                            <span class=" font-semibold text-[#63040D]">Playmedia Id: <span class="ml-2 text-lg text-gray-500">{{SelectedPlayMedia.playMediaId}}</span></span> 
+                        </div>
+    
+                        <div class="flex justify-start w-[50%] gap-2 flex-col">
+                            <div>
+                                <label class=" font-semibold text-[#63040D]" for="link">Add media link:</label>
+                                <input [(ngModel)]="SelectedPlayMedia.mediaLink" name="link" class="ml-2 text-[12px] p-[3px]" type="text" id="link" placeholder="" />
+                            </div>
+                            <div>
+                                <label class=" font-semibold text-[#63040D]" for="status">Active Status:</label>
+                                <select [(ngModel)]="SelectedPlayMedia.activeFlg" class="ml-2 text-[12px] p-[3px]" id="status" name="status">
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class=" flex justify-center w-full items-end pb-1 pt-1 ">
+                        <button (click)="EditPlayMeddia()" class="bg-red-600 px-2 text-sm py-1 hover:bg-red-700 text-white font-semibold">Edit Mediaplayer</button>
+                    </div>
+                </div>
+
+
+                <div *ngIf="isaddopenplayer" class="w-[95%] p-5 mt-2 border-[1px] flex flex-col gap-6 justify-between items-center">
+
+                    <div class="w-full flex justify-center items-center">
+                        <div class="flex w-[50%] justify-start gap-2 flex-col">
+                            <span [(ngModel)]="NewPlayMedia.subItemId" class=" font-semibold text-[#63040D]">Subitem Id: <span class="ml-2 text-lg text-gray-500">{{SelectedSubItem.adcSubitemId}}</span></span> 
+                            <div>
+                                <label class=" font-semibold text-[#63040D]" for="language">Language:</label>
+                                <select [(ngModel)]="NewPlayMedia.lanuageId"  class="ml-2 text-[12px] p-[3px]" id="language" name="language">
+                                    <option value="Hindi">Hindi</option>
+                                    <option value="Malyalam">Malyalam</option>
+                                </select>
+                            </div>
+                        </div>
+    
+                        <div class="flex justify-start w-[50%] gap-2 flex-col">
+                            <div>
+                                <label class=" font-semibold text-[#63040D]" for="link">Add media link:</label>
+                                <input [(ngModel)]="NewPlayMedia.mediaLink" name="link" class="ml-2 text-[12px] p-[3px]" type="text" id="link" placeholder="" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class=" flex justify-center w-full items-end pb-1 pt-1 ">
+                        <button (click)="addPlayMedia()" class="bg-red-600 px-2 text-sm py-1 hover:bg-red-700 text-white font-semibold">Add Mediaplayer</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Subtitle popup -->
+    <div *ngIf="isPopupVisible7" class="fixed z-20 inset-0 flex justify-center items-center bg-black bg-opacity-50">
+
+        <div class="w-[55%] bg-white flex justify-start flex-col max-h-[75vh] overflow-y-scroll ">
+
+
+            <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+                <button (click)="togglePopup7()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                      </svg>
+                </button>
+            </div>
+
+            <div class="w-full flex justify-end p-5 pb-0 mt-3 gap-8">
+                <button (click)="toggleAddsubtitle()" class="bg-[#63040D] text-white px-4 h-10 font-semibold">New PlayerMedia</button>
+            </div>
+
+            <div class="w-full p-5 bg-white flex items-center flex-col gap-6 justify-start ">
+                <div class="h-2 flex justify-start font-semibold text-[#63040D] w-full mb-5">
+                    <span class="w-[20%] h-10">Subitem</span>
+                    <span class="w-[20%] h-10">Language</span>
+                    <span class="w-[20%] h-10">Status</span>
+                    <span class="w-[20%] h-10">Link</span>
+                    <span class="w-[20%] h-10">Action</span>
+                </div>
+    
+                <div class="w-full flex max-h-[7rem] overflow-y-scroll font-semibold flex-col ">
+                    <div class="w-full py-2 flex justify-start">
+                        <span class=" w-[20%] h-10">998</span>
+                        <span class="w-[20%] h-10">English</span>
+                        <div class=" w-[20%] h-10">
+                            <img [src]="valid" alt="" class=" h-6">
+                        </div>
+                        <a href="" class="w-[20%] h-10">Link</a>
+                        <div class="flex gap-4 justify-center items-center">
+                            <button (click)="toggleEditsubtitle()"><img [src]="edit" class="h-6"></button>
+                        </div>
+                    </div>
+
+                    <div class="w-full py-2 flex justify-start">
+                        <span class=" w-[20%] h-10">998</span>
+                        <span class="w-[20%] h-10">English</span>
+                        <div class=" w-[20%] h-10">
+                            <img [src]="valid" alt="" class=" h-6">
+                        </div>
+                        <a href="" class="w-[20%] h-10">Link</a>
+                        <div class="flex gap-4 justify-center items-center">
+                            <button (click)="toggleEditsubtitle()"><img [src]="edit" class="h-6"></button>
+                        </div>
+                    </div>
+
+                    <div class="w-full py-2 flex justify-start">
+                        <span class=" w-[20%] h-10">998</span>
+                        <span class="w-[20%] h-10">English</span>
+                        <div class=" w-[20%] h-10">
+                            <img [src]="valid" alt="" class=" h-6">
+                        </div>
+                        <a href="" class="w-[20%] h-10">Link</a>
+                        <div class="flex gap-4 justify-center items-center">
+                            <button (click)="toggleEditsubtitle()"><img [src]="edit" class="h-6"></button>
+                        </div>
+                    </div>
+
+                    <div class="w-full py-2 flex justify-start">
+                        <span class=" w-[20%] h-10">998</span>
+                        <span class="w-[20%] h-10">English</span>
+                        <div class=" w-[20%] h-10">
+                            <img [src]="valid" alt="" class=" h-6">
+                        </div>
+                        <a href="" class="w-[20%] h-10">Link</a>
+                        <div class="flex gap-4 justify-center items-center">
+                            <button (click)="toggleEditsubtitle()"><img [src]="edit" class="h-6"></button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div *ngIf="iseditopensubtitle" class="w-[95%] p-5 mt-2 border-[1px] flex flex-col gap-6 justify-between items-center">
+
+                    <div class="w-full flex justify-center items-center">
+                        <div class="flex w-[50%] justify-start gap-2 flex-col">
+                            <span class=" font-semibold text-[#63040D]">Subitem:<span class="ml-2 text-lg text-gray-500"></span></span> 
+                            
+                            <div>
+                                <label class=" font-semibold text-[#63040D]" for="language">Subtitle language:</label>
+                                <select  class="ml-2 text-[12px] p-[3px]" id="language" name="language">
+                                    <option value="Hindi">Hindi</option>
+                                    <option value="Malyalam">Malyalam</option>
+                                </select>
+                            </div>
+                        </div>
+    
+                        <div class="flex justify-start w-[50%] gap-2 flex-col">
+                            <div>
+                                <label class=" font-semibold text-[#63040D]" for="status">Active Status:</label>
+                                <select  class="ml-2 text-[12px] p-[3px]" id="status" name="status">
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class=" font-semibold text-[#63040D]" for="link">Subtitle file URL:</label>
+                                <input  name="link" class="ml-2 text-[12px] p-[3px]" type="text" id="link" placeholder="" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class=" flex justify-center w-full items-end pb-1 pt-1 ">
+                        <button class="bg-red-600 px-2 text-sm py-1 hover:bg-red-700 text-white font-semibold">Edit Subtitle</button>
+                    </div>
+                </div>
+
+                <div *ngIf="isaddopensubtitle" class="w-[95%] p-5 mt-2 border-[1px] flex flex-col gap-6 justify-between items-center">
+
+                    <div class="w-full flex justify-center items-center">
+                        <div class="flex w-[50%] justify-start gap-2 flex-col">
+                            <span class=" font-semibold text-[#63040D]">Subitem:<span class="ml-2 text-lg text-gray-500"></span></span> 
+                            
+                            <div>
+                                <label class=" font-semibold text-[#63040D]" for="language">Subtitle language:</label>
+                                <select  class="ml-2 text-[12px] p-[3px]" id="language" name="language">
+                                    <option value="Hindi">Hindi</option>
+                                    <option value="Malyalam">Malyalam</option>
+                                </select>
+                            </div>
+                        </div>
+    
+                        <div class="flex justify-start w-[50%] gap-2 flex-col">
+                            <div>
+                                <label class=" font-semibold text-[#63040D]" for="status">Active Status:</label>
+                                <select  class="ml-2 text-[12px] p-[3px]" id="status" name="status">
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class=" font-semibold text-[#63040D]" for="link">Subtitle file URL:</label>
+                                <input  name="link" class="ml-2 text-[12px] p-[3px]" type="text" id="link" placeholder="" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class=" flex justify-center w-full items-end pb-1 pt-1 ">
+                        <button class="bg-red-600 px-2 text-sm py-1 hover:bg-red-700 text-white font-semibold">Add Subtitle</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    
+    <div *ngIf="isShowMediaVisible" class="fixed z-20 inset-0 flex justify-center items-center bg-black bg-opacity-50">
+
+        <div class="w-[40%] bg-white flex justify-start flex-col ">
+
+
+            <div class="w-full px-4 pt-8 mb-5  items-center flex flex-row-reverse">
+                <button (click)="showMedia()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                      </svg>
+                </button>
+            </div>
+
+            <div *ngIf="mediaToShowType === 'imagerepository' " class="w-full flex justify-center items-center mb-10 mt-5">
+                <img [src]="mediaToShow" class="h-20 border-[1px]">
+            </div>
+
+            <div *ngIf="mediaToShowType === 'digitaltext' " class="w-full flex justify-center items-center text-lg mb-10 gap-1 mt-5">
+                <span>Link to file: </span>
+                <a [href]="mediaToShow" target="_blank" class=" text-red-500">link</a>
+            </div>
+
+            <div *ngIf="mediaToShowType === 'video' " class="w-full py-8 px-20 flex justify-center items-center mb-10 mt-5">
+                <video [src]="mediaToShow" class=" border-[1px]" controls></video>
+            </div>
+
+            <div *ngIf="mediaToShowType === 'audio' " class="w-full flex px-12 py-8 justify-center items-center mb-10 mt-5">
+                <audio [src]="mediaToShow" class="" controls></audio>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div *ngIf="isShowPromo" class="fixed z-20 inset-0 flex justify-center items-center bg-black bg-opacity-50">
+
+        <div class="w-[40%] bg-white flex justify-start flex-col ">
+
+
+            <div class="w-full px-4 pt-8 mb-5  items-center flex flex-row-reverse">
+                <button (click)="showPromo()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                      </svg>
+                </button>
+            </div>
+
+            <div class="w-full py-8 px-20 flex justify-center items-center mb-10 mt-5">
+                <video [src]="promoToShow" class=" border-[1px]" controls></video>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div *ngIf="isPopupVisible8" class="fixed z-20 inset-0 flex justify-center items-center bg-black bg-opacity-50">
+
+        <div class="w-[40%] bg-white flex justify-start flex-col ">
+
+
+            <div class="w-full px-4 pt-8 mb-5  items-center flex flex-row-reverse">
+                <button (click)="togglePopup8()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                      </svg>
+                </button>
+            </div>
+
+            <div class="w-full flex justify-start p-5 gap-8">
+                <span class="text-lg font-semibold text-[#63040D]">Subitem:<span class="ml-2 text-lg text-gray-500">4853</span></span>            
+            </div>
+
+            <div class="w-full flex justify-start px-5 mb-5 gap-2 items-center">
+                <span class="text-lg font-semibold text-[#63040D]">Subitem Top Line status:
+                </span>            
+                <img [src]="valid" class=" h-6">
+            </div>
+
+            <div class=" flex justify-center w-full items-end pb-6 ">
+
+                <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Delete</button>
+
+            </div>            
+
+        </div>
+
+    </div>

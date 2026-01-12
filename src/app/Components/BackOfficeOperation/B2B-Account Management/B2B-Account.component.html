@@ -1,0 +1,677 @@
+<!-- main div -->
+<div class="w-11/12 overflow-hidden pt-3  flex flex-col gap-6">
+    <!-- manage account users and bo users -->
+    <div class="flex gap-3 m-2">
+        <button class="border  inline-block px-1 py-1 rounded-md shadow-md  text-lg
+            {{ selectedButton === 'accounts' ? 
+            'bg-orange-500 text-white outline-none ring-2 ring-orange-500 ring-offset-2' : 
+            'bg-white text-red-500 border border-gray-300'  }}" (click)="selectButton('accounts')">
+            Manage Accounts
+        </button>
+        <button class="inline-block px-2 py-1 rounded-md shadow-md text-lg
+            {{ selectedButton === 'boUsers' ? 
+            'bg-orange-500 text-white outline-none ring-2 ring-orange-500 ring-offset-2 ' : 
+            'bg-white text-red-500 border border-gray-300'  }}" (click)="selectButton('boUsers')">
+            Manage BO users
+        </button>
+    </div>
+
+    <!-- div to display the whole content for accounts tab -->
+    <div class="flex flex-col gap-4">
+
+        @if (selectedButton === 'accounts' && selectedUser!=="") {
+
+            <div class="flex flex-col gap-8 ">
+                <!-- application user and inventoty holder user, Avertiser user  and add new account button-->
+                <div class="flex justify-between  ">
+                    <div class="flex gap-2 justify-between items-center ">
+                        <label class="font-semibold text-base w-[80%] whitespace-nowrap">Application User</label>
+                        <select [(ngModel)]="selectedUser" class="custom-input2 bg-[#FFFFFF]  w-[100%]">
+                            <option value="Inventory Holder User" selected>Inventory Holder Account</option>
+                            <option value="Advertiser User">Advertiser Account</option>
+                        </select>
+                    </div>
+                    @if(selectedUser==="Inventory Holder User") {
+                    <div class="mr-1 ">
+                        <button (click)="OpenpopupForInventory()"
+                            class="inline-block text-base  px-2 py-1 text-white bg-sideBarColor rounded-md shadow-md hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-sideBarColor focus:ring-offset-2 ">
+                            Add New Account
+                        </button>
+                    </div>
+                    }
+                    @if(selectedUser==="Advertiser User") {
+                    <div class="mr-1">
+                        <button  (click)="OpenpopupForAdvertiser()"
+                             class="inline-block text-base  px-2 py-1 text-white bg-sideBarColor rounded-md shadow-md hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-sideBarColor focus:ring-offset-2 ">
+                            Add New Account
+                        </button>
+                    </div>
+                    }
+
+
+                </div>
+            </div>
+
+
+            <!-- for inventory holder user-->
+            @if(selectedUser=="Inventory Holder User") {
+
+                <div class="bg-white  dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+                    <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4 relative">
+                        <div class="w-full md:w-1/2">
+                            <form class="flex items-center">
+                                <label for="simple-search" class="sr-only">Search</label>
+                                <div class="relative w-full">
+                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                        <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor"
+                                            viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd"
+                                                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                    <input type="text" id="simple-search" [(ngModel)]="searchTermForInventory" name="searchTermForInventory"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                        placeholder="Search" required="">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div *ngIf="loading" class="flex justify-center items-center h-full">
+                        <div class="spinner-border text-orange-500" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    <div *ngIf="!loading" class="overflow-x-auto p-6">
+                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                            <thead class="text-sm text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                <tr class="pb-2">
+                                    <th class="">S.no</th>
+                                    <th class="">Account Id</th>
+                                    <th class=" ">Name</th>
+                                    <th class=" ">SubAcct flg</th>
+                                    <th class="">Address </th>
+                                    <th class="">Acct Details </th>
+                                    <th class="">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            
+                                @for (item of filteredInventoryUser; track item.name; let i = $index) {
+                                <tr class="border-t py-10">
+                                    <td class="py-1">{{ (currentPageForInventory - 1) * itemsPerPageForInventory + i + 1 }}</td>
+                                    <td class="py-1">{{item.invntrY_ACCOUNT_UID}}</td>
+                                    <td class="py-1">{{item.invntrY_ACCOUNT_NAME}}</td>
+                                    @if(item.invntrY_ACCOUNT_SUBACCTS_ACTIVATED_FLG) {
+                                    <td class="py-1 text-green-500">
+                                        <span class="material-symbols-outlined">
+                                            done
+                                        </span>
+                                    </td>
+                            
+                                    }
+                                    @else {
+                                    <td class="py-1 text-red-400">
+                                        <span class="material-symbols-outlined">
+                                            close
+                                        </span>
+                                    </td>
+                                    }
+                                    <td class="py-1">{{item.invntrY_ACCOUNT_CORP_ADDRESS}}</td>
+                                    <td class="py-1">
+                                        <div class="flex flex-row gap-2 w-[100%] ">
+                                            
+                                        
+                                            
+                                                <button (click)="showBankDetailsForInventoryUser(item.invntrY_ACCOUNT_UID)" class="bg-green-500 text-white px-4 py-1 rounded-md">
+                                                    Details
+                                                </button>
+                                            <!-- </div> -->
+                                            
+                                                <button (click)="showDetailForInventoryPUserDetail(item.invntrY_ACCOUNT_UID)" class="bg-green-500 text-white px-4 py-1 rounded-md">P
+                                                    User</button>
+                                        
+                                                <button class="bg-green-500 text-white px-4 py-1 rounded-md">S User</button>
+                                            
+                                        </div>
+                            
+                                    </td>
+                                    <td class="py-1">
+                                        <span (click)="populateFormFieldsForInventory(item)"
+                                            class="material-symbols-outlined hover:cursor-pointer text-red-500">edit_square</span>
+                                    </td>
+                                </tr>
+                                }
+                            
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <nav class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4"
+                        aria-label="Table navigation">
+                        <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
+                            Showing
+                            <span class="font-semibold text-gray-900 dark:text-white">{{ startItemForInventory }}-{{
+                                endItemForInventory }}</span>
+                            of
+                            <span class="font-semibold text-gray-900 dark:text-white">{{ totalItemsForInventory }}</span>
+                        </span>
+                        <ul class="inline-flex items-stretch -space-x-px">
+                            <li>
+                                <button (click)="changePageForInventory(currentPageForInventory - 1)" [disabled]="currentPageForInventory === 1"
+                                    class="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                    <span class="sr-only">Previous</span>
+                                    <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+                                            d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </li>
+                            <li>
+                                <button (click)="changePageForInventory(currentPageForInventory + 1)" [disabled]="currentPageForInventory === totalPagesForInventory"
+                                    class="flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                    <span class="sr-only">Next</span>
+                                    <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+                                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                
+                <!-- bank details and primary user info -->
+                <ng-template #dialogTemplateforInventoryUserBankDetail>
+                    <div class="flex justify-between items-center border-b p-2">
+                        <div class="text-black text-base">Inventory User Bank Detail</div>
+                        <div class="">
+                            <span (click)="closePopupForInventoryForInventoryUserBankDetail()"
+                                class=" flex  justify-center items-center material-symbols-outlined cursor-pointer hover:bg-gray-200 hover:rounded-full h-8 w-8  transition  ">
+                                close
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-2 text-black text-base">
+                        <div class="">Bank Name: {{ bankDetails.bankName }}</div>
+                        <div class="">IFSC: {{ bankDetails.ifsc }}</div>
+                        <div class="">Branch: {{ bankDetails.branch }}</div>
+                        <div class="">Bank A/c Number: {{ bankDetails.accountNumber }}</div>
+                    </div>
+                </ng-template>
+                
+                <ng-template #dialogTemplateForInventoryPUserDetail>
+                    <div class="flex justify-between items-center border-b p-2">
+                        <div class="text-black text-base">Inventory Primary User Detail</div>
+                        <div class="">
+                            <span (click)="closePopupForInventoryPUserDetail()"
+                                class=" flex  justify-center items-center material-symbols-outlined cursor-pointer hover:bg-gray-200 hover:rounded-full h-8 w-8  transition  ">
+                                close
+                            </span>
+                        </div>
+                    </div>
+                    <div *ngIf="selectedPUser" class="p-2 text-black text-base">
+                        @if(InventoryPUserDetails.admediA_PRIMARY_USER_FLAG) {
+                            <div class="flex items-center">Primary User : 
+                                <span class="material-symbols-outlined text-green-400">
+                                    done
+                                </span>
+                            </div>
+                        }
+                        <div>Mobile Number :{{InventoryPUserDetails.admediA_MOBL_NUMBR}}</div>
+                        <div>Role-id :{{InventoryPUserDetails.admediA_ROLE_ID}}</div>
+                        <div>Role Name :{{InventoryPUserDetails.admediA_ROLE_NAME}}</div>
+                        <div>WebApp PIN :{{InventoryPUserDetails.admediA_WEBAPP_PIN}}</div>
+                        <div>Screen Player PIN :{{InventoryPUserDetails.admediA_SCREENPLAYER_PIN}}</div>
+                        <div>EComm App PIN :{{InventoryPUserDetails.admediA_ECOMAPP_PIN}}</div>
+                    </div>
+                </ng-template>
+
+                
+
+                <!-- add new account section form -->
+                <ng-template #dialogTemplateforInventory>
+                    <div class="relative max-h-max   rounded-md mb-3 flex flex-col gap-3 mt-6">
+                        <div class="border-b w-full pl-3 pr-3 pb-3 relative flex">
+                            <div class="flex gap-6">
+                                <div class="flex gap-3 justify-center items-center">
+                                    <div class="text-lg font-semibold font-xyz">Inventory Holder Account</div>
+                                    <span class="material-symbols-outlined text-green-500">
+                                        done
+                                    </span>
+                                </div>
+                                <div class="flex gap-3 justify-center items-center">
+                                    <div class="text-lg font-semibold font-xyz">Advertiser Account</div>
+                                    <span class="material-symbols-outlined text-red-600">
+                                        close
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="absolute right-2 top-0">
+                                <span (click)="closePopupForInventory()"
+                                    class=" flex  justify-center items-center material-symbols-outlined cursor-pointer hover:bg-gray-200 hover:rounded-full h-8 w-8  transition  ">
+                                    close
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- form -->
+                        
+
+                        <div>
+                            <form class="row g-3 rounded-md p-3  w-[100%] flex flex-col gap-3"
+                                [formGroup]="addNewAccountFormForInventoryUser"
+                                (submit)="saveNewAccountForInventoryUser(addNewAccountFormForInventoryUser.value)">
+
+                                <div   class="flex flex-col md:flex-row gap-3  justify-between ">
+
+                                    <div *ngIf="!editFormForInventory" class="flex flex-col w-[50%]">
+                                        <label class="font-semibold">Name</label>
+                                        <input name="ACCOUNT_NAME" formControlName="ACCOUNT_NAME" type="text"
+                                            class="custom-input border border-gray-300 rounded px-3 py-2">
+                                        <div *ngIf="accountName!.invalid && (accountName!.dirty || accountName!.touched)" class="text-red-500 mt-1 text-sm">
+                                            <div *ngIf="accountName!.errors?.['required']"> Name is required.</div>
+                                            <div *ngIf="accountName!.errors?.['minlength']">Name must be at least 3 characters long.</div>
+                                        </div>
+                                    </div>
+
+                                    <div *ngIf="editFormForInventory" class="flex flex-col w-[50%]">
+                                        <label class="font-semibold">UID</label>
+                                        <input readonly name="ACCOUNT_NAME" formControlName="invntrY_ACCOUNT_UID" type="text" class="custom-input">
+                                    </div>
+
+                                    <div class="flex flex-col w-[50%]">
+                                        <label class="font-semibold">Address</label>
+                                        <input name="ACCOUNT_ADDRESS" formControlName="ACCOUNT_ADDRESS" type="text"
+                                            class="custom-input border border-gray-300 rounded px-3 py-2">
+                                        <div *ngIf="accountAddress!.invalid && (accountAddress!.dirty || accountAddress!.touched)"
+                                            class="text-red-500 mt-1 text-sm">
+                                            <div *ngIf="accountAddress!.errors?.['required']">Address is required.</div>
+                                            <div *ngIf="accountAddress!.errors?.['minlength']">Address must be at least 5 characters long.</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                
+
+                                <div class="flex flex-col md:flex-row gap-3  justify-between ">
+                                    <div class="flex flex-col w-[50%] mt-4">
+                                        <label class="font-semibold">Bank Name</label>
+                                        <input name="ACCOUN_BANK" formControlName="ACCOUN_BANK" type="text"
+                                            class="custom-input border border-gray-300 rounded px-3 py-2">
+                                        <div *ngIf="accountBank!.invalid && (accountBank!.dirty || accountBank!.touched)" class="text-red-500 mt-1 text-sm">
+                                            <div *ngIf="accountBank!.errors?.['required']">Bank Name is required.</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex flex-col w-[50%] mt-4">
+                                        <label class="font-semibold">IFSC</label>
+                                        <input name="ACCOUNT_BANK_IFSC" formControlName="ACCOUNT_BANK_IFSC" type="text"
+                                            class="custom-input border border-gray-300 rounded px-3 py-2">
+                                        <div *ngIf="accountBankIFSC!.invalid && (accountBankIFSC!.dirty || accountBankIFSC!.touched)"
+                                            class="text-red-500 mt-1 text-sm">
+                                            <div *ngIf="accountBankIFSC!.errors?.['required']">IFSC is required.</div>
+                                            <div *ngIf="accountBankIFSC!.errors?.['pattern']">Invalid IFSC. It should be in the format ABCD0123456.</div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="flex flex-col md:flex-row gap-3  justify-between ">
+                                    <div class="flex flex-col w-[50%]">
+                                        <label class="font-semibold">Branch</label>
+                                        <input name="ACCOUNT_BRANCH" formControlName="ACCOUNT_BRANCH" type="text"
+                                            class="custom-input border border-gray-300 rounded px-3 py-2">
+                                        <div *ngIf="accountBranch!.invalid && (accountBranch!.dirty || accountBranch!.touched)"
+                                            class="text-red-500 mt-1 text-sm">
+                                            <div *ngIf="accountBranch!.errors?.['required']">Branch is required.</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex flex-col w-[50%] ">
+                                        <label class="font-semibold">Bank A/c No.</label>
+                                        <input name="ACCOUNT_BANK_NUMBR" formControlName="ACCOUNT_BANK_NUMBR" type="text"
+                                            class="custom-input border border-gray-300 rounded px-3 py-2">
+                                        <div *ngIf="accountBankNumber!.invalid && (accountBankNumber!.dirty || accountBankNumber!.touched)"
+                                            class="text-red-500 mt-1 text-sm">
+                                            <div *ngIf="accountBankNumber!.errors?.['required']">Bank A/c No. is required.</div>
+                                            <div *ngIf="accountBankNumber!.errors?.['minlength']">Bank A/c No. must be at least 9 characters long.</div>
+                                            <div *ngIf="accountBankNumber!.errors?.['maxlength']">Bank A/c No. cannot be more than 18 characters long.</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="flex justify-start items-center  gap-2 w-[50%]">
+                                    <label class="font-semibold whitespace-nowrap">Subaccounts Activated on Account :</label>
+                                    <div class="w-[100%]">
+                                        <select formControlName="SUBACCT_FLG" class="custom-input">
+                                            <option [ngValue]="true" selected>True</option>
+                                            <option [ngValue]="false">False</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+
+                                <div class="flex flex-col md:flex-row gap-3  justify-between ">
+                                    <div class="flex flex-col w-[50%]">
+                                        <label class="font-semibold">Primary User Mobile Number</label>
+                                        <input [readOnly]="editFormForInventory" formControlName="ACCOUNT_PRIMARY_MOBL_NUMBR" type="text"
+                                            class="custom-input border border-gray-300 rounded px-3 py-2">
+                                        <div *ngIf="primaryMobileNumber!.invalid && (primaryMobileNumber!.dirty || primaryMobileNumber!.touched)"
+                                            class="text-red-500 mt-1 text-sm">
+                                            <div *ngIf="primaryMobileNumber!.errors?.['required']">Mobile number is required.</div>
+                                            <div *ngIf="primaryMobileNumber!.errors?.['pattern']">Invalid phone number. It should be a 10-digit number
+                                                starting with 6-9.</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex flex-col w-[50%]">
+                                        <label class="font-semibold">Account User Name </label>
+                                        <input [readOnly]="editFormForInventory" formControlName="ACCOUNT_USER_NAME" type="text" class="custom-input">
+                                    </div>
+                                </div>
+
+                                <div class="flex justify-center">
+                                    <button type="submit" [disabled]="!addNewAccountFormForInventoryUser.valid" (click)="closePopupForInventory()"
+                                        class="inline-block px-3 py-2 text-white rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2
+                                                   {{ addNewAccountFormForInventoryUser.valid ? 'bg-orange-500 hover:bg-orange-600' : 'bg-orange-500 cursor-not-allowed' }}">
+                                        {{ this.SaveButtonForInventory }}
+                                    </button>
+
+
+                                </div>
+                            </form>
+                        </div>
+
+
+                    </div>
+                </ng-template>
+            }
+        }
+
+        @if(selectedButton != 'boUsers' && selectedUser=="Advertiser User") {
+
+            <div class="bg-white  dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+                <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
+                    <div class="w-full md:w-1/2">
+                        <form class="flex items-center">
+                            <label for="simple-search" class="sr-only">Search</label>
+                            <div class="relative w-full">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor"
+                                        viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+                                            d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                                <input type="text" id="simple-search" [(ngModel)]="searchTermForAdvertiser" name="searchTermForAdvertiser"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                    placeholder="Search" required="">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div *ngIf="loadingForAdvertiser" class="flex justify-center items-center h-full">
+                    <div class="spinner-border text-orange-500" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+
+                <div *ngIf="!loadingForAdvertiser" class="overflow-x-auto p-6">
+                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <thead class="text-sm text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr>
+                                <th class="">S.no</th>
+                                <th class="">Account Id</th>
+                                <th class=" ">Name</th>
+                                <th class=" ">SubAcct flg</th>
+                                <th class="">Address </th>
+                                <th class="pb-2 pt-2">Acct Details </th>
+                                <th class="">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        
+                            @for (item of filteredAdvertiserUser; track item.name; let i = $index) {
+                            <tr class="border-t py-10">
+                                <td class="py-1">{{ (currentPageForAdvertiser - 1) * itemsPerPageForAdvertiser + i + 1 }}</td>
+                                <td class="">{{item.promO_REP_ACCOUNT_ID}}</td>
+                                <td class="">{{item.admediA_ROLE_NAME}}</td>
+                                @if(item.promO_REP_SUBACCTS_ACTIVATED_FLG) {
+                                <td class=" text-green-500">
+                                    <span class="material-symbols-outlined">
+                                        done
+                                    </span>
+                                </td>
+                        
+                                }
+                                @else {
+                                <td class=" text-red-400">
+                                    <span class="material-symbols-outlined">
+                                        close
+                                    </span>
+                                </td>
+                                }
+                                <td class="max-w-xs truncate" style="max-width: 100px;" [title]="item.promO_REP_ACCOUNT_CORP_ADDRESS">
+                                    {{item.promO_REP_ACCOUNT_CORP_ADDRESS}}
+                                </td>
+
+                                <td class="pt-1 pb-1">
+                                    <div class="flex gap-3">
+                                        <button (click)="showdetailsForAdvertiserUser(item.promO_REP_ACCOUNT_ID)"
+                                            class="bg-green-500 text-white px-4 py-1 rounded-md">Details</button>
+                        
+                                        <button (click)="showPUserDetailsForAdvertiser(item.promO_REP_ACCOUNT_ID)"
+                                            class="bg-green-500 text-white px-4 py-1 rounded-md">
+                                            P User</button>
+                                        <button class="bg-green-500 text-white px-4 py-1 rounded-md">S User</button>
+                                    </div>
+                        
+                                </td>
+                                <td class="">
+                                    <span (click)="populateFormFieldsForAdvertiser(item)"
+                                        class="material-symbols-outlined hover:cursor-pointer text-red-500">edit_square</span>
+                                </td>
+                            </tr>
+                            }
+                        
+                        </tbody>
+
+                    </table>
+                </div>
+
+                <nav class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4"
+                    aria-label="Table navigation">
+                    <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
+                        Showing
+                        <span class="font-semibold text-gray-900 dark:text-white">{{ startItemForAdvertiser }}-{{
+                            endItemForAdvertiser }}</span>
+                        of
+                        <span class="font-semibold text-gray-900 dark:text-white">{{ totalItemsForAdvertiser }}</span>
+                    </span>
+                    <ul class="inline-flex items-stretch -space-x-px">
+                        <li>
+                            <button (click)="changePageForAdvertiser(currentPageForAdvertiser - 1)"
+                                [disabled]="currentPageForAdvertiser === 1"
+                                class="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                <span class="sr-only">Previous</span>
+                                <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                        d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </li>
+                        <li>
+                            <button (click)="changePageForAdvertiser(currentPageForAdvertiser + 1)"
+                                [disabled]="currentPageForAdvertiser === totalPagesForAdvertiser"
+                                class="flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                                <span class="sr-only">Next</span>
+                                <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            <!-- advertiser details -->
+             <ng-template #dialogTemplateForAdvertiserDetails>
+
+                <div>
+                    <div class="flex justify-between items-center pl-3 pr-3 pb-1 pt-1 border-b">
+                        <div>Advertiser Details</div>
+                        <div>
+                            <span
+                                class=" flex justify-center items-center material-symbols-outlined cursor-pointer hover:bg-gray-200 hover:rounded-full h-10 w-10  transition  "
+                                (click)="closePopupForAdvertiserDetails()">
+                                close
+                            </span>
+                        </div>    
+                    </div>
+                    <div class="p-3">
+                        <div>Mobile Number : {{this.AdvertiserDetails.admediA_MOBL_NUMBR}}</div>
+                        <div>Name : {{this.AdvertiserDetails.admediA_ROLE_NAME}}</div>
+                    </div>
+                    
+                </div>
+
+            </ng-template>
+             
+        
+        
+            <!-- primary user details -->
+            <ng-template #dialogTemplateForAdvertiserPrimaryUserDetails>
+                <div class="mb-3  rounded-md">
+                    <div class="flex justify-between items-center pl-3 pr-3 pb-1 pt-1 border-b">
+                        <div>P User Details</div>
+                        <div>
+                            <span
+                                class=" flex justify-center items-center material-symbols-outlined cursor-pointer hover:bg-gray-200 hover:rounded-full h-10 w-10  transition  "
+                                (click)="closePopupForAdvertiserPrimaryUserDetails()">
+                                close
+                            </span>
+                        </div>
+                        
+                    </div>
+                    <div class="p-3">
+                        <div>Primary User :{{selectedPUserDetailsForAdvertiser.primaryUser}}</div>
+                        <div>Mobile Number :{{selectedPUserDetailsForAdvertiser.mobNumber}}</div>
+                        <div>Role Id :{{selectedPUserDetailsForAdvertiser.roleId}}</div>
+                        <div>Role Name :{{selectedPUserDetailsForAdvertiser.roleName}}</div>
+                        <div>WebApp Pin :{{selectedPUserDetailsForAdvertiser.webAppPin}}</div>
+                        <div>Screen Player PIN :{{selectedPUserDetailsForAdvertiser.screenPlayerPin}}</div>
+                        <div>EComm App Pin :{{selectedPUserDetailsForAdvertiser.eCommAppPin}}</div>
+                    </div>
+                    
+                </div>
+            </ng-template>
+        
+            <ng-template #dialogTemplateForAdvertiser>
+                <div
+                    class="relative  bg-[#FFFFFF]  rounded-md mb-3   flex flex-col gap-3 mt-2">
+                    <div class="flex p-3  justify-between border-b">
+                        <div class="flex gap-6">
+                            <div class="flex gap-3 justify-center items-center">
+                                <div class="text-lg font-semibold font-xyz">Advertiser Account</div>
+                            </div>
+                        </div>
+                        <div class="absolute right-2 top-0 max-w-max ">
+                            <span
+                                class=" flex justify-center items-center material-symbols-outlined cursor-pointer hover:bg-gray-200 hover:rounded-full h-10 w-10  transition  "
+                                (click)="closePopupForAdvertiser()">
+                                close
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- form -->
+                
+                    <div class="p-3">
+                        <form class="row g-3 rounded-md pb-3  w-[100%] flex flex-col gap-3" [formGroup]="addNewAccountFormForAdvertiser"
+                            (submit)="saveNewAccountForAdvertiserUser(addNewAccountFormForAdvertiser.value)">
+                    
+                            <div class="flex flex-col   gap-3  justify-between ">
+                                <div *ngIf="editFormForAdvertiser" class="flex flex-col">
+                                    <label class="font-semibold">UID </label>
+                                    <input readonly name="" formControlName="promO_REP_ACCOUNT_ID" type="text"
+                                        class="custom-input">
+                                </div>
+                                <div class="flex flex-col">
+                                    <label class="font-semibold">Name</label>
+                                    <input [readOnly]="editFormForAdvertiser" name="ACCOUNT_NAME" formControlName="ACCOUNT_NAME" type="text"
+                                        class="custom-input">
+                                    <div *ngIf="addNewAccountFormForAdvertiser.get('ACCOUNT_NAME')!.touched && addNewAccountFormForAdvertiser.get('ACCOUNT_NAME')!.invalid">
+                                        <small class="text-red-500" *ngIf="addNewAccountFormForAdvertiser.get('ACCOUNT_NAME')?.errors?.['required']">
+                                            required.</small>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col">
+                                    <label class="font-semibold">Address</label>
+                                    <input name="promO_ACCT_ADDRESS" formControlName="promO_ACCT_ADDRESS" type="text" class="custom-input">
+                                    <div
+                                        *ngIf="addNewAccountFormForAdvertiser.get('promO_ACCT_ADDRESS')?.touched && addNewAccountFormForAdvertiser.get('promO_ACCT_ADDRESS')?.invalid">
+                                        <small class="text-red-500"
+                                            *ngIf="addNewAccountFormForAdvertiser.get('promO_ACCT_ADDRESS')?.errors?.['required']">
+                                            required.</small>
+                                    </div>
+                                </div>
+                    
+                                <div class="flex flex-col gap-3">
+                                    <label class="font-semibold whitespace-nowrap">Subaccounts Activated on Account :</label>
+                                    <select formControlName="promO_SUBACCT_FLG" class="custom-input">
+                                        <option [ngValue]="true" selected>True</option>
+                                        <option [ngValue]="false">False</option>
+                                    </select>
+                                    <div
+                                        *ngIf="addNewAccountFormForAdvertiser.get('promO_SUBACCT_FLG')?.touched && addNewAccountFormForAdvertiser.get('promO_SUBACCT_FLG')?.invalid">
+                                        <small class="text-red-500"
+                                            *ngIf="addNewAccountFormForAdvertiser.get('promO_SUBACCT_FLG')?.errors?.['required']">
+                                            required.</small>
+                                    </div>
+                                </div>
+                    
+                                <div class="flex flex-col gap-3">
+                                    <div class="flex flex-col">
+                                        <label class="font-semibold">Primary User Mobile Number</label>
+                                        <input [readOnly]="editFormForAdvertiser" formControlName="primarY_MOBL_NUMBR" type="text" class="custom-input">
+                                        <div
+                                            *ngIf="addNewAccountFormForAdvertiser.get('primarY_MOBL_NUMBR')?.touched && addNewAccountFormForAdvertiser.get('primarY_MOBL_NUMBR')?.invalid">
+                                            <small class="text-red-500"
+                                                *ngIf="addNewAccountFormForAdvertiser.get('primarY_MOBL_NUMBR')?.errors?.['required']">Primary User
+                                                Mobile Number is required.</small>
+                                            <small class="text-red-500"
+                                                *ngIf="addNewAccountFormForAdvertiser.get('primarY_MOBL_NUMBR')?.errors?.['pattern']">Please enter a
+                                                valid Indian mobile number.</small>
+                                        </div>
+                                    </div>
+                                </div>
+                    
+                                <div class="flex justify-center"> 
+                                    <button type="submit" [disabled]="!addNewAccountFormForAdvertiser.valid" (click)="closePopupForAdvertiser()"
+                                        class="inline-block px-3 py-2 text-white rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2
+                                                   {{ addNewAccountFormForAdvertiser.valid ? 'bg-orange-500 hover:bg-orange-600' : 'bg-orange-500 cursor-not-allowed' }}">
+                                        {{ this.SaveButtonForAdvertiser }}
+                                    </button>
+
+                                </div>
+                        </div>
+                        
+                        </form>
+                    </div>
+                </div>
+            </ng-template> 
+        }    
+    </div>
+</div>

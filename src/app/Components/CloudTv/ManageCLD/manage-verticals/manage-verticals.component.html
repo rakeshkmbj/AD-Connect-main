@@ -1,0 +1,288 @@
+<div class="flex flex-col w-full">
+    <div class="w-full flex flex-col gap-10 justify-center items-center">
+        <div class="text-orange-500 w-full font-bold font-abcd text-2xl">
+            Manage Verticals
+        </div>
+
+        <div class="flex w-[95%] gap-6 flex-col">
+
+            <div class="w-[100%] mb-2 text-[12px] flex justify-start gap-8 flex-row">
+                <button (click)="toggleMasterApp()" 
+                    [class.bg-[#d11225]]="isMasterAppVisible"
+                    [class.bg-[#63040D]]="!isMasterAppVisible"
+                    class=" text-white px-4 py-2 font-semibold">
+                    Master App
+                </button>
+                <button (click)="toggleVertical()" 
+                    [class.bg-[#d11225]]="isVerticalVisible"
+                    [class.bg-[#63040D]]="!isVerticalVisible"
+                    class=" text-white px-4 py-2 font-semibold">
+                    Vertical
+                </button>
+            </div>
+
+            <div class="w-full flex items-center gap-8 flex-row-reverse">
+                <button *ngIf="isVerticalVisible" class="bg-[#63040D] text-white px-4 py-2 font-semibold" (click)="togglePopup1()">
+                    Add Vertical
+                </button>
+                <!-- <button *ngIf="isMasterAppVisible" class="bg-[#63040D] text-white px-4 py-2 font-semibold" >
+                    Manage Master App
+                </button> -->
+            </div>
+
+            <div class="w-full p-5 bg-white border-[1px] flex flex-col justify-start border-black">
+                <div *ngIf="isVerticalVisible" class="h-2 flex gap-5 text-[15px] justify-start font-semibold text-[#63040D] w-full mb-10">
+                    <span class="w-[8%] h-10">Serial#</span>
+                    <span class="w-[8%] h-10">Vertical Id</span>
+                    <span class="w-[15%] h-10">Vertical Name</span>
+                    <span class="w-[12%] h-10">Image</span>
+                    <span class="w-[8%] h-10">Valid</span>
+                    <span class="w-20 h-10">Action</span>
+                </div>
+
+                <div *ngIf="isVerticalVisible" class="w-full text-[12px] flex font-semibold flex-col gap-1">
+                    <div *ngFor="let item of verData; let i = index" class="w-full gap-5 py-2 flex justify-start">
+                        <div class="w-[8%] h-8">{{ i }}</div>
+                        <div class="w-[8%] h-8">{{ item.vertId }}</div>
+                        <div class="w-[15%] h-8">{{ item.vertName }}</div>
+                        <div class="w-[12%] h-8">
+                            <img [src]="item.image" alt="{{ item.vertName }}" class="h-full w-auto" />
+                        </div>
+                        <div class="w-[8%] h-8">
+                            <img [src]="item.activeflg ? valid : unvalid" alt="Validity" class="h-6 w-auto" />
+                        </div>
+                        <button (click)="togglePopup2(i, item)" class=" h-8">
+                            <img [src]="edit" alt="Edit" class="h-6 w-auto" />
+                        </button>
+                    </div>
+                </div>
+
+                <div *ngIf="isMasterAppVisible" class="h-2 flex gap-5 text-[15px] justify-start font-semibold text-[#63040D] w-full mb-10">
+                    <span class="w-[8%] h-10">Serial#</span>
+                    <span class="w-[18%] h-10">App Name</span>
+                    <span class="w-[12%] h-10">Version</span>
+                    <span class="w-[12%] h-10">Home Image</span>
+                    <span class="w-[8%] h-10">Status</span>
+                    <div class=" flex flex-col w-[25%] h-10">
+                        <div class=" w-full flex flex-col justify-center items-center h-5">
+                            <div class="w-full h-6 flex flex-col justify-end">
+                                <div class="w-full h-1 bg-red-500"></div>
+                            </div>
+                            <span class="px-2 absolute bg-white z-10">Actions</span>
+                            <div class=" w-full flex justify-between h-4">
+                                <div class="w-1 h-full bg-red-500"></div>
+                                <div class="w-1 h-full bg-red-500"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="isMasterAppVisible" class="w-full text-[12px] flex font-semibold flex-col gap-1">
+                    <div class="w-full gap-5 py-2 flex justify-start">
+                        <div class="w-[8%] h-8">01</div>
+                        <div class="w-[18%] h-8">AD-Connect-Master</div>
+                        <div class="w-[12%] h-8">1.0</div>
+                        <div class="w-[12%] h-8">Image</div>
+                        <div class="w-[8%] h-8">
+                            <img [src]="valid" alt="Validity" class="h-6 w-auto" />
+                        </div>
+                        <div class="w-[25%] flex justify-between items-center">
+                            <button class=" h-8">
+                                <img [src]="edit" alt="Edit" class="h-6 w-auto" />
+                            </button>
+                            <button (click)="toggleManageHomePromos()" class="bg-green-500 text-white px-4 py-2 font-semibold">
+                                Manage Home Promos
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup Template -->
+    <div *ngIf="isPopupVisible1" class="fixed z-20 inset-0 flex justify-center items-center bg-black bg-opacity-50">
+        <form #formRef="ngForm" novalidate (ngSubmit)="addVertical(formRef)" class="w-[55%] bg-white flex flex-col">
+            <div class="w-full px-4 pt-8 items-center flex flex-row-reverse">
+                <button (click)="togglePopup1()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- <span class="text-lg p-5 font-semibold text-[#63040D]">Serial#:<span class="ml-2 text-lg text-gray-500">{{ verData.length }}</span></span> -->
+
+            <div class="w-full flex rounded-lg mb-5">
+                <div class="w-[50%] flex flex-col gap-6 h-full p-5 pr-0">
+                    <div>
+                        <label class="text-lg font-semibold text-[#63040D]" for="verticalName">
+                            Vertical Name <span class="text-red-600">*</span>:
+                        </label>
+                        <select [(ngModel)]="newVertical.vertName" name="verticalName" class="ml-2 p-1" id="verticalName" required #typeRef="ngModel">
+                            <option value="" disabled selected>Select Vertical</option>
+                            <option value="image">Image</option>
+                            <option value="video">Video</option>
+                            <option value="audio">Audio</option>
+                            <option value="text">Text</option>
+                        </select>
+                    </div>                    
+                </div>
+            
+                <div class="w-[50%] flex p-5 pr-0 flex-col h-full">
+                    <label class="text-lg font-semibold text-[#63040D]" for="imageUpload">
+                        Attach an image <span class="text-red-600">*</span>:
+                    </label>
+                    <div class="flex flex-col gap-3">
+                        <!-- Image preview -->
+                        <div class="w-[70%] mt-2 h-[8rem] p-2 border-[2px] flex justify-center items-center">
+                            <img *ngIf="SelectedVerticalImageToBeAdded" class="max-w-max h-full" 
+                                 alt="Preview" [src]="SelectedVerticalImageToBeAdded"/>
+                        </div>
+                
+                        <!-- File input -->
+                        <input class="w-[80%] text-sm" 
+                               type="file" 
+                               id="imageUpload" 
+                               name="imageUpload" 
+                               accept="image/*" 
+                               (change)="onFileChange($event)" 
+                               required #fileRef/>
+                
+                        <!-- Validation error message -->
+                        <div *ngIf="formRef?.submitted && !SelectedVerticalImageToBeAdded" 
+                             class="text-red-600 text-sm">
+                            * File is required *
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+
+            <div class=" flex-col justify-center items-center w-full mt-8 pb-6 ">
+            
+                <div class="w-full flex justify-center items-center">
+                    <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Save Vertical</button>    
+                </div>
+            
+                 <!-- Error Message -->
+                <div *ngIf="formRef.submitted && formRef.invalid" class="text-red-600 text-center  mt-1 mb-1">
+                    ***Fill all the required fields.***
+                </div>
+            </div>
+        </form>
+    </div>
+    <!-- Button Popup Template -->
+    <div *ngIf="isPopupVisible2" class="fixed inset-0 z-20 flex justify-center items-center bg-black bg-opacity-50">
+        <form (ngSubmit)="editVertical()" class="w-[55%] bg-white flex flex-col">
+            <div class="w-full px-4 pt-8 items-center flex flex-row-reverse">
+                <button (click)="togglePopup2(-1)" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="w-full  p-5 flex justify-start gap-8">
+                <span class="text-lg font-semibold text-[#63040D]">Serial#:<span class="ml-2 text-lg text-gray-500">{{ selectedVertical.serial }}</span></span>
+                <span class="text-lg font-semibold text-[#63040D]">Vertical Name:<span class="ml-2 text-lg text-gray-500">{{ selectedVertical.vertName }}</span></span>
+            </div>
+
+
+            <div class="w-full flex rounded-lg mb-5">
+                <div class="w-[50%] flex flex-col gap-6 h-full p-5 pr-0">
+            
+                    <div>
+                        <label class="text-lg font-semibold text-[#63040D]" for="choice">Valid:</label>
+                        <select [(ngModel)]="selectedVertical.activeflg" class="ml-2 p-1" id="choice" name="choice">
+                            <option [value]="true">Yes</option>
+                            <option [value]="false">No</option>
+                        </select>
+                    </div>
+
+                    <div>
+
+                        <span *ngIf="selectedVertical.sequence !== ''" class="text-lg font-semibold text-[#63040D]">Sequence:<span class="ml-2 text-lg text-gray-500">{{ selectedVertical.sequence }}</span></span>
+                        
+                        <label *ngIf="selectedVertical.sequence === ''" class="text-lg font-semibold text-[#63040D]" for="seq">Sequence:</label>
+                        <select *ngIf="selectedVertical.sequence === ''" [(ngModel)]="selectedVertical.sequence" required="true" class="ml-2 p-1" id="choice" name="seq">
+                            <option *ngFor="let seq of sequence" [value]="seq">{{ seq }}</option>
+                        </select>                       
+                    </div>
+
+                    <div class=" flex gap-3">
+                        <span class="text-lg font-semibold text-[#63040D]">Current Image:</span>
+                        <div class="border-[2px]">
+                            <img class="h-16 m-3" [src]="tempimg">
+                        </div>
+                    </div>
+
+                </div>
+            
+                <!-- <div class="w-[50%] flex p-5 pr-0 flex-col h-full">
+                    <label class="text-lg font-semibold text-[#63040D]" for="imageUpload">Change Image:</label>
+                    <div class="w-[70%] mt-2 h-[8rem] border-[2px] flex justify-center items-center">
+                        <input [(ngModel)]="currentImagefile" class="w-[80%] text-sm" required type="file" id="imageUpload" name="imageUpload" accept="image/*" (change)="onFileChange($event)" />
+                    </div>
+                </div> -->
+
+                <div class="w-[50%] flex p-5 pr-0 flex-col h-full">
+                    <label class="text-lg font-semibold text-[#63040D]" for="imageUpload">Change image:</label>
+                    <div class="flex flex-col gap-3">
+                        <div class="w-[70%] mt-2 h-[8rem] p-2 border-[2px] flex justify-center items-center">
+                            <img *ngIf="SelectedVerticalImageToBeAdded" class=" max-w-max h-full" alt="" [src]="SelectedVerticalImageToBeAdded"/>
+                        </div>
+                        <input [(ngModel)]="currentImagefile" class="w-[80%] text-sm" required type="file" id="imageUpload" name="imageUpload" accept="image/*" (change)="onFileChange($event)" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-center pb-6 w-full items-center">
+                <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Save Vertical</button>
+            </div>
+        </form>
+    </div>
+
+    <div *ngIf="isManageHomePromosVisible" class="fixed z-20 inset-0 flex justify-center items-center bg-black bg-opacity-50">
+        <form class="w-[65%] bg-white flex flex-col">
+            <div class="w-full px-4 pt-8 items-center flex flex-row-reverse">
+                <button (click)="toggleManageHomePromos()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="flex justify-end px-5 py-8 w-full items-end">
+                <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Add New Promo</button>
+            </div>
+
+            <div class="h-2 flex gap-5 text-[15px] justify-start font-semibold text-[#63040D] w-[95%] mx-auto mb-10">
+                <span class="w-[8%] h-10">Serial#</span>
+                <span class="w-[18%] h-10">Org. Name</span>
+                <span class="w-[18%] h-10">Promo Name</span>
+                <span class="w-[10%] h-10">Id</span>
+                <span class="w-[8%] h-10">Media</span>
+                <span class="w-[8%] h-10">Status</span>
+                <span class="w-20 h-10">Action</span>
+            </div>
+
+            <div class="w-[95%] mb-8 mx-auto max-h-[250px] overflow-y-scroll text-[12px] flex font-semibold flex-col gap-1">
+                <div class="w-full gap-5 py-2 flex justify-start">
+                    <div class="w-[8%] h-8">01</div>
+                    <div class="w-[18%] h-8">ST-Micro</div>
+                    <div class="w-[18%] h-8">Tranning-1</div>
+                    <div class="w-[10%] h-8">453</div>
+                    <div class="w-[8%] h-8">
+                        <img [src]="valid" alt="Validity" class="h-6 w-auto" />
+                    </div>
+                    <div class="w-[8%] h-10">Status</div>
+                    <button  class=" h-8">
+                        <img [src]="edit" alt="Edit" class="h-6 w-auto" />
+                    </button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+img, video {
+  width: 100%;
+  height: 100%;
+}
+
+/* styles.css or styles.scss */
+.custom-snackbar {
+  background-color: #4caf50; /* Green background */
+  color: #ffffff; /* White text color */
+}
+
+/* Optional: Style for snackbar action (like 'Close') */
+.custom-snackbar .mat-simple-snackbar-action {
+  color: #ffffff; /* White color for the action button */
+}

@@ -1,0 +1,674 @@
+<div class="flex flex-col w-full">
+    <div class="w-full flex flex-col gap-10 justify-center items-center">
+        <div class="text-orange-500 w-full font-bold font-abcd text-2xl">
+            Key Install On Your server
+        </div>
+
+        <div class="flex w-[95%] gap-1 items-center flex-col">
+
+            <div class="w-[100%] mb-3 flex justify-start gap-4 flex-row">
+                <button (click)="toggleManageVirtualMeet()" 
+                    [class.bg-[#d11225]]="isManageVirtualMeetVisible"
+                    [class.bg-[#63040D]]="!isManageVirtualMeetVisible"
+                    class=" text-white px-4 py-2 font-semibold">
+                    Manage Virtual Meeet
+                </button>
+                <button (click)="toggleAllocationOfParticipants()" 
+                    [class.bg-[#d11225]]="isAllocationOfParticipantsVisible"
+                    [class.bg-[#63040D]]="!isAllocationOfParticipantsVisible"
+                    class=" text-white px-4 py-2 font-semibold">
+                    Allocation of Participants on Created Meet
+                </button>
+                <button (click)="toggleVirtualMeetDashboard()"
+                    [class.bg-[#d11225]]="isVirtualMeetDashboardVisible"
+                    [class.bg-[#63040D]]="!isVirtualMeetDashboardVisible" 
+                    class=" text-white px-4 py-2 font-semibold">
+                    Virtual Meet Dashboard
+                </button>
+            </div>
+
+            <div class="w-full">
+                <span class="text-lg font-semibold text-[#63040D]">Channel:<span class="ml-2 text-lg text-gray-500">{{userData.accT_NAME}}</span></span>                      
+            </div>
+
+            <div class="w-full">
+                <span class="text-lg font-semibold text-[#63040D]">Channel Id:<span class="ml-2 text-lg text-gray-500">{{userData.accT_ID}}</span></span>                      
+            </div>
+
+            <div *ngIf="isManageVirtualMeetVisible" class="w-full p-5 bg-white border-[1px] mt-4 flex flex-col justify-start border-black">
+                <div class="  w-full flex justify-between items-center">
+                    <div class="gap-5 flex justify-start items-center">
+                        <button
+                            (click)="toggleisPendingMeet()"
+                            [class.bg-orange-700]="isPendingMeetVisible"
+                            [class.bg-orange-500]="!isPendingMeetVisible"
+                            class="text-[12px] text-white px-2 py-1 font-semibold">
+                            Pending Virtual Meets
+                        </button>
+                        <button
+                            (click)="toggleisCompletedMeet()"
+                            [class.bg-orange-700]="isCompletedMeetVisible"
+                            [class.bg-orange-500]="!isCompletedMeetVisible"
+                            class="text-[12px] text-white px-2 py-1 font-semibold">
+                            Completed Virtual Meets
+                        </button>
+
+                        <button
+                            (click)="toggleisNotCompletedMeet()"
+                            [class.bg-orange-700]="isNotCompletedMeetVisible"
+                            [class.bg-orange-500]="!isNotCompletedMeetVisible"
+                            class="text-[12px] text-white px-2 py-1 font-semibold">
+                            Not Completed Virtual Meets
+                        </button>
+
+                        <button
+                            (click)="toggleisToBeSheduledMeet()"
+                            [class.bg-orange-700]="isToBeScheduledMeetVisible"
+                            [class.bg-orange-500]="!isToBeScheduledMeetVisible"
+                            class="text-[12px] text-white px-2 py-1 font-semibold">
+                            Not Completed Virtual Meets
+                        </button>
+
+                    </div>  
+
+                    
+                    <div class=" gap-5 flex justify-start items-center">
+                        <button (click)="toggleAddNewVirtualMeet()" class="bg-[#63040D] text-[12px] text-white px-2 py-1 font-semibold">
+                            Add New Virtual Meet
+                        </button>
+                    </div>
+                      
+                </div>
+
+                <!-- Pending Virtual Meets -->
+                <div *ngIf="isPendingMeetVisible" class="h-2 text-[15px] mt-8 flex justify-start font-semibold text-[#63040D] mx-auto w-[95%] mb-10">
+                    <span class="w-[9%] h-10">#Serial</span>
+                    <span class="w-[9%] h-10">Date</span>
+                    <span class="w-[12%] h-10">Time</span>
+                    <span class="w-[12%] h-10">Meet Id</span>
+                    <span class="w-[18%] h-10">Meet Name</span>
+                    <span class="w-[13%] h-10">Host Name</span>
+                    <span class="w-[14%] h-10">Detail</span>
+                    <div class=" flex flex-col w-[10%] h-10">
+                        <div class=" w-full flex flex-col justify-center items-center h-5">
+                            <div class="w-full h-6 flex flex-col justify-end">
+                                <div class="w-full h-1 bg-red-500"></div>
+                            </div>
+                            <span class="px-2 absolute bg-white z-10">Action</span>
+                            <div class=" w-full flex justify-between h-4">
+                                <div class="w-1 h-full bg-red-500"></div>
+                                <div class="w-1 h-full bg-red-500"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="isPendingMeetVisible" class="w-[95%] mx-auto mb-5  text-[12px] flex font-semibold flex-col gap-1">
+                    <div class="w-full py-2 flex justify-start">
+                        <div class="w-[9%] h-8">01</div>
+                        <div class="w-[9%] h-8">19-01-25</div>
+                        <div class="w-[12%] h-8">11 AM IST</div>
+                        <div class="w-[12%] h-8">987767</div>
+                        <div class="w-[18%] h-8">Cyber Security Audit</div>
+                        <div class="w-[13%] h-8">Rakesh Singh</div>
+                        <div class="w-[14%] h-8">
+                            <button class="w-[60%] bg-green-500 text-white h-8">Detail</button>
+                        </div>
+                        <div class="w-[10%]  flex justify-between items-center">
+        
+                            <button  class=" h-8">
+                                <img [src]="edit" alt="Edit" class="h-6 w-auto" />
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Completed Virtual Meets -->
+                <div *ngIf="isCompletedMeetVisible" class="h-2 text-[15px] mt-8 flex justify-start font-semibold text-[#63040D] mx-auto w-[95%] mb-10">
+                    <span class="w-[9%] h-10">#Serial</span>
+                    <span class="w-[9%] h-10">Date</span>
+                    <span class="w-[12%] h-10">Time</span>
+                    <span class="w-[12%] h-10">Meet Id</span>
+                    <span class="w-[18%] h-10">Meet Name</span>
+                    <span class="w-[13%] h-10">Host Name</span>
+                    <span class="w-[14%] h-10">Detail</span>
+                    <div class=" flex flex-col w-[10%] h-10">
+                        <div class=" w-full flex flex-col justify-center items-center h-5">
+                            <div class="w-full h-6 flex flex-col justify-end">
+                                <div class="w-full h-1 bg-red-500"></div>
+                            </div>
+                            <span class="px-2 absolute bg-white z-10">Action</span>
+                            <div class=" w-full flex justify-between h-4">
+                                <div class="w-1 h-full bg-red-500"></div>
+                                <div class="w-1 h-full bg-red-500"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="isCompletedMeetVisible" class="w-[95%] mx-auto mb-5  text-[12px] flex font-semibold flex-col gap-1">
+                    <div class="w-full py-2 flex justify-start">
+                        <div class="w-[9%] h-8">01</div>
+                        <div class="w-[9%] h-8">19-01-25</div>
+                        <div class="w-[12%] h-8">11 AM IST</div>
+                        <div class="w-[12%] h-8">987767</div>
+                        <div class="w-[18%] h-8">Network Audit</div>
+                        <div class="w-[13%] h-8">Rakesh Singh</div>
+                        <div class="w-[14%] h-8">
+                            <button class="w-[60%] bg-green-500 text-white h-8">Detail</button>
+                        </div>
+                        <div class="w-[10%]  flex justify-between items-center">
+        
+                            <button  class=" h-8">
+                                <img [src]="edit" alt="Edit" class="h-6 w-auto" />
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Not Completed Virtual Meets -->
+                <div *ngIf="isNotCompletedMeetVisible" class="h-2 text-[15px] mt-8 flex justify-start font-semibold text-[#63040D] mx-auto w-[95%] mb-10">
+                    <span class="w-[9%] h-10">#Serial</span>
+                    <span class="w-[9%] h-10">Date</span>
+                    <span class="w-[12%] h-10">Time</span>
+                    <span class="w-[12%] h-10">Meet Id</span>
+                    <span class="w-[18%] h-10">Meet Name</span>
+                    <span class="w-[13%] h-10">Host Name</span>
+                    <span class="w-[14%] h-10">Detail</span>
+                    <div class=" flex flex-col w-[10%] h-10">
+                        <div class=" w-full flex flex-col justify-center items-center h-5">
+                            <div class="w-full h-6 flex flex-col justify-end">
+                                <div class="w-full h-1 bg-red-500"></div>
+                            </div>
+                            <span class="px-2 absolute bg-white z-10">Action</span>
+                            <div class=" w-full flex justify-between h-4">
+                                <div class="w-1 h-full bg-red-500"></div>
+                                <div class="w-1 h-full bg-red-500"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="isNotCompletedMeetVisible" class="w-[95%] mx-auto mb-5  text-[12px] flex font-semibold flex-col gap-1">
+                    <div class="w-full py-2 flex justify-start">
+                        <div class="w-[9%] h-8">01</div>
+                        <div class="w-[9%] h-8">19-01-25</div>
+                        <div class="w-[12%] h-8">11 AM IST</div>
+                        <div class="w-[12%] h-8">987767</div>
+                        <div class="w-[18%] h-8">Code Audit</div>
+                        <div class="w-[13%] h-8">Rakesh Singh</div>
+                        <div class="w-[14%] h-8">
+                            <button class="w-[60%] bg-green-500 text-white h-8">Detail</button>
+                        </div>
+                        <div class="w-[10%]  flex justify-between items-center">
+        
+                            <button  class=" h-8">
+                                <img [src]="edit" alt="Edit" class="h-6 w-auto" />
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- To Be Scheduled Meets -->
+                <div *ngIf="isToBeScheduledMeetVisible" class="h-2 text-[15px] mt-8 flex justify-start font-semibold text-[#63040D] mx-auto w-[95%] mb-10">
+                    <span class="w-[9%] h-10">#Serial</span>
+                    <span class="w-[9%] h-10">Date</span>
+                    <span class="w-[12%] h-10">Time</span>
+                    <span class="w-[12%] h-10">Meet Id</span>
+                    <span class="w-[18%] h-10">Meet Name</span>
+                    <span class="w-[13%] h-10">Host Name</span>
+                    <span class="w-[14%] h-10">Detail</span>
+                    <div class=" flex flex-col w-[20%] h-10">
+                        <div class=" w-full flex flex-col justify-center items-center h-5">
+                            <div class="w-full h-6 flex flex-col justify-end">
+                                <div class="w-full h-1 bg-red-500"></div>
+                            </div>
+                            <span class="px-2 absolute bg-white z-10">Action</span>
+                            <div class=" w-full flex justify-between h-4">
+                                <div class="w-1 h-full bg-red-500"></div>
+                                <div class="w-1 h-full bg-red-500"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="isToBeScheduledMeetVisible" class="w-[95%] mx-auto mb-5  text-[12px] flex font-semibold flex-col gap-1">
+                    <div class="w-full py-2 flex justify-start">
+                        <div class="w-[9%] h-8">01</div>
+                        <div class="w-[9%] h-8">19-01-25</div>
+                        <div class="w-[12%] h-8">11 AM IST</div>
+                        <div class="w-[12%] h-8">000000000</div>
+                        <div class="w-[18%] h-8">Code Audit</div>
+                        <div class="w-[13%] h-8">Rakesh Singh</div>
+                        <div class="w-[14%] h-8">
+                            <button class="w-[60%] bg-green-500 text-white h-8">Detail</button>
+                        </div>
+                        <div class="w-[20%]  flex justify-between items-center">
+        
+                            <button  class=" h-8">
+                                <img [src]="edit" alt="Edit" class="h-6 w-auto" />
+                            </button>
+
+                            <button (click)="toggleScheduleTest()" class="w-[60%] bg-green-500 text-white h-8">Schedule test</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div> 
+
+            <div *ngIf="isAllocationOfParticipantsVisible" class="w-full p-5 bg-white border-[1px] mt-4 flex flex-col justify-start border-black">
+                <div class="  w-full flex justify-between items-center">
+
+                    <div class="gap-5 flex justify-start items-center">
+                        <button (click)="toggleCorpUserPopup()" [class.bg-orange-700]="isCorpUserVisible"
+                            [class.bg-orange-500]="!isCorpUserVisible"
+                            class="text-[12px] text-white px-2 py-1 font-semibold">
+                            Corporate Users
+                        </button>
+                        <button (click)="toggleNonCorpUserPopup()" [class.bg-orange-700]="isNonCorpUserVisible"
+                            [class.bg-orange-500]="!isNonCorpUserVisible"
+                            class="text-[12px] text-white px-2 py-1 font-semibold">
+                            Non Corporate Users
+                        </button>
+                    </div>                   
+
+                    <div class=" gap-5 flex justify-start items-center">
+                        <button  class="bg-[#63040D] text-[12px] text-white px-2 py-1 font-semibold">
+                            Get Business Users
+                        </button>
+                    </div>
+
+                </div>
+
+                <div *ngIf="isCorpUserVisible" class=" w-full mt-4 gap-5 flex flex-col">
+                    <div class="w-full flex gap-5 justify-start items-center">
+                        <div>
+                            <label class="text-[15px] font-semibold text-[#63040D]" for="choice">Corporate: </label>
+                            <select class="ml-2 text-[15px] p-1" id="choice" name="choice"
+                                (change)="onSelectCorporate($event)">
+                                <option *ngFor="let item of corporateArr; let i = index" [value]="i">{{
+                                    item.cldtvCorpName }}</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class=" text-[15px] font-semibold text-[#63040D]" for="choice">Division: </label>
+                            <select class="ml-2 text-[15px] p-1" id="choice2" name="choice2"
+                                (change)="onSelectDivision($event)">
+                                <option *ngFor="let item of divisionsArr" [value]="item.cldtvDivId">{{
+                                    item.cldtvDivConName }}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w-full mt-4">
+                    <button (click)="manageB2Buser()"
+                        class="bg-[#63040D] text-[12px] text-white px-2 py-1 font-semibold">
+                        Manage Channel B2B User
+                    </button>
+                </div>
+
+                <div class="h-2 text-[15px] mt-5 flex justify-start font-semibold text-[#63040D] mx-auto w-[95%] mb-10">
+                    <span class="w-[10%] h-10">#Serial</span>
+                    <span class="w-[10%] h-10">Subs Id</span>
+                    <span class="w-[12%] h-10">First Name</span>
+                    <span class="w-[12%] h-10">Last Name</span>
+                    <span class="w-[14%] h-10">Mobile No.</span>
+                    <span class="w-[12%] h-10">Detail</span>
+                    <span class="w-[10%] h-10">Select</span>
+                    <div class=" flex flex-col w-[28%] h-10">
+                        <div class=" w-full flex flex-col justify-center items-center h-5">
+                            <div class="w-full h-6 flex flex-col justify-end">
+                                <div class="w-full h-1 bg-red-500"></div>
+                            </div>
+                            <span class="px-2 absolute bg-white z-10">Action Item</span>
+                            <div class=" w-full flex justify-between h-4">
+                                <div class="w-1 h-full bg-red-500"></div>
+                                <div class="w-1 h-full bg-red-500"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w-[95%] mx-auto mb-5  text-[12px] flex font-semibold flex-col gap-1">
+                    <div *ngFor="let item of B2BSubscriberArr, let i = index" class="w-full py-2 flex justify-start">
+                        <div class="w-[10%] h-8">{{i}}</div>
+                        <div class="w-[10%] h-8">{{item.b2bCldtvSubscribrId}}</div>
+                        <div class="w-[12%] h-8">{{item.b2bCldtvSubscribrFirstName}}</div>
+                        <div class="w-[12%] h-8">{{item.b2bCddtvSubcribrLastName}}</div>
+                        <div class="w-[14%] h-8">{{item.b2bCldtvMasterMoblNumbr}}</div>
+                        <div class="w-[12%] h-8">
+                            <button class="h-6 w-[70%] bg-green-500 text-white">Detail</button>
+                        </div>
+                        <div class="w-[10%]">
+                            <input type="radio" class=""/>
+                        </div>
+                        <div class="w-[28%]  flex justify-between items-center">
+
+                            <button (click)="toggleViewAllocation(item.b2bCldtvSubscribrId)" class="bg-green-500 text-[12px] text-white px-2 py-1 font-semibold">
+                                View Allocation
+                            </button>
+
+                            <button (click)="toggleAllocateVirtualMeet(item.b2bCldtvSubscribrId)" class="bg-green-500 text-[12px] text-white px-2 py-1 font-semibold">
+                                Allocate Virtual Meet
+                            </button>
+        
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<div *ngIf="isAddNewVirtualMeetVisible" class="fixed inset-0 z-20 flex justify-center items-center bg-black bg-opacity-50">
+    <form #formRef="ngForm" novalidate (ngSubmit)="addNewVirtualMeet(formRef)" class="w-[70%] max-h-[35rem] overflow-y-scroll bg-white flex justify-start flex-col ">
+
+        <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+            <button (click)="toggleAddNewVirtualMeet()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="w-full flex justify-between items-start mt-5 px-5 roundded-lg">
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="meettype">Virtual Meet Type <span class="text-red-600">*</span>: </label>
+                <select [(ngModel)]="selectedMeet" (change)="selectMeetType($event)" class="ml-2 text-[15px] p-1" id="meettype" name="meettype" required #meetTypeRef="ngModel">
+                    <option value="" disabled selected>Select a meet type</option>
+                    <option value="conf">Small Conf. call</option>
+                    <option value="webinar">Webinar</option>
+                    <option value="livesteam">Live Streaming</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="w-full flex justify-between items-start mt-5 px-5 roundded-lg">
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="class">Class/Tutorial Name <span class="text-red-600">*</span>: </label>
+                <input [(ngModel)]="virtualMeet.class_Name" name="class" class="ml-2 p-1" type="text" id="class" [placeholder]="" required #classNameRef="ngModel"/>
+            </div>
+
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="subject">Subject/Chapter <span class="text-red-600">*</span>: </label>
+                <input [(ngModel)]="virtualMeet.chapter" name="subject" class="ml-2 p-1" type="text" id="subject" [placeholder]="" required #subjectRef="ngModel"/>
+            </div>
+        </div>
+
+        <div class="w-full flex justify-between items-start mt-5 px-5 roundded-lg">
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="hostcount">Max host including the lead host(max 5) <span class="text-red-600">*</span>: </label>
+                <input [(ngModel)]="virtualMeet.meet_Max_Host_Counts" name="hostcount" class="ml-2 p-1" type="number" min="1" max="5" id="hostcount" [placeholder]="" required #maxhostRef="ngModel"/>
+            </div>
+
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="leadhost">Lead Host for Meet <span class="text-red-600">*</span>: </label>
+                <select [(ngModel)]="virtualMeet.lead_Host_Usr_id" class="ml-2 text-[15px] p-1" id="leadhost" name="leadhost" required #leadHostRef="ngModel">
+                    <option value="" disabled selected>Select a Lead Host</option>
+                    <option value="true">Lead Host 1</option>
+                    <option value="false">Lead Host 2</option>
+                </select>
+            </div>
+        </div>
+
+        <div *ngIf="virtualMeet.meet_Max_Host_Counts >= 1" class="w-full flex justify-between items-start mt-5 px-5 roundded-lg">
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="host2">Host 2 <span class="text-red-600">*</span>: </label>
+                <select [(ngModel)]="virtualMeet.host2_Usr_id" class="ml-2 text-[15px] p-1" id="host2" name="host2" required #host2Ref="ngModel">
+                    <option value="" disabled selected>Select a Host</option>
+                    <option value="true">Host xyz</option>
+                    <option value="false">Host xyz</option>
+                </select>
+            </div>
+        </div>
+
+        <div *ngIf="virtualMeet.meet_Max_Host_Counts >= 2" class="w-full flex justify-between items-start mt-5 px-5 roundded-lg">
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="host3">Host 3 <span class="text-red-600">*</span>: </label>
+                <select [(ngModel)]="virtualMeet.host3_Usr_id" class="ml-2 text-[15px] p-1" id="host3" name="host3" required #host3Ref="ngModel">
+                    <option value="" disabled selected>Select a Host</option>
+                    <option value="true">Host xyz</option>
+                    <option value="false">Host xyz</option>
+                </select>
+            </div>
+        </div>
+
+        <div *ngIf="virtualMeet.meet_Max_Host_Counts >= 3" class="w-full flex justify-between items-start mt-5 px-5 roundded-lg">
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="host4">Host 4 <span class="text-red-600">*</span>: </label>
+                <select [(ngModel)]="virtualMeet.host4_Usr_Id" class="ml-2 text-[15px] p-1" id="host4" name="host4" required #host4Ref="ngModel">
+                    <option value="" disabled selected>Select a Host</option>
+                    <option value="true">Host xyz</option>
+                    <option value="false">Host xyz</option>
+                </select>
+            </div>
+        </div>
+
+        <div *ngIf="virtualMeet.meet_Max_Host_Counts >= 4" class="w-full flex justify-between items-start mt-5 px-5 roundded-lg">
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="host5">Host 5 <span class="text-red-600">*</span>: </label>
+                <select [(ngModel)]="virtualMeet.host5_Usr_id" class="ml-2 text-[15px] p-1" id="host5" name="host5" required #host5Ref="ngModel">
+                    <option value="" disabled selected>Select a Host</option>
+                    <option value="true">Host xyz</option>
+                    <option value="false">Host xyz</option>
+                </select>
+            </div>
+        </div>
+
+        <div *ngIf="virtualMeet.meet_Max_Host_Counts >= 5" class="w-full flex justify-between items-start mt-5 px-5 roundded-lg">
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="host6">Host 6 <span class="text-red-600">*</span>: </label>
+                <select [(ngModel)]="virtualMeet.host6_Usr_ID" class="ml-2 text-[15px] p-1" id="host6" name="host6" required #host6Ref="ngModel">
+                    <option value="" disabled selected>Select a Host</option>
+                    <option value="true">Host xyz</option>
+                    <option value="false">Host xyz</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="w-full flex justify-between items-start mt-5 px-5 roundded-lg">
+            <div class="w-[50%] flex justify-start items-start">
+                <label class="text-lg font-semibold text-[#63040D]" for="otherdetils">Other Details <span class="text-red-600">*</span>: </label>
+                <textarea [(ngModel)]="virtualMeet.class_Detail" name="otherdetils" class="ml-2 p-1 w-[60%] max-h-[5rem] overflow-y-auto" id="otherdetils" [placeholder]="" required #detailsRef="ngModel"></textarea>
+            </div>
+
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="participants">Maximum Participants(max 250) <span class="text-red-600">*</span>: </label>
+                <input [(ngModel)]="virtualMeet.max_Particpnt_Counts" name="participants" class="ml-2 p-1" type="number" min="1" max="255" id="participants" [placeholder]="" required #maxparticipantsRef="ngModel" />
+            </div>
+        </div>
+
+        <div class=" flex-col justify-center items-center w-full mt-8 pb-6 ">
+            
+            <div class="w-full flex justify-center items-center">
+                <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Add New Virtual Meet</button>
+            </div>
+        
+             <!-- Error Message -->
+            <div *ngIf="formRef.submitted && formRef.invalid" class="text-red-600 text-center  mt-1 mb-1">
+                ***Fill all the required fields.***
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<div *ngIf="isAllocateVirtualMeetVisible" class="fixed inset-0 z-20 flex justify-center items-center bg-black bg-opacity-50">
+    <form #formRef="ngForm" novalidate (ngSubmit)="allocateVirtualMeet(formRef)" class="w-[40%] bg-white flex justify-start flex-col ">
+
+        <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+            <button (click)="toggleAllocateVirtualMeet()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="w-full flex justify-start px-5 gap-8">
+            <span class="text-lg font-semibold text-[#63040D]">Channel Id:<span class="ml-2 text-lg text-gray-500">{{userData.accT_ID}}</span></span>   
+        </div>
+
+        <div class="w-full flex justify-between items-start mt-5 px-5 roundded-lg">
+            <div class="w-[80%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="ctegory">Category<span class="text-red-600">*</span>: </label>
+                <select [(ngModel)]="addVirtualMeet.classid" class="ml-2 text-[15px] p-1" id="ctegory" name="ctegory" required #meetingRef="ngModel" >
+                    <option value="conference">Conference</option>
+                    <option value="webinar">Webinar</option>
+                    <option value="live-streaming">Live stream</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="w-full flex justify-between items-start mt-5 px-5 roundded-lg">
+            <div class="w-[80%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="meeting">Select Meeting<span class="text-red-600">*</span>: </label>
+                <select class="ml-2 text-[15px] p-1" id="meeting" name="meeting" required >
+                    <option>Meeting 1</option>
+                    <option>Meeting 2</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="w-full flex justify-between items-start mt-5 px-5 roundded-lg">
+            <div class="w-[100%] justify-start flex items-start">
+                <label class="text-lg font-semibold text-[#63040D]" for="startDate">Detail of Meeting: </label>
+                <textarea name="startDate" class="ml-2" type="" id="startDate" [placeholder]="" required ></textarea>
+            </div>
+        </div>
+
+        <div class=" flex-col justify-center items-center w-full mt-8 pb-6 ">
+
+            <div class="w-full flex justify-center items-center">
+                <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Allocate To Virtual Meet</button>
+            </div>
+
+            <!-- Error Message -->
+            <div *ngIf="formRef.submitted && formRef.invalid" class="text-red-600 text-center  mt-1 mb-1">
+                ***Fill all the required fields.***
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<div *ngIf="isPopupViewAllocationVisible" class="fixed inset-0 z-20 flex justify-center items-center bg-black bg-opacity-50">
+    <form  class="w-[75%] bg-white flex justify-start flex-col ">
+
+        <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+            <button (click)="toggleViewAllocation()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="w-full flex justify-start px-5 gap-8">
+            <span class="text-lg font-semibold text-[#63040D]">Rakesh Singh</span>   
+        </div>
+
+        <div class="h-2 text-[15px] my-5 w-[95%] flex justify-start font-semibold text-[#63040D] mx-auto mb-10">
+            <span class="w-[10%] h-10">#Serial</span>
+            <span class="w-[18%] h-10">Pending Meeting Id</span>
+            <span class="w-[16%] h-10">Meet name</span>
+            <span class="w-[15%] h-10">Date Planned</span>
+            <span class="w-[12%] h-10">Start Time</span>
+            <span class="w-[12%] h-10">Duration</span>
+            <span class="w-[9%] h-10">Status</span>
+            <span class="w-[10%] h-10">Host Id</span>
+            <span class="w-[12%] h-10">Action</span>
+        </div>
+
+        
+        <div class="w-[95%] mx-auto mb-5 h-[250px] overflow-y-scroll text-[12px] flex font-semibold flex-col gap-1">
+            <div class="w-full py-2 flex justify-start">
+                <div class="w-[10%] h-8">01</div>
+                <div class="w-[18%] h-8">t0086</div>
+                <div class="w-[16%] h-8">Cyber Security</div>
+                <div class="w-[15%] h-8">19-01-25</div>
+                <div class="w-[12%] h-8">6:30 PM IST</div>
+                <div class="w-[12%] h-8">60 min</div>
+                <div class="w-[9%] h-8">
+                    <img [src]="valid" alt="Validity" class="h-6 w-auto" />
+                </div>
+                <div class="w-[10%] h-8">567</div>
+                <div class="w-[12%]  flex justify-between items-center">
+                    <button class=" h-8">
+                        <img [src]="edit" alt="Edit" class="h-6 w-auto" />
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<div *ngIf="isScheduleTestVisible" class="fixed inset-0 z-20 flex justify-center items-center bg-black bg-opacity-50">
+    <form #formRef="ngForm" novalidate (ngSubmit)="addSchedule(formRef)" class="w-[55%] bg-white flex justify-start flex-col ">
+
+        <div class="w-full px-4 pt-8  items-center flex flex-row-reverse">
+            <button (click)="toggleScheduleTest()" class="absolute z-2 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div class="w-full flex justify-start px-5 gap-8">
+            <span class="text-lg font-semibold text-[#63040D]">Channel Id:<span class="ml-2 text-lg text-gray-500">{{userData.accT_ID}}</span></span>   
+        </div>
+
+        <div class="w-full flex justify-between items-start mt-5 px-5 roundded-lg">
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="timezone">Time Zone: </label>
+                <select [(ngModel)]="schedule.timezone" class="ml-2 text-[15px] p-1" id="timezone" name="timezone" required #timeZoneRef="ngModel">
+                    <option value="" disabled selected>Select a Time Zone</option>
+                    <option>Time Zone 2</option>
+                    <option>Time Zone 2</option>
+                </select>
+            </div>
+
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="meetdate">Calander Date <span class="text-red-600">*</span>: </label>
+                <input [(ngModel)]="schedule.dateinDDMMYYYY" name="meetdate" class="ml-2 p-1" type="date" id="meetdate" [placeholder]="" required [min]="today" #dateRef="ngModel"/>
+            </div>
+        </div>
+
+        <div class="w-full flex justify-between items-start mt-5 px-5 roundded-lg">
+
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="meettime">Time(24-hour format)<span class="text-red-600">*</span>: </label>
+                <input [(ngModel)]="scheduleTime" name="meettime" class="ml-2 p-1 w-[8rem]" type="time" id="meettime"
+                        [min]="formatDate(schedule.dateinDDMMYYYY) === today ? currentTime : '00:00'"
+                        required #timeRef="ngModel"/>
+            </div>
+
+            <div class="w-[50%]">
+                <label class="text-lg font-semibold text-[#63040D]" for="duration">Duration in min(max 180) <span class="text-red-600">*</span>: </label>
+                <input [(ngModel)]="schedule.duration_In_Mins" name="duration" class="ml-2 p-1" type="number" min="1" max="180" id="duration" placeholder="" required #durationRef="ngModel"/>
+            </div>
+            
+        </div>
+
+        <div class=" flex-col justify-center items-center w-full mt-8 pb-6 ">
+            
+            <div class="w-full flex justify-center items-center">
+                <button class="bg-red-600 px-4 py-2 hover:bg-red-700 text-white font-semibold">Save Schedule</button>
+            </div>
+        
+             <!-- Error Message -->
+            <div *ngIf="formRef.submitted && formRef.invalid" class="text-red-600 text-center  mt-1 mb-1">
+                ***Fill all the required fields.***
+            </div>
+        </div>
+
+    </form>
+</div>

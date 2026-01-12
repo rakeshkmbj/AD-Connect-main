@@ -1,0 +1,89 @@
+<nav class="  border-blue-400 dark:bg-gray-900  w-full z-[300] fixed top-0  ">
+    <div class=" flex flex-wrap lg:flex-row flex-row-reverse items-center shadow-lg justify-between h-16  bg-white pl-16 pr-16">
+        <a  class="flex items-center space-x-3 rtl:space-x-reverse">
+            <img src="../../../assets/adConnectNewLogo.jpg" alt="Icon" class="w-12  h-12 rounded-lg ">
+            
+        </a>
+        <button class=" lg:hidden" (click)="changeVariable()">
+            <span class="sr-only">Open main menu</span>
+            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M1 1h15M1 7h15M1 13h15" />
+            </svg>
+        </button>
+        
+        <div class="rounded-lg lg:block hidden">
+            <!-- Account Name -->
+            <div class="text-sm font-semibold">
+                Account Name : <span class="font-normal">{{userData?.accT_NAME}}</span>
+            </div>
+        
+            <!-- Account Id and Sub Account Id -->
+            <div class="flex flex-row space-x-4">
+                <div class="text-sm font-semibold">
+                    Account Id : <span class="font-normal">{{userData?.accT_ID}}</span>
+                </div>
+                <div class="text-sm font-semibold">
+                    Sub Account Id : <span class="font-normal">{{userData?.subaccT_ID}}</span>
+                </div>
+            </div>
+        
+            <!-- Address -->
+            <div class="text-sm font-semibold">
+                Address: <span class="font-normal">{{userData?.address}}</span>
+            </div>
+        </div>
+
+        <div class="hidden w-full lg:block md:w-auto" id="navbar-default">
+            <ul
+                class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+        
+                <!-- Info Icon -->
+                <li class="flex items-center">
+                    <span class="material-symbols-outlined text-slate-500 text-2xl hover:cursor-pointer">info</span>
+                </li>
+        
+                <!-- Notification Icon with Badge -->
+                <li class="relative flex items-center">
+                    <div class="relative flex items-center">
+                        <span
+                            class="material-symbols-outlined text-slate-500 text-2xl hover:cursor-pointer">notifications</span>
+                        <div *ngIf="bellCount[0]?.adConnectTotalAlarmsUnread"
+                            class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center">
+                            {{bellCount[0]?.adConnectTotalAlarmsUnread}}
+                        </div>
+                    </div>
+                </li>
+        
+                <!-- Cart Icon with Count -->
+                <li class="relative flex items-center">
+                    <div class="relative flex items-center">
+                        <span
+                            class="material-symbols-outlined text-slate-500 text-2xl hover:cursor-pointer">shopping_cart</span>
+                        <div class="absolute -right-2 -top-2 text-base text-slate-500">0</div>
+                    </div>
+                </li>
+        
+                <!-- Profile Icon with Dropdown -->
+                <li class="relative flex items-center">
+                    <span class="material-symbols-outlined text-slate-500 text-2xl hover:cursor-pointer"
+                        (click)="toggleProfileDropdown()">person</span>
+                    <div *ngIf="isProfileDropdownOpen"
+                        class="absolute right-0 top-full mt-2 w-64 bg-white border border-gray-200 shadow-lg rounded-lg p-4 z-10">
+                        <div class="text-gray-800 font-semibold text-lg mb-2">{{ userData?.useR_NAME }}</div>
+                        <div class="text-gray-600 mb-1">User ID: {{ userData?.useR_ID }}</div>
+                        <div class="text-gray-600 mb-1">Role ID: {{ userData?.admediA_ROLE_ID }}</div>
+                        <div class="text-gray-600 mb-1">Role Name: {{ userData?.admediA_ROLE_NAME }}</div>
+                        <div class="text-gray-600 mb-2">Mobile Number: {{ userData?.useR_MOBILE }}</div>
+                        <button (click)="logout()"
+                            class="w-full text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-4 py-2 text-center">
+                            Logout
+                        </button>
+                    </div>
+                </li>
+        
+            </ul>
+        </div>
+
+    </div>
+</nav>

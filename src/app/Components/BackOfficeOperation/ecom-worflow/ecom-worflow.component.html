@@ -1,0 +1,62 @@
+<div class="flex flex-col gap-3">
+    <!-- heading -->
+    <div class="text-orange-500 font-bold font-abcd text-2xl">Manage E-comm Workflow</div>
+
+    <!-- buttons pending screen mapped screen pending content mapped content -->
+    <div class="grid  grid-cols-2 lg:grid-cols-4 gap-3 w-full md:w-[60%]">
+        <button class="bg-sideBarColor text-white px-2 py-1 rounded-md">Pending Screens</button>
+        <button class="bg-sideBarColor text-white px-2 py-1 rounded-md">Mapped Screens</button>
+        <button class="bg-sideBarColor text-white px-2 py-1 rounded-md">Pending Content</button>
+        <button class="bg-sideBarColor text-white px-2 py-1 rounded-md">Mapped Content</button>
+    </div>
+
+
+
+    <!-- table -->
+    <div class="overflow-x-auto bg-white shadow-md shadow-gray-200  rounded-md p-3">
+        <table class=" w-full">
+            <thead>
+                <tr class="flex flex-row gap-8">
+                    <th>S#</th>
+                    <th>Media id</th>
+                    <th>Name</th>
+                    <th>Repo id</th>
+                    <th>Pending Status</th>
+                    <th>Detail</th>
+                    <th>Mapped Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+
+    <!-- media details -->
+    <div class="flex flex-col gap-3 bg-white shadow-md shadow-gray-200 p-3 rounded-md">
+        <div>Media id :</div>
+        <div class="text-sideBarColor font-semibold">Media as Sub-item Mapped in E-comm :</div>
+        <div class="flex flex-col gap-1 md:flex-row md:gap-3">
+            <div class="flex flex-col gap-1">
+                <label class="text-sideBarColor font-semibold" for="">Mapped Vertical id</label>
+                <input class="custom-input" type="text">
+            </div>
+            <div class="flex flex-col gap-1">
+                <label class="text-sideBarColor font-semibold" for="">Mapped Product id</label>
+                <input class="custom-input" type="text">
+            </div>
+            <div class="flex flex-col gap-1">
+                <label class="text-sideBarColor font-semibold" for="">Mapped Item id</label>
+                <input class="custom-input" type="text">
+            </div>
+            <div class="flex flex-col gap-1">
+                <label class="text-sideBarColor font-semibold" for="">Mapped SubItem id</label>
+                <input class="custom-input" type="text">
+            </div>
+        </div>
+        <div>
+            <button class="bg-sideBarColor text-white px-4 py-2 rounded-md">Save</button>
+        </div>
+    </div>
+</div>

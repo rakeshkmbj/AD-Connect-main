@@ -1,0 +1,100 @@
+<section class=" flex items-center justify-center">
+
+    <div class="relative flex flex-col items-center justify-center  ">
+
+        <button (click)="closePopup()" class="absolute top-4 z-2 right-4 bg-transparent text-gray-600 hover:text-red-500 text-2xl font-bold">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+        </button>
+
+        <div class=" lg:w-[400px] w-[285px]   mt-6 bg-opacity-40 p-6 md:p-8 space-y-4 md:space-y-6">
+            <span class="lg:text-2xl text-xl font-bold leading-tight text-gray-900 dark:text-white">
+                Sign in to your account
+            </span>
+
+            <form [formGroup]="loginForm" (ngSubmit)="submitloginForm()" class="space-y-4 md:space-y-6">
+
+                <!-- Application -->
+
+                <div class="flex flex-col mb-4">
+                    <label for="application" class="font-semibold mb-1 lg:text-base text-sm text-black dark:text-gray-300">
+                        Select Application
+                    </label>
+                    
+                    <div class=" relative">
+                        <div class=" bg-blue-100 px-1 py-2 border cursor-pointer border-gray-400 text-gray-900 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                            (click)="toggleDropdown()">
+                            {{ selectedApplication?.label || 'Select' }}
+                        </div>
+                        
+                        <div class="absolute bg-white border border-gray-300 rounded-md shadow-lg mt-1 w-full" *ngIf="isDropdownOpen">
+                            <div *ngFor="let option of applications" 
+                                (click)="selectApplication(option)" 
+                                class="px-2 text-xs lg:text-base  hover:bg-blue-100 cursor-pointer"
+                                [class.font-semibold]="selectedApplication?.value === option.value">
+                                {{ option.label }}
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="text-red-500 mt-1"
+                        *ngIf="loginForm.controls['applicationId'].touched && loginForm.controls['applicationId'].invalid">
+                        <span *ngIf="loginForm.controls['applicationId'].errors?.['required']">
+                            Please select an application.
+                        </span>
+                    </div>
+                </div>
+                
+
+                <!-- Phone Number -->
+                <div class="flex flex-col mb-4">
+                    <label for="phone" class="font-semibold text-black dark:text-gray-300">Your phone number</label>
+                    <input type="number" formControlName="mobNumber"
+                        class="custom-input border-gray-300 bg-gray-50 text-gray-900 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                        placeholder="8578457345">
+
+                    <div class="text-red-500 mt-1"
+                        *ngIf="loginForm.controls['mobNumber'].touched && loginForm.controls['mobNumber'].invalid">
+                        <span *ngIf="loginForm.controls['mobNumber'].errors?.['required']">
+                            Phone number is required.
+                        </span>
+                        <span *ngIf="loginForm.controls['mobNumber'].errors?.['pattern']">
+                            Please enter a valid 10-digit phone number.
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Password -->
+                <div class="flex flex-col mb-4">
+                    <label for="password"
+                        class="block text-sm font-medium text-black dark:text-gray-300">Password</label>
+                    <input formControlName="password" type="password"
+                        class="custom-input border-gray-300 bg-gray-50 text-gray-900 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                        placeholder="••••••••" required>
+                    <div class="text-red-500 mt-1"
+                        *ngIf="loginForm.controls['password'].touched && loginForm.controls['password'].invalid">
+                        <span *ngIf="loginForm.controls['password'].errors?.['required']">
+                            Password is required.
+                        </span>
+                    </div>
+                </div>
+
+                <button type="submit" [disabled]="isLoading"
+                    class="w-full bg-blue-600 text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center flex items-center justify-center hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                    <span *ngIf="!isLoading">Sign in</span>
+                    <span *ngIf="isLoading">
+                        <svg class="animate-spin h-5 w-5 mr-3 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                            </circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                        </svg>
+                    </span>
+                </button>
+
+            </form>
+
+        </div>
+    </div>
+</section>

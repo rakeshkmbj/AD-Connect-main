@@ -1,0 +1,316 @@
+<!-- tabs -->
+<div class="flex flex-row gap-3">
+    <div class="px-2 py-1 cursor-pointer rounded transition-colors duration-200 ease-in-out" [ngClass]="{
+                'bg-gray-700 text-white': isSelected('Pending Media Validation'),
+                'bg-gray-300 text-gray-800 hover:bg-gray-400': !isSelected('Pending Media Validation')
+            }" (click)="onButtonClick('Pending Media Validation')">
+        Pending Media Validation
+    </div>
+    <div class="px-2 py-1 cursor-pointer rounded transition-colors duration-200 ease-in-out" [ngClass]="{
+                'bg-gray-700 text-white': isSelected('Approved Media Files'),
+                'bg-gray-300 text-gray-800 hover:bg-gray-400': !isSelected('Approved Media Files')
+            }" (click)="onButtonClick('Approved Media Files')">
+        Approved Media Files
+    </div>
+    <div class="px-2 py-1 cursor-pointer rounded transition-colors duration-200 ease-in-out" [ngClass]="{
+                'bg-gray-700 text-white': isSelected('Rejected Media Files'),
+                'bg-gray-300 text-gray-800 hover:bg-gray-400': !isSelected('Rejected Media Files')
+            }" (click)="onButtonClick('Rejected Media Files')">
+        Rejected Media Files
+    </div>
+</div>
+
+
+@if(!this.isLoading && this.selectedButton === "Pending Media Validation") {
+    <div class="flex flex-col gap-3 mx-auto  px-2 lg:px-0">
+        <!-- heading -->
+        <div class="text-orange-500 font-bold text-2xl mb-2 mt-2">Manage Media Validation Workflow</div>
+    
+        <!-- table -->
+        <div class="overflow-x-auto p-6 bg-white">
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-sm text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr class="">
+                        <th class="w-1/12">Serial#</th>
+                        <th class="sm:whitespace-nowrap">Media ID</th>
+                        <th class="sm:whitespace-nowrap">Name</th>
+                        <th class="sm:whitespace-nowrap">Repo ID</th>
+                        <th class="sm:whitespace-nowrap">
+                            <span class="block break-words">
+                                Validation Pending Status
+                            </span>
+                        </th>
+                        <th class="sm:whitespace-nowrap">Sent to Backoffice</th>
+                        <th class="sm:whitespace-nowrap">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="border-b dark:border-gray-700" *ngFor="let item of pendingMedia; let i = index">
+                        <td class="py-1">{{i}}</td>
+                        <td class="py-1">{{item.adConnectBoMedId}}</td>
+                        <td class="py-1">{{item.adConnectBoMediaName}}</td>
+                        <td class="py-1">{{item.adConnectBoRepoId}}</td>
+                        @if (item.adConnectBoVldtdPndngFlg === true) {
+                        <td class="py-1    text-green-400"><span class="material-symbols-outlined">
+                                done
+                            </span></td>
+                        }
+                        @else {
+                        <td class="py-1 flex  text-red-400"><span class="material-symbols-outlined">
+                                close
+                            </span></td>
+                        }
+                       
+                        <td class="py-1">{{ formatDate(item.adConnectMediaSentToBoDatetime) }}</td>
+                        <td class="py-1">
+                            <button (click)="Openpopup(item.adConnectBoMedId)"
+                                class="px-2 py-1~ bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75 transition duration-300">
+                                View & Validate
+                            </button>
+                        </td>
+    
+    
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    
+    
+        <!-- media files details section -->
+        <ng-template #dialogTemplate>
+            <form class="bg-white rounded-md pb-3 h-full w-full transition-all duration-1000" >
+                <div class="border-b w-full px-5 py-3 relative flex justify-between">
+                    <div class="text-lg font-semibold font-xyz">View & Validate</div>
+                    <div>
+                        <span (click)="closePopup()"
+                            class="flex justify-center items-center material-symbols-outlined cursor-pointer hover:bg-gray-200 hover:rounded-full h-8 w-8 transition">
+                            close
+                        </span>
+                    </div>
+                </div>
+                <div class="p-3 flex flex-col gap-3">
+
+                    <div class="flex flex-col space-y-3 lg:space-y-0 lg:flex-row lg:items-center lg:space-x-4 w-full">
+                        <div class="text-orange-500 font-semibold whitespace-nowrap">Media File</div>
+                    
+                        <!-- Container for the image and controls -->
+                        <div class="relative border border-gray-300 rounded-md w-full lg:w-100 h-full max-h-[90vh] flex items-center justify-center overflow-hidden">
+                            <!-- Zoom in and out controls -->
+                            <button
+                                *ngIf="mediaFileUrl && !isVideoFile(mediaFileUrl)"
+                                (click)="zoomIn()"
+                                class="absolute top-2 left-2 bg-white text-gray-700 p-2 rounded shadow z-10 hover:bg-gray-100 transition-colors"
+                            >
+                                <span class="text-xl">+</span>
+                            </button>
+                            <button
+                                *ngIf="mediaFileUrl && !isVideoFile(mediaFileUrl)"
+                                (click)="zoomOut()"
+                                class="absolute top-2 left-14 bg-white text-gray-700 p-2 rounded shadow z-10 hover:bg-gray-100 transition-colors"
+                            >
+                                <span class="text-xl">-</span>
+                            </button>
+
+                            <!-- Video player for video URLs -->
+                            <div *ngIf="mediaFileUrl && isVideoFile(mediaFileUrl)">
+                                <video
+                                id="videoPlayer"
+                                class="video-js vjs-default-skin"
+                                controls
+                                preload="auto"
+                                width="100%"
+                                height="auto"
+                                data-setup="{}"
+                                >
+                                <!-- <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4" type="video/mp4"> -->
+                                <source [src]="mediaFileUrl" type="video/mp4" />
+                                Your browser does not support the video tag.
+                                </video>
+                            </div>
+
+                            <!-- Image preview for image URLs -->
+                            <img
+                                *ngIf="mediaFileUrl && !isVideoFile(mediaFileUrl)"
+                                [src]="mediaFileUrl"
+                                alt="Media Preview"
+                                class="object-contain max-w-[15rem] max-h-[15rem] transition-transform duration-300"
+                                [ngStyle]="{ transform: 'scale(' + zoomLevel + ')' }"
+                            />
+
+                            <!-- Placeholder if no media is available -->
+                            <div *ngIf="!mediaFileUrl" class="flex items-center justify-center text-gray-500 h-full">
+                                No media available
+                            </div>
+                            </div>
+
+                    </div>
+                    
+    
+                    <!-- BO Rejection and Approval -->
+                    <div class="flex flex-col w-[35%] gap-3">
+
+                        <div class="flex flex-row gap-3 justify-start items-center">
+                            <label class="text-sideBarColor font-semibold whitespace-nowrap">Validate Media:</label>
+                            <select class="custom-input border border-gray-300 rounded-md p-2"
+                            (change)="onValidationChange($event)">
+                            >
+                                <option value="" selected="true" disabled="true">Select</option>
+                                <option value="approved">Approve</option>
+                                <option value="rejected">Reject</option>
+                            </select>
+                        </div>
+
+                        <div *ngIf="Validationstatus == 'rejected'" class="flex flex-row gap-3 items-center">
+                            <label class="text-sideBarColor font-semibold whitespace-nowrap">Reason:</label>
+                            <select (change)="onSelectReason($event)" class="custom-input border border-gray-300 rounded-md p-2">
+                                <option value="" selected="true" disabled="true">Select reason</option>
+                                <option value="Sexually Prohibited">Sexually Prohibited</option>
+                                <option value="Industry Prohibited">Industry Prohibited</option>
+                                <option value="Geography Prohibited">Geography Prohibited</option>
+                            </select>
+                        </div>
+
+                        <div class=" w-full flex justify-end">
+                            <button 
+                                *ngIf="Validationstatus == 'rejected'" 
+                                class="bg-red-500 rounded-md text-white px-4 py-2 transition 
+                                       disabled:cursor-not-allowed"
+                                (click)="rejectMedia()" 
+                                [disabled]="!SelectedReason">
+                                Rejected
+                            </button>
+
+                            <div>
+                                <button *ngIf="Validationstatus == 'approved'" class="bg-green-500 rounded-md text-white px-4 py-2 transition"
+                                    (click)="validateMedia()">
+                                    Approved
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+    
+            </form>
+        </ng-template>
+    
+    
+    </div>
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@if(!this.isLoading && this.selectedButton === "Approved Media Files") {
+
+    <!-- heading -->
+    <div class="text-orange-500 font-bold text-2xl mb-2 mt-2">Approved Media Files</div>
+    <div class="overflow-x-auto p-6 bg-white">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead class="text-sm text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr class="">
+                    <th class="w-1/12">Serial#</th>
+                    <th class="sm:whitespace-nowrap">Media Id</th>
+                    <th class="sm:whitespace-nowrap">Repo Id</th>
+                    <th class="sm:whitespace-nowrap">Media Name</th>
+                    <th class="sm:whitespace-nowrap">Media Sent To Bo Datetime</th>
+                    <th class="sm:whitespace-nowrap">Media Response Bo Datetime</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="border-b dark:border-gray-700" *ngFor="let item of validatedMediaList; let i = index">
+                    <td>{{i}}</td>
+                    <td>{{item.adConnectBoMedId}}</td>
+                    <td>{{item.adConnectBoRepoId}}</td>
+                    <td>{{item.adConnectBoMediaName}}</td>
+                    <td>{{formatDate(item.adConnectMediaSentToBoDatetime)}}</td>
+                    <td>{{formatDate(item.adConnectMediaResponseBoDatetime)}}</td>
+    
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
+
+@if(!this.isLoading && this.selectedButton === "Rejected Media Files") {
+    <!-- heading -->
+    <div class="text-orange-500 font-bold text-2xl mt-2 mb-2">Rejected Media Files</div>
+    <div class="overflow-x-auto p-6 bg-white">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead class="text-sm text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr class="">
+                    <th class="w-1/12">Serial#</th>
+                    <th class="sm:whitespace-nowrap">Media Id</th>
+                    <th class="sm:whitespace-nowrap">Repo Id</th>
+                    <th class="sm:whitespace-nowrap">Media Name</th>
+                    <th class="sm:whitespace-nowrap">Media Sent To Bo Datetime</th>
+                    <th class="sm:whitespace-nowrap">Media Response Bo Datetime</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="border-b dark:border-gray-700" *ngFor="let item of rejectedMediaList; let i = index">
+                    <td>{{i}}</td>
+                    <td>{{item.adConnectBoMedId}}</td>
+                    <td>{{item.adConnectBoRepoId}}</td>
+                    <td>{{item.adConnectBoMediaName}}</td>
+                    <td>{{formatDate(item.adConnectMediaSentToBoDatetime)}}</td>
+                    <td>{{formatDate(item.adConnectMediaResponseBoDatetime)}}</td>
+        
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+
+}
+
+
+@if(this.isLoading) {
+    
+    <div class="flex justify-center items-center h-screen">
+        <div class="flex flex-col justify-center items-center space-y-4">
+            <!-- Custom Spinner -->
+            <div class="w-16 h-16 border-t-4 border-b-4 border-green-500 rounded-full animate-spin"></div>
+    
+            <p class="text-center text-gray-700">Loading, please wait...</p>
+        </div>
+    </div>
+    
+}

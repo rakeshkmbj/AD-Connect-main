@@ -1,0 +1,35 @@
+.flex {
+  display: flex;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+.gap-3 {
+  gap: 12px; /* Adjust the gap size as needed */
+}
+
+.border {
+  border-width: 1px;
+  border-style: solid;
+}
+
+.border-black {
+  border-color: black;
+}
+
+.w-40 {
+  width: 160px; /* Adjust the width as needed */
+}
+
+.h-24 {
+  height: 96px; /* Adjust the height as needed */
+}
+
+.upload-box-img {
+  max-width: 100%;
+  max-height: 100%;
+  width: 100%; /* Ensure the image covers the width */
+  height: 100%;
+}

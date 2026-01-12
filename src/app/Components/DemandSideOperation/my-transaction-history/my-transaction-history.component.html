@@ -1,0 +1,66 @@
+<div class="flex flex-col gap-3">
+    <!-- Buttons my account dashboard and my subaccount dashboard -->
+    <div class=" rounded-md    flex flex-col gap-3 justify-between">
+        <div class="text-orange-500 font-bold font-abcd text-2xl">My Transaction History</div>
+        <div class="flex flex-row gap-4">
+            <button class=" bg-[#a00e1a] text-white rounded-md px-3 py-2">My Account Dashboard</button>
+            <button class=" bg-[#a00e1a] text-white rounded-md px-3 py-2">My Subaccount Dashboard</button>
+        </div>
+    </div>
+
+    <div class="bg-white w-full xl:w-[45%] lg:w-[70%] md:w-[80%] p-3 rounded-md flex flex-col gap-3">
+        <div class="">
+            <div class="grid lg:grid-cols-2 grid-cols-1">
+                <div class="font-semibold flex justify-start items-center">Account : -----</div>
+                <div class="flex flex-row justify-start items-center gap-2">
+                    <label class="whitespace-nowrap font-semibold" for="">Sub-Account : </label>
+                    <select class="custom-input" name="" id="">
+                        <option value="">Franchise 1</option>
+                        <option value="">Franchise 2</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid lg:grid-cols-2 grid-cols-1 gap-3">
+            <div class="flex justify-center items-center gap-3">
+                <label class="font-semibold whitespace-nowrap" for="">Date From : </label>
+                <input class="custom-input" type="date" #datePickerInput>
+            </div>
+            <div class="flex justify-center items-center gap-3">
+                <label class="font-semibold whitespace-nowrap" for="">Date to : </label>
+                <input class="custom-input" type="date">
+            </div>
+        </div>
+
+        <div class="flex justify-end">
+            <button
+                class="inline-block px-6 py-3 text-white bg-orange-500 rounded-md shadow-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2">Generate</button>
+        </div>
+    </div>
+
+
+    <div class="text-white p-1  flex flex-row gap-16 bg-sideBarColor xl:w-[45%] lg:w-[60%] sm:w-[80%]">
+        <div>Account : -----</div>
+        <div>Sub-Account : -----</div>
+    </div>
+
+    <div class="text-sideBarColor font-bold flex flex-row gap-16 w-11/12">
+        <div>Dt From: </div>
+        <div>Dt To:</div>
+    </div>
+
+    <div class="overflow-x-auto">
+        <table class="mb-3 bg-white rounded-md w-full">
+            <thead>
+                <tr class="flex flex-row gap-8 p-3">
+                    <th>Sr. No</th>
+                    <th>date of Transaction</th>
+                    <th>Confirmed Order</th>
+                    <th>Cart ID</th>
+                    <th>View Invoice</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
